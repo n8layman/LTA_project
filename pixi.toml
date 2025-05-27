@@ -1,0 +1,12 @@
+[project]
+authors = ["Nathan Layman <layman@ecohealthalliance.org>"]
+channels = ["conda-forge"]
+name = "project-template"
+platforms = ["osx-arm64"]
+version = "0.1.0"
+
+[tasks]
+
+[dependencies]
+python = ">=3.13.2,<3.14"
+pytest = ">=8.3.5,<9"

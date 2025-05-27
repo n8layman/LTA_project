@@ -1,0 +1,6 @@
+.env filter=git-crypt diff=git-crypt
+auth/** filter=git-crypt diff=git-crypt
+auth/**/*.gitkeep !filter
+.gitattributes !filter !diff
+# SCM syntax highlighting & preventing 3-way merges
+pixi.lock merge=binary linguist-language=YAML linguist-generated=true

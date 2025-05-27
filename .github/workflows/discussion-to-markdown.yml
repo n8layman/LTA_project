@@ -1,0 +1,24 @@
+name: Sync Discussion to Markdown
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'resources/notes/**'  # Trigger only when Markdown files in resources/notes/ change
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    container: rocker/tidyverse:4.3.1  # Use a specific Rocker R version
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Run sync script
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          Rscript --vanilla scripts/sync_discussion_to_markdown.R

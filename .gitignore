@@ -1,0 +1,18 @@
+# Ignore local R files
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.DS_Store
+
+# Ignore target objects which can be quite large
+_targets/objects
+
+# Ignore all .key files
+*.key
+
+# Exception: Do not ignore .gitkeep files
+!*.gitkeep
+# pixi environments
+.pixi
+*.egg-info

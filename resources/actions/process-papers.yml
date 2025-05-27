@@ -1,0 +1,22 @@
+name: Process New Papers
+
+on:
+  push:
+    paths:
+      - 'resources/papers/**'
+
+jobs:
+  process-papers:
+    runs-on: ubuntu-latest
+    container: rocker/r-ver:4.3.1  # Use a specific Rocker R version
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install required R packages
+        run: |
+          install.packages(c("pdftools", "httr", "stringr", "bibtex"), repos = "https://cloud.r-project.org/")
+
+      - name: Run R script
+        run: Rscript scripts/process_papers.R

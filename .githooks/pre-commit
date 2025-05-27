@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# Maximum allowed file size (in bytes)
+max_size=99000000
+
+# Find all files larger than the max_size
+files=$(git diff --cached --name-only | xargs -I{} find {} -type f -size +${max_size}c 2>/dev/null)
+
+if [ -n "$files" ]; then
+    echo "Error: The following files are larger than 99MB:"
+    echo "$files"
+    echo "Please remove these files from the commit or reduce their size."
+    exit 1
+fi

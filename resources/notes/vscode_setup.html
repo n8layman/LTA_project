@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>vscode_setup</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="vscode_setup_files/libs/clipboard/clipboard.min.js"></script>
+<script src="vscode_setup_files/libs/quarto-html/quarto.js"></script>
+<script src="vscode_setup_files/libs/quarto-html/popper.min.js"></script>
+<script src="vscode_setup_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="vscode_setup_files/libs/quarto-html/anchor.min.js"></script>
+<link href="vscode_setup_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="vscode_setup_files/libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="vscode_setup_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="vscode_setup_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="vscode_setup_files/libs/bootstrap/bootstrap-973236bd072d72a04ee9cd82dcc9cb29.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+
+
+
+<p>I recently tried switching from managing my R projects with RStudio to VScode. The switch was motivated by a desire to improve my interaction with git and github. VScode has some very elegant methods to view the commit graph, visualize and resolve merge conflicts, view issues, and create pull requests right from within the IDE. RStudio’s github integration feels much less mature - even clunky. This post is a way to capture and share the steps necessay to get things going, some of the challenges I ran into along the way and the solutions I found as well as some of the exciting features that come with switching to VScode.</p>
+<section id="benefits" class="level3">
+<h3 class="anchored" data-anchor-id="benefits">Benefits</h3>
+<p>The switch to VScode brings several compelling advantages:</p>
+<p>Superior Git Integration: Beyond basic version control, VScode offers advanced features like:</p>
+<ol type="1">
+<li>Synchronize changes - never miss a <code>git pull</code> again!</li>
+<li>Interactive commit graph visualization</li>
+<li>Built-in merge conflict resolution tools</li>
+<li>Integrated GitHub issue tracking</li>
+<li>Pull request management within the IDE</li>
+<li>Detailed file history and blame annotations through GitLens</li>
+<li>Line-specific code suggestions, reviews, and comments</li>
+<li>Live share</li>
+</ol>
+<p>Extensibility: VScode’s marketplace offers thousands of extensions that can enhance your R development experience, from themes to productivity tools. Multi-language Support: If you work with multiple programming languages, VScode provides a consistent interface across all of them, reducing context switching. Performance: VScode generally feels more responsive than RStudio, especially when working with large projects or multiple files. Modern Interface: The UI is clean, customizable, and supports modern features like split editors, integrated terminals, and customizable layouts.</p>
+</section>
+<section id="costs" class="level3">
+<h3 class="anchored" data-anchor-id="costs">Costs</h3>
+<p>There are some trade-offs to consider:</p>
+<ol type="1">
+<li>Initial Setup Time: Getting everything configured properly takes more time than RStudio’s out-of-the-box experience.</li>
+<li>Learning Curve: You’ll need to learn new keyboard shortcuts and workflows, which can temporarily slow you down.</li>
+<li>Missing Features: Some RStudio-specific features might not be available or work differently:</li>
+</ol>
+<ul>
+<li>The environment pane works differently</li>
+<li>Package management is less integrated</li>
+<li>Some Shiny features require additional setup</li>
+</ul>
+<ol start="4" type="1">
+<li>Configuration Management: You’ll need to maintain your own settings and extensions, which requires more active management than RStudio.</li>
+</ol>
+</section>
+<section id="pre-game" class="level2">
+<h2 class="anchored" data-anchor-id="pre-game">Pre-game</h2>
+<section id="installing-r-mac-os" class="level3">
+<h3 class="anchored" data-anchor-id="installing-r-mac-os">Installing R (mac OS)</h3>
+<p><strong>Using <code>brew install --cask r</code></strong> - Installs R as a cask (pre-built binary) - More similar to the experience of downloading from CRAN - This is the only one that allows package binaries to be downloaded from CRAN - Includes R.app (GUI version) - May be easier for beginners</p>
+<p><strong>Using <code>brew install r</code></strong> (NOT RECOMMENDED!) - Installs R as a formula - Provides more control over the installation - Better integration with other Homebrew packages - Easier to update and manage dependencies - Packages must be built from source</p>
+<p>Note: The formula installation (<code>brew install --cask r</code>) is highly recommended because it allows package binaries to be downloaded from CRAN.</p>
+</section>
+<section id="installing-radian" class="level3">
+<h3 class="anchored" data-anchor-id="installing-radian">Installing radian</h3>
+<p>Radian is a modern R console with syntax highlighting and multi-line editing. It’s a significant improvement over the default R console. BUT! Before radian is a <strong>Python</strong> based application! You need a Python environment.</p>
+<section id="first-install-python" class="level4">
+<h4 class="anchored" data-anchor-id="first-install-python">First install python:</h4>
+<p><code>brew install python</code></p>
+</section>
+<section id="now-install-and-use-a-python-application-manager" class="level4">
+<h4 class="anchored" data-anchor-id="now-install-and-use-a-python-application-manager">Now install and use a python application manager:</h4>
+<p><code>brew install Pipx</code></p>
+</section>
+<section id="finally-install-radian" class="level4">
+<h4 class="anchored" data-anchor-id="finally-install-radian">Finally install radian</h4>
+<pre><code>pipx install radian
+which radian</code></pre>
+</section>
+</section>
+</section>
+<section id="game-day" class="level2">
+<h2 class="anchored" data-anchor-id="game-day">Game day</h2>
+<section id="download-vscode-from-the-official-website-or-use-homebrew" class="level3">
+<h3 class="anchored" data-anchor-id="download-vscode-from-the-official-website-or-use-homebrew">Download VScode from the official website or use Homebrew:</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install <span class="at">--cask</span> visual-studio-code</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="vscode-settings" class="level3">
+<h3 class="anchored" data-anchor-id="vscode-settings">VScode settings</h3>
+<p>VScode uses a hierarchical settings system that can be configured at different levels.</p>
+<section id="global-vs-workspace-environments-and-settings" class="level4">
+<h4 class="anchored" data-anchor-id="global-vs-workspace-environments-and-settings">Global vs Workspace environments and settings</h4>
+<p>Global settings affect all VScode projects, while workspace settings override global settings for specific projects. Settings can be managed through the UI or by editing JSON files. It’s recommended to start with global settings and create workspace-specific overrides as needed.</p>
+</section>
+</section>
+<section id="extensions" class="level3">
+<h3 class="anchored" data-anchor-id="extensions">Extensions</h3>
+<p>Essential extensions for R development:</p>
+<p><strong>Project manager</strong> - Helps organize and switch between projects - Saves project-specific settings - Supports custom project templates</p>
+<p><strong>R Extensions</strong> - R Language Support - R Debugger - R LSP Client</p>
+<p><strong>GitHub Integration</strong> - Git History: Visualize repository history - Git Actions: Manage GitHub Actions workflows - Git Codespaces: Remote development environments - Git Graph: Interactive visualization of git history - GitHub Pull Requests: Manage PRs from VScode - GitHub Theme: Official GitHub color themes - GitLens: Enhanced git capabilities</p>
+<p><strong>Quarto</strong> - Essential for R Markdown users - Supports interactive previews - Handles rendering and export</p>
+<p><strong>Prettier</strong> - Code formatting for multiple languages - Ensures consistent style - Configurable formatting rules</p>
+</section>
+<section id="renv" class="level3">
+<h3 class="anchored" data-anchor-id="renv">renv</h3>
+<p>It is highly recommended to use package management when working on R code. Renv allows for project libraries which make it much easier to avoid conflicts.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://rstudio.github.io/renv/articles/renv.png" class="img-fluid figure-img"></p>
+<figcaption>image</figcaption>
+</figure>
+</div>
+</section>
+<section id="install-renv" class="level3">
+<h3 class="anchored" data-anchor-id="install-renv">Install renv</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"renv"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">init</span>()  <span class="co"># Initialize project</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="use-renv" class="level4">
+<h4 class="anchored" data-anchor-id="use-renv">Use <a href="https://rstudio.github.io/renv/articles/renv.html">renv</a></h4>
+<p>First activate your project using <code>renv::activate()</code>. Make sure</p>
+<p>From now on: - install regular packages via <code>renv::install('package')</code> - install github packages via <code>renv::install('user/repo')</code></p>
+<p>For example, to install the development version of ggplot use:</p>
+<pre><code>renv::install('tidyverse/ggplot2')</code></pre>
+</section>
+</section>
+<section id="languageserver" class="level3">
+<h3 class="anchored" data-anchor-id="languageserver">languageserver</h3>
+<p>The R language server provides code intelligence:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">install</span>(<span class="st">"languageserver"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In order for some features, such as function hover information and goto defintion to index files in the <code>R/</code> folder, the project needs a DESCRIPTION file.</p>
+<section id="create-description-file" class="level4">
+<h4 class="anchored" data-anchor-id="create-description-file">Create DESCRIPTION file</h4>
+<pre><code>renv::install('usethis')
+usethis::use_description(check_name = F)</code></pre>
+</section>
+</section>
+<section id="linting" class="level3">
+<h3 class="anchored" data-anchor-id="linting">linting</h3>
+<p>Configure linting rules in <code>.lintr</code>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>linters<span class="sc">:</span> <span class="fu">linters_with_defaults</span>(<span class="at">line_length_linter=</span><span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="httpgd" class="level3">
+<h3 class="anchored" data-anchor-id="httpgd">httpgd</h3>
+<ol type="1">
+<li><code>renv::install("nx10/unigd")</code></li>
+<li><code>renv::install("nx10/httpgd")</code></li>
+</ol>
+</section>
+<section id="quarto" class="level3">
+<h3 class="anchored" data-anchor-id="quarto">quarto</h3>
+<p>Quarto provides enhanced document processing capabilities and requires separate installation and configuration.</p>
+</section>
+<section id="rprofile" class="level3">
+<h3 class="anchored" data-anchor-id="rprofile">.RProfile</h3>
+<pre><code>if (interactive() &amp;&amp; Sys.getenv("TERM_PROGRAM") == "vscode") {
+
+  library(languageserver) # Needed to make function definition goto work
+
+  options(vsc.dev.args = list(
+    width = 1500,
+    height = 1500,
+    pointsize = 12,
+    res = 300
+  ))
+
+
+  if (requireNamespace("httpgd", quietly = TRUE)) {
+    options(vsc.plot = FALSE)
+    options(device = function(...) {
+      httpgd::hgd(silent = TRUE)
+      .vsc.browser(httpgd::hgd_url(history = FALSE), viewer = "Beside")
+    })
+  }</code></pre>
+</section>
+<section id="vscode-keybindings" class="level3">
+<h3 class="anchored" data-anchor-id="vscode-keybindings">VScode keybindings</h3>
+<p>Consider creating custom keybindings for: - Running code selections - Starting/stopping R sessions - Managing plots - Navigating between files - Git operations</p>
+<section id="targets-keybindings" class="level4">
+<h4 class="anchored" data-anchor-id="targets-keybindings">targets keybindings</h4>
+<p>Add the following to the end of your global keybindings.json to enable targets specific macros</p>
+<pre><code>  {
+    "key": "alt+shift+m",
+    "command": "workbench.action.terminal.sendSequence",
+    "args": {
+      "text": "tar_make()\r"
+    }
+  },
+  {
+    "key": "alt+shift+l",
+    "command": "runCommands",
+    "args": {
+      "commands": [
+        "editor.action.addSelectionToNextFindMatch",
+        {
+          "command": "workbench.action.terminal.sendSequence",
+          "args": {
+            "text": "tar_load(${selectedText})\n"
+          }
+        }
+      ]
+    }
+  }</code></pre>
+</section>
+</section>
+</section>
+<section id="problems" class="level2">
+<h2 class="anchored" data-anchor-id="problems">Problems</h2>
+<p>Current issues and potential solutions:</p>
+<p><strong>renv/radian integration bug</strong></p>
+<pre><code> *** caught bus error ***
+address 0x1013065e8, cause 'invalid alignment'</code></pre>
+<ul>
+<li><p>Issue being tracked in the renv and radian repositories</p></li>
+<li><p>Current solution is to re-build the renv project library.</p>
+<ol type="1">
+<li>Delete renv.lock</li>
+<li>Delete workspace renv folder</li>
+<li><code>install.packages('renv')</code></li>
+<li><code>renv::snapshot()</code></li>
+<li><code>renv::hydrate()</code></li>
+</ol>
+<ul>
+<li>Chose: <code>Activate the project and use the project library.</code></li>
+</ul>
+<ol start="6" type="1">
+<li>Close R terminal and open a new one</li>
+<li><code>renv::snapshot()</code></li>
+</ol>
+<ul>
+<li>Chose: <code>2: Install the packages, then snapshot.</code></li>
+</ul>
+<ol start="8" type="1">
+<li>Repeat steps until <code>renv::status</code> returns <code>No issues found -- the project is in a consistent state.</code></li>
+<li>Make sure to install any missing packages not tracked by renv such as:</li>
+</ol>
+<ul>
+<li><code>renv::install('languageserver')</code></li>
+</ul>
+<p>Another option is to re-install / re-build the package from source as recommended <a href="https://github.com/randy3k/radian/issues/371">here</a></p>
+<pre><code>https://github.com/randy3k/radian/issues/371</code></pre></li>
+</ul>
+<p><strong>Quarto preview formatting</strong> - Bullet alignment issues with checkboxes - Issue being tracked in the renv repository</p>
+<p><strong>Go to definition functionality</strong> - Requires sourcing files or DESCRIPTION file</p>
+<p>Future updates to the R extension and language server should address many of these issues.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ul>
+<li><a href="https://www.schmidtynotes.com/blog/r/2023-01-03-targets_helpers/" class="uri">https://www.schmidtynotes.com/blog/r/2023-01-03-targets_helpers/</a></li>
+</ul>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
