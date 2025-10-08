@@ -1,0 +1,56 @@
+name: Deploy Shinylive App
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.3.1'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev libgdal-dev libproj-dev libgeos-dev libudunits2-dev
+
+      - name: Install R packages
+        run: |
+          install.packages(c("shiny", "leaflet", "jsonlite", "dplyr", "DT", "lubridate", "leaflet.providers", "leaflet.extras", "htmltools"))
+          install.packages("httpuv")
+        shell: Rscript {0}
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install shinylive
+        run: |
+          pip install shinylive
+
+      - name: Export to shinylive
+        run: |
+          shinylive export app _site
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
