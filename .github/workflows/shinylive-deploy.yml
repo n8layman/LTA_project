@@ -9,9 +9,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    # --- OPTIMIZATION: Use rocker/shiny-verse:latest ---
-    # Using 'latest' ensures the fastest deployment by pre-installing all core packages 
-    # and automatically picking up the latest stable R version.
+    # Using the latest full-stack image to minimize installation steps.
     container:
       image: rocker/shiny-verse:latest 
 
@@ -35,16 +33,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # --- REMOVED SYSTEM DEPENDENCIES ---
-      # The rocker/shiny-verse image contains the necessary system libraries (curl, ssl, xml2) 
-      # and build tools (cmake) required for the few remaining R packages to install.
-      
-      # --- Installing only the few remaining extension packages ---
+      # --- Minimal system dependencies for compiling non-base R packages ---
+      # libarchive-dev is required by the 'archive' package, a dependency of 'shinylive', if binaries are unavailable.
+      - name: Install system dependencies for extensions
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends \
+            libarchive-dev
+
+      # Installing packages using CRAN precompiled binaries.
+      # If binaries are unavailable, it will fall back to source installation.
       - name: Install required R packages
         run: |
-          # We removed 'readxl' as it is part of the pre-installed Tidyverse.
-          # Only installing specific Leaflet extensions and the deployment tool.
-          R -e "install.packages(c('leaflet.providers', 'leaflet.extras', 'shinylive'), repos = 'https://cloud.r-project.org/')"
+          R -e "install.packages(c('leaflet.providers', 'leaflet.extras', 'shinylive'), repos = 'https://cloud.r-project.org/', type = 'binary')"
 
       - name: Export to shinylive
         run: |
