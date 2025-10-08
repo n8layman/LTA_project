@@ -9,11 +9,11 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    # --- OPTIMIZATION: Use rocker/tidyverse ---
-    # This image pre-installs 'dplyr', 'lubridate', 'jsonlite', etc., 
-    # significantly reducing the dependency installation load (the 100+ packages).
+    # --- OPTIMIZATION: Use rocker/shiny-verse:latest ---
+    # Using 'latest' ensures the fastest deployment by pre-installing all core packages 
+    # and automatically picking up the latest stable R version.
     container:
-      image: rocker/tidyverse:4.4.1 
+      image: rocker/shiny-verse:latest 
 
     permissions:
       contents: write
@@ -35,23 +35,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install system dependencies
-        run: |
-          apt-get update
-          # We keep the minimal system libs, as they are often required 
-          # for compiling the non-Tidyverse dependencies like 'leaflet' and 'DT'.
-          apt-get install -y --no-install-recommends \
-            libcurl4-openssl-dev \
-            libssl-dev \
-            libxml2-dev \
-            cmake
-
-      # --- Installing only the remaining required packages ---
+      # --- REMOVED SYSTEM DEPENDENCIES ---
+      # The rocker/shiny-verse image contains the necessary system libraries (curl, ssl, xml2) 
+      # and build tools (cmake) required for the few remaining R packages to install.
+      
+      # --- Installing only the few remaining extension packages ---
       - name: Install required R packages
         run: |
-          # The Tidyverse image already provides: dplyr, jsonlite, lubridate, htmltools (often).
-          # We only need to install: shiny, DT, leaflet and its extensions, readxl, and shinylive.
-          R -e "install.packages(c('shiny', 'leaflet', 'DT', 'leaflet.providers', 'leaflet.extras', 'readxl', 'shinylive'), repos = 'https://cloud.r-project.org/')"
+          # We removed 'readxl' as it is part of the pre-installed Tidyverse.
+          # Only installing specific Leaflet extensions and the deployment tool.
+          R -e "install.packages(c('leaflet.providers', 'leaflet.extras', 'shinylive'), repos = 'https://cloud.r-project.org/')"
 
       - name: Export to shinylive
         run: |
