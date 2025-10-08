@@ -10,7 +10,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     container:
-      image: rocker/shiny-verse:4.3.1
+      image: rocker/shiny-verse:latest
 
     permissions:
       contents: write
@@ -31,7 +31,11 @@ jobs:
             libgdal-dev \
             libproj-dev \
             libgeos-dev \
-            libudunits2-dev
+            libudunits2-dev \
+            cmake \
+            gdal-bin \
+            libglpk-dev \
+            libpoppler-cpp-dev
 
       - name: Cache renv packages
         uses: actions/cache@v4
