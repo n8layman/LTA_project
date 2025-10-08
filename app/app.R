@@ -11,6 +11,7 @@ library(leaflet.providers)
 library(leaflet.extras)
 library(readxl)
 library(htmltools)
+library(ggplot2)
 
 # --- Configuration & Data Loading ---
 
@@ -96,22 +97,75 @@ set.seed(42)
 start_date <- ymd("2023-04-01")
 end_date <- ymd("2024-09-30")
 dates <- seq(start_date, end_date, by = "day")
-n <- 500
 
-mock_data <- data.frame(
-  Date = sample(dates, n, replace = TRUE),
-  # Use standardized Mianus name
-  Site = sample(
-    c("Mohonk Preserve", "Mianus River Gorge"),
-    n, replace = TRUE, prob = c(0.6, 0.4)
-  ),
-  Species = sample(
-    c("Ixodes scapularis (Blacklegged)", "Amblyomma americanum (Lone Star)", "Dermacentmaus variabilis (Dog Tick)"),
-    n, replace = TRUE, prob = c(0.5, 0.3, 0.2)
-  ),
-  Count = round(rlnorm(n, meanlog = 1.5, sdlog = 0.8)) + 1
-) %>%
-  arrange(Date, Site)
+# Define all possible transects
+mohonk_transects <- c("Cedar Drive Loop", "Canaan Rd", "Glory Hill", "Undercliff Rd")
+
+# All individual Mianus transect SEGMENTS (each line on the map)
+mianus_transect_segments <- c(
+  "MRG-1-Fen-0-A", "MRG-1-Fen-0-B", "MRG-1-Fen-0-C", "MRG-1-Fen-0-D", "MRG-1-Fen-0-F",
+  "MRG-1-Fen-1-A", "MRG-1-Fen-1-B", "MRG-1-Fen-1-C", "MRG-1-Fen-1-D", "MRG-1-Fen-1-E", "MRG-1-Fen-1-F",
+  "MRG-1-Fen-2-A", "MRG-1-Fen-2-B", "MRG-1-Fen-2-C", "MRG-1-Fen-2-D", "MRG-1-Fen-2-E", "MRG-1-Fen-2-F",
+  "MRG-1-Fen-3-A", "MRG-1-Fen-3-B", "MRG-1-Fen-3-C", "MRG-1-Fen-3-D", "MRG-1-Fen-3-F",
+  "MRG-1-Fen-4-A",
+  "MRG-1-Unf-0-A", "MRG-1-Unf-0-B", "MRG-1-Unf-0-C", "MRG-1-Unf-0-D", "MRG-1-Unf-0-E", "MRG-1-Unf-0-F",
+  "MRG-1-Unf-1-A", "MRG-1-Unf-1-B", "MRG-1-Unf-1-C", "MRG-1-Unf-1-D", "MRG-1-Unf-1-E", "MRG-1-Unf-1-F",
+  "MRG-1-Unf-2-A", "MRG-1-Unf-2-B", "MRG-1-Unf-2-C", "MRG-1-Unf-2-D", "MRG-1-Unf-2-E", "MRG-1-Unf-2-F",
+  "MRG-1-Unf-3-A", "MRG-1-Unf-3-B", "MRG-1-Unf-3-C", "MRG-1-Unf-3-D", "MRG-1-Unf-3-E", "MRG-1-Unf-3-F",
+  "MRG-1-Unf-4-A", "MRG-1-Unf-4-B", "MRG-1-Unf-4-C", "MRG-1-Unf-4-D", "MRG-1-Unf-4-E", "MRG-1-Unf-4-F",
+  "MRG-2-Fen-0-A", "MRG-2-Fen-0-B", "MRG-2-Fen-0-C", "MRG-2-Fen-0-D", "MRG-2-Fen-0-E", "MRG-2-Fen-0-F", "MRG-2-Fen-0-G", "MRG-2-Fen-0-H",
+  "MRG-2-Fen-1-A", "MRG-2-Fen-1-B", "MRG-2-Fen-1-C", "MRG-2-Fen-1-D", "MRG-2-Fen-1-E", "MRG-2-Fen-1-F", "MRG-2-Fen-1-G", "MRG-2-Fen-1-H",
+  "MRG-2-Fen-2-A", "MRG-2-Fen-2-B", "MRG-2-Fen-2-C", "MRG-2-Fen-2-D", "MRG-2-Fen-2-E", "MRG-2-Fen-2-F", "MRG-2-Fen-2-G", "MRG-2-Fen-2-H",
+  "MRG-2-Fen-3-A", "MRG-2-Fen-3-B", "MRG-2-Fen-3-C", "MRG-2-Fen-3-D", "MRG-2-Fen-3-E", "MRG-2-Fen-3-F", "MRG-2-Fen-3-G", "MRG-2-Fen-3-H",
+  "MRG-2-Fen-4-A", "MRG-2-Fen-4-B", "MRG-2-Fen-4-C", "MRG-2-Fen-4-D", "MRG-2-Fen-4-E", "MRG-2-Fen-4-F", "MRG-2-Fen-4-G", "MRG-2-Fen-4-H",
+  "MRG-2-Unf-0-A", "MRG-2-Unf-0-B", "MRG-2-Unf-0-C", "MRG-2-Unf-0-D", "MRG-2-Unf-0-E", "MRG-2-Unf-0-F", "MRG-2-Unf-0-G", "MRG-2-Unf-0-H",
+  "MRG-2-Unf-1-A", "MRG-2-Unf-1-B", "MRG-2-Unf-1-C", "MRG-2-Unf-1-D", "MRG-2-Unf-1-E", "MRG-2-Unf-1-F", "MRG-2-Unf-1-G", "MRG-2-Unf-1-H",
+  "MRG-2-Unf-2-A", "MRG-2-Unf-2-B", "MRG-2-Unf-2-C", "MRG-2-Unf-2-D", "MRG-2-Unf-2-E", "MRG-2-Unf-2-F", "MRG-2-Unf-2-G", "MRG-2-Unf-2-H",
+  "MRG-2-Unf-3-A", "MRG-2-Unf-3-B", "MRG-2-Unf-3-C", "MRG-2-Unf-3-D", "MRG-2-Unf-3-E", "MRG-2-Unf-3-F", "MRG-2-Unf-3-G", "MRG-2-Unf-3-H",
+  "MRG-2-Unf-4-A", "MRG-2-Unf-4-B", "MRG-2-Unf-4-C", "MRG-2-Unf-4-D", "MRG-2-Unf-4-E", "MRG-2-Unf-4-F", "MRG-2-Unf-4-G", "MRG-2-Unf-4-H"
+)
+
+# Generate detections using Poisson distribution
+# Lambda chosen so P(X=0) = 50%, which gives lambda ≈ 0.69
+# P(X=0) = e^(-lambda), so lambda = -ln(0.5) ≈ 0.69
+
+all_transect_segments <- c(mohonk_transects, mianus_transect_segments)
+mock_data_list <- list()
+
+for (segment in all_transect_segments) {
+  # Poisson distribution: 50% chance of 0 detections per segment
+  n_detections <- rpois(1, lambda = 0.69)
+
+  if (n_detections > 0) {
+    # Determine site based on transect name
+    site <- if (segment %in% mohonk_transects) "Mohonk Preserve" else "Mianus River Gorge"
+
+    # For Mianus, store both the full segment code and base transect
+    if (site == "Mianus River Gorge") {
+      transect <- sub("-[A-Z]$", "", segment)  # Base transect (e.g., MRG-1-Unf-0)
+      segment_code <- segment  # Full segment (e.g., MRG-1-Unf-0-A)
+    } else {
+      transect <- segment
+      segment_code <- segment
+    }
+
+    mock_data_list[[length(mock_data_list) + 1]] <- data.frame(
+      Date = sample(dates, n_detections, replace = TRUE),
+      Site = site,
+      Transect = transect,
+      Segment = segment_code,
+      Species = sample(
+        c("Ixodes scapularis (Blacklegged)", "Amblyomma americanum (Lone Star)", "Dermacentmaus variabilis (Dog Tick)"),
+        n_detections, replace = TRUE, prob = c(0.5, 0.3, 0.2)
+      ),
+      Life_Stage = sample(c("Adult", "Nymph"), n_detections, replace = TRUE, prob = c(0.4, 0.6)),
+      Count = round(rlnorm(n_detections, meanlog = 1.5, sdlog = 0.8)) + 1
+    )
+  }
+}
+
+mock_data <- bind_rows(mock_data_list) %>%
+  arrange(Date, Site, Transect)
 exclosures_data <- data.frame(
   Exclosure_Name = c("Cedar Drive Loop", "Canaan Rd", "Glory Hill", "Undercliff Rd"),
   Latitude = c(41.79766, 41.78495, 41.74764, 41.75430),
@@ -228,7 +282,7 @@ ui <- fluidPage(
       h3("Mohonk Preserve, NY - Location and Data Overview", class = "text-xl font-semibold mb-4 text-gray-700"),
       fluidRow(
         column(8, leafletOutput("mohonk_map", height = "500px")),
-        column(4, div(class = "site-summary-panel", h4("Data Summary", class = "text-lg font-semibold mb-3 text-gray-800"), uiOutput("site_summary_ui")))
+        column(4, div(class = "site-summary-panel", h4("Data Summary", class = "text-lg font-semibold mb-3 text-gray-800"), uiOutput("site_summary_ui"), br(), plotOutput("mohonk_species_plot", height = "250px")))
       ),
       div(class = "data-table-styled-container", h4("Mohonk Preserve Data", class = "text-lg font-semibold mb-3 text-gray-800"), DTOutput("mohonk_data_table"))
     ),
@@ -239,7 +293,7 @@ ui <- fluidPage(
       h3("Mianus River Gorge Preserve - Location and Data Overview", class = "text-xl font-semibold mb-4 text-gray-700"),
       fluidRow(
         column(8, leafletOutput("mianus_map", height = "500px")),
-        column(4, div(class = "site-summary-panel", h4("Data Summary", class = "text-lg font-semibold mb-3 text-gray-800"), uiOutput("site_summary_ui_mianus")))
+        column(4, div(class = "site-summary-panel", h4("Data Summary", class = "text-lg font-semibold mb-3 text-gray-800"), uiOutput("site_summary_ui_mianus"), br(), plotOutput("mianus_species_plot", height = "250px")))
       ),
       div(class = "data-table-styled-container", h4("Mianus River Gorge Preserve Data", class = "text-lg font-semibold mb-3 text-gray-800"), DTOutput("mianus_data_table"))
     )
@@ -252,9 +306,6 @@ server <- function(input, output, session) {
 
   filtered_data <- reactive({ mock_data })
   
-  # --- Toggle State Reactive Values ---
-  mohonk_model_state <- reactiveVal(FALSE) 
-  mianus_model_state <- reactiveVal(FALSE)
   
   # ------------------------------------------------------------------
   # 4a. GEOJSON STYLING AND INTERACTION FUNCTIONS (Mianus Map)
@@ -326,51 +377,6 @@ server <- function(input, output, session) {
     }"
   )
   
-  # ------------------------------------------------------------------
-  # 4b. MODEL AND DATA LOGIC (UNCHANGED)
-  # ------------------------------------------------------------------
-  
-  # --- Mohonk Model Layer Toggle Logic ---
-  observeEvent(input$mohonk_model_toggle, {
-    new_state <- !mohonk_model_state()
-    mohonk_model_state(new_state) 
-    session$sendCustomMessage("set-attribute", list(id = "easy_button_mohonk"))
-  })
-  
-  observeEvent(mohonk_model_state(), {
-    proxy <- leafletProxy("mohonk_map", session)
-    if (mohonk_model_state()) {
-      proxy %>% addCircles(lng = SITE_COORDS[["Mohonk Preserve"]][2], lat = SITE_COORDS[["Mohonk Preserve"]][1], radius = 5000, color = "#FF0000", fillOpacity = 0.2, group = "Model Layer", layerId = "Model Layer")
-    } else {
-      proxy %>% removeShape(layerId = "Model Layer") 
-    }
-  })
-  
-  # --- Mianus Model Layer Toggle Logic ---
-  observeEvent(input$mianus_model_toggle, {
-    new_state <- !mianus_model_state()
-    mianus_model_state(new_state) 
-    session$sendCustomMessage("set-attribute", list(id = "easy_button_mianus"))
-  })
-  
-  observeEvent(mianus_model_state(), {
-    proxy <- leafletProxy("mianus_map", session)
-    if (mianus_model_state()) {
-      proxy %>% addCircles(lng = SITE_COORDS[["Mianus River Gorge"]][2], lat = SITE_COORDS[["Mianus River Gorge"]][1], radius = 1000, color = "#0000FF", fillOpacity = 0.2, group = "Mianus Model Layer", layerId = "Mianus Model Layer")
-    } else {
-      proxy %>% removeShape(layerId = "Mianus Model Layer")
-    }
-  })
-
-
-  # --- CUSTOM JAVASCRIPT FOR TOGGLING EASYBUTTON ACTIVE CLASS ---
-  session$sendCustomMessage("set-attribute", message = list(code = 
-    "Shiny.setInputValue('trigger', Math.random());
-     Shiny.addCustomMessageHandler('set-attribute', function(message) {
-       // Toggle the 'active' class on the EasyButton element itself
-       $('#' + message.id).toggleClass('active');
-     });"
-  ))
   
   # --- Data and Summary Generation ---
 
@@ -389,7 +395,44 @@ server <- function(input, output, session) {
   
   output$site_summary_ui <- renderUI({ generate_site_summary("Mohonk Preserve") })
   output$site_summary_ui_mianus <- renderUI({ generate_site_summary("Mianus River Gorge") })
-  
+
+  # Generate species distribution plots by life stage
+  generate_species_plot <- function(site_name) {
+    data <- filtered_data() %>%
+      filter(Site == site_name) %>%
+      group_by(Species, Life_Stage) %>%
+      summarize(Total = sum(Count), .groups = "drop") %>%
+      mutate(
+        Species_Abbrev = case_when(
+          Species == "Ixodes scapularis (Blacklegged)" ~ "I. scap",
+          Species == "Amblyomma americanum (Lone Star)" ~ "A. amer",
+          Species == "Dermacentmaus variabilis (Dog Tick)" ~ "D. var",
+          TRUE ~ Species
+        )
+      )
+
+    ggplot(data, aes(x = Species_Abbrev, y = Total, fill = Life_Stage)) +
+      geom_bar(stat = "identity", position = "stack", width = 0.6) +
+      scale_fill_manual(
+        values = c("Adult" = "#3B82F6", "Nymph" = "#10B981"),
+        labels = c("Adult", "Nymph")
+      ) +
+      labs(x = NULL, y = "Count", fill = NULL) +
+      theme_minimal() +
+      theme(
+        axis.text.x = element_text(size = 11),
+        axis.text.y = element_text(size = 11),
+        axis.title.y = element_text(size = 11),
+        legend.title = element_blank(),
+        legend.text = element_text(size = 10),
+        legend.position = "bottom",
+        plot.margin = margin(5, 5, 5, 5)
+      )
+  }
+
+  output$mohonk_species_plot <- renderPlot({ generate_species_plot("Mohonk Preserve") })
+  output$mianus_species_plot <- renderPlot({ generate_species_plot("Mianus River Gorge") })
+
   output$mohonk_data_table <- renderDT({ datatable(filtered_data() %>% filter(Site == "Mohonk Preserve") %>% select(-Site), options = list(pageLength = 10, dom = 'tip', searching = TRUE, scrollY = '300px'), rownames = FALSE) })
   output$mianus_data_table <- renderDT({ datatable(filtered_data() %>% filter(Site == "Mianus River Gorge") %>% select(-Site), options = list(pageLength = 10, dom = 'tip', searching = TRUE, scrollY = '300px'), rownames = FALSE) })
   
@@ -397,25 +440,45 @@ server <- function(input, output, session) {
   output$mohonk_map <- renderLeaflet({
     lat <- SITE_COORDS[["Mohonk Preserve"]][1]
     lng <- SITE_COORDS[["Mohonk Preserve"]][2]
-    
+
+    # Calculate life stage counts for each exclosure
+    mohonk_summary <- filtered_data() %>%
+      filter(Site == "Mohonk Preserve") %>%
+      group_by(Transect, Life_Stage) %>%
+      summarize(Total = sum(Count), .groups = "drop")
+
+    # Create labels with life stage breakdown
+    exclosures_with_labels <- exclosures_data %>%
+      rowwise() %>%
+      mutate(
+        adult_count = mohonk_summary %>% filter(Transect == Exclosure_Name, Life_Stage == "Adult") %>% pull(Total) %>% sum(),
+        nymph_count = mohonk_summary %>% filter(Transect == Exclosure_Name, Life_Stage == "Nymph") %>% pull(Total) %>% sum(),
+        label_text = paste0("<strong>", Exclosure_Name, "</strong><br>",
+                           "Adult: ", adult_count, "<br>",
+                           "Nymph: ", nymph_count)
+      ) %>%
+      ungroup()
+
     leaflet() %>%
-      addProviderTiles(providers$OpenTopoMap, group = "Topographic") %>% 
+      addProviderTiles(providers$OpenTopoMap, group = "Topographic") %>%
       addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") %>%
       addTiles(group = "Default Map") %>%
       setView(lng = lng, lat = lat, zoom = 12.5) %>%
-      addMarkers(data = exclosures_data, lat = ~Latitude, lng = ~Longitude, popup = ~paste("Exclosure:", Exclosure_Name), label = ~Exclosure_Name) %>%
-      
-      addLayersControl(baseGroups = c("Default Map", "Topographic", "Satellite"), options = layersControlOptions(collapsed = TRUE)) %>%
-      
-      addEasyButton(
-        easyButton(
-          id = "easy_button_mohonk", 
-          icon = "fas fa-chart-column",
-          title = "Show Predictive Modeling Results (TBD)",
-          position = "bottomleft",
-          onClick = JS("function(btn, map) { Shiny.setInputValue('mohonk_model_toggle', Math.random(), {priority: 'event'}); }")
-        )
-      )
+      addMarkers(
+        data = exclosures_with_labels,
+        lat = ~Latitude,
+        lng = ~Longitude,
+        popup = ~lapply(label_text, HTML),
+        label = ~lapply(label_text, HTML),
+        group = "Exclosures"
+      ) %>%
+      addCircles(lng = lng, lat = lat, radius = 5000, color = "#FF0000", fillOpacity = 0.2, group = "Model Layer") %>%
+      addLayersControl(
+        baseGroups = c("Default Map", "Topographic", "Satellite"),
+        overlayGroups = c("Exclosures", "Model Layer"),
+        options = layersControlOptions(collapsed = TRUE)
+      ) %>%
+      hideGroup("Model Layer")
   })
   
   # 2. Mianus River Map - With Preserve Boundary, Exclosures, and Transects
@@ -429,10 +492,10 @@ server <- function(input, output, session) {
     transects_data <- transects_data_list$geojson
     trails_data <- trails_data_list$geojson
 
-    map <- leaflet() %>%
-      addProviderTiles(providers$OpenTopoMap, group = "Topographic") %>%
-      addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") %>%
-      addTiles(group = "Default Map") %>%
+    map <- leaflet(options = leafletOptions(maxZoom = 20)) %>%
+      addProviderTiles(providers$OpenTopoMap, group = "Topographic", options = providerTileOptions(maxZoom = 20)) %>%
+      addProviderTiles(providers$Esri.WorldImagery, group = "Satellite", options = providerTileOptions(maxZoom = 20)) %>%
+      addTiles(group = "Default Map", options = tileOptions(maxZoom = 20)) %>%
       setView(lng = lng, lat = lat, zoom = 14.5)
 
     # --- Add Preserve Boundary Polygons (FIRST - so they're on bottom) ---
@@ -509,25 +572,46 @@ server <- function(input, output, session) {
             lng = sapply(coords[[1]], function(x) x[[1]]),
             lat = sapply(coords[[1]], function(x) x[[2]]),
             fillColor = fill_color,
-            fillOpacity = 0.4,
+            fillOpacity = 0.15,
             color = "#7C3AED",
             weight = 2,
-            opacity = 1,
-            group = "Exclosures",
-            popup = popup_content,
-            label = unique_label,
-            highlightOptions = highlightOptions(
-              weight = 4,
-              color = "#A78BFA",
-              fillOpacity = 0.7,
-              bringToFront = TRUE
-            )
+            opacity = 0.7,
+            group = "Exclosures"
           )
       }
     }
 
     # --- Add Transects ---
     if (!is.null(transects_data)) {
+      # Calculate counts at different hierarchical levels
+      mianus_data <- filtered_data() %>%
+        filter(Site == "Mianus River Gorge")
+
+      # Extract hierarchy: MRG-1-Fen-4-A -> Transect: MRG-1, Line: MRG-1-Fen-4, Segment: MRG-1-Fen-4-A
+      # For data, we need to create hierarchy columns
+      mianus_data_with_hierarchy <- mianus_data %>%
+        mutate(
+          # Extract transect number (e.g., "MRG-1" from "MRG-1-Fen-4")
+          Transect_Num = sub("^(MRG-\\d+).*", "\\1", Transect),
+          # Line is the Transect column (e.g., "MRG-1-Fen-4")
+          Line = Transect
+        )
+
+      # Level 1: Transect totals (e.g., all of MRG-1)
+      transect_summary <- mianus_data_with_hierarchy %>%
+        group_by(Transect_Num, Life_Stage) %>%
+        summarize(Total = sum(Count), .groups = "drop")
+
+      # Level 2: Line totals (e.g., all segments in MRG-1-Fen-4)
+      line_summary <- mianus_data_with_hierarchy %>%
+        group_by(Line, Life_Stage) %>%
+        summarize(Total = sum(Count), .groups = "drop")
+
+      # Level 3: Segment totals (e.g., just MRG-1-Fen-4-A)
+      segment_summary <- mianus_data %>%
+        group_by(Segment, Life_Stage) %>%
+        summarize(Total = sum(Count), .groups = "drop")
+
       for (i in seq_along(transects_data$features)) {
         feature <- transects_data$features[[i]]
         coords <- feature$geometry$coordinates
@@ -540,13 +624,91 @@ server <- function(input, output, session) {
         transect <- feature$properties$Transect
         segment <- feature$properties$Segment
 
-        # Color code by treatment type
-        line_color <- if (!is.null(treatm) && treatm == "Unf") "#EF4444" else "#10B981"
+        # Parse hierarchy from segment code (e.g., MRG-1-Fen-4-A)
+        transect_num <- sub("^(MRG-\\d+).*", "\\1", segm_code)  # MRG-1
+        line_code <- sub("-[A-Z]$", "", segm_code)             # MRG-1-Fen-4
 
-        # Create popup content
-        popup_content <- sprintf(
-          '<div style="font-family: sans-serif; font-size: 12px;"><strong>Transect: %s</strong><br>Site: %s<br>Pair: %s<br>Treatment: %s<br>Segment: %s</div>',
-          segm_code, site, pair, treatm, segment
+        # Get TRANSECT level counts (e.g., all of MRG-1)
+        t_adult <- transect_summary %>%
+          filter(Transect_Num == transect_num, Life_Stage == "Adult") %>%
+          pull(Total) %>%
+          {if(length(.) > 0) sum(.) else 0}
+
+        t_nymph <- transect_summary %>%
+          filter(Transect_Num == transect_num, Life_Stage == "Nymph") %>%
+          pull(Total) %>%
+          {if(length(.) > 0) sum(.) else 0}
+
+        t_total <- t_adult + t_nymph
+
+        # Get LINE level counts (e.g., all segments in MRG-1-Fen-4)
+        l_adult <- line_summary %>%
+          filter(Line == line_code, Life_Stage == "Adult") %>%
+          pull(Total) %>%
+          {if(length(.) > 0) sum(.) else 0}
+
+        l_nymph <- line_summary %>%
+          filter(Line == line_code, Life_Stage == "Nymph") %>%
+          pull(Total) %>%
+          {if(length(.) > 0) sum(.) else 0}
+
+        l_total <- l_adult + l_nymph
+
+        # Get SEGMENT level counts (e.g., just MRG-1-Fen-4-A)
+        s_adult <- segment_summary %>%
+          filter(Segment == segm_code, Life_Stage == "Adult") %>%
+          pull(Total) %>%
+          {if(length(.) > 0) sum(.) else 0}
+
+        s_nymph <- segment_summary %>%
+          filter(Segment == segm_code, Life_Stage == "Nymph") %>%
+          pull(Total) %>%
+          {if(length(.) > 0) sum(.) else 0}
+
+        s_total <- s_adult + s_nymph
+
+        # Color: grey if no ticks on THIS SEGMENT, red/purple if has ticks
+        if (s_total == 0) {
+          line_color <- "#9CA3AF"  # Grey
+        } else {
+          line_color <- if (!is.null(treatm) && treatm == "Unf") "#EF4444" else "#7C3AED"  # Red or Purple
+        }
+
+        # Create table-style tooltip content
+        tooltip_content <- sprintf(
+          '<div style="font-family: sans-serif; font-size: 11px;">
+          <strong>%s</strong><br>
+          <table style="margin-top: 6px; border-collapse: collapse;">
+            <tr style="background-color: #f3f4f6;">
+              <th style="padding: 3px 6px; text-align: left; border: 1px solid #d1d5db; font-size: 10px;">Level</th>
+              <th style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">Adult</th>
+              <th style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">Nymph</th>
+              <th style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">Total</th>
+            </tr>
+            <tr>
+              <td style="padding: 3px 6px; border: 1px solid #d1d5db; font-size: 10px;">Transect</td>
+              <td style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">%d</td>
+              <td style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">%d</td>
+              <td style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">%d</td>
+            </tr>
+            <tr style="background-color: #f9fafb;">
+              <td style="padding: 3px 6px; border: 1px solid #d1d5db; font-size: 10px;">Line</td>
+              <td style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">%d</td>
+              <td style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">%d</td>
+              <td style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">%d</td>
+            </tr>
+            <tr>
+              <td style="padding: 3px 6px; border: 1px solid #d1d5db; font-size: 10px;">Segment</td>
+              <td style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">%d</td>
+              <td style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">%d</td>
+              <td style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">%d</td>
+            </tr>
+          </table>
+          </div>',
+          segm_code,
+          t_adult, t_nymph, t_total,
+          l_adult, l_nymph, l_total,
+          s_adult, s_nymph, s_total
         )
 
         # Add polyline
@@ -555,13 +717,18 @@ server <- function(input, output, session) {
             lng = sapply(coords, function(x) x[[1]]),
             lat = sapply(coords, function(x) x[[2]]),
             color = line_color,
-            weight = 3,
-            opacity = 0.8,
+            weight = 7,
+            opacity = 0.9,
             group = "Transects",
-            popup = popup_content,
-            label = segm_code,
+            label = lapply(tooltip_content, HTML),
+            labelOptions = labelOptions(
+              permanent = FALSE,
+              direction = "auto",
+              textOnly = FALSE,
+              style = list("background-color" = "white", "border" = "1px solid #ccc", "padding" = "8px")
+            ),
             highlightOptions = highlightOptions(
-              weight = 5,
+              weight = 9,
               color = "#FBBF24",
               opacity = 1,
               bringToFront = TRUE
@@ -609,24 +776,17 @@ server <- function(input, output, session) {
       }
     }
 
-    # Add Layers Control and EasyButton
+    # Add Model Layer circle and Layers Control
     map %>%
+      addCircles(lng = lng, lat = lat, radius = 1000, color = "#0000FF", fillOpacity = 0.2, group = "Model Layer") %>%
       addLayersControl(
         baseGroups = c("Default Map", "Topographic", "Satellite"),
-        overlayGroups = c("Preserve Boundary", "Exclosures", "Transects", "Trails"),
+        overlayGroups = c("Preserve Boundary", "Exclosures", "Transects", "Trails", "Model Layer"),
         options = layersControlOptions(collapsed = TRUE)
       ) %>%
       hideGroup("Trails") %>%  # Hide trails by default
       hideGroup("Preserve Boundary") %>%  # Hide preserve boundary by default
-      addEasyButton(
-        easyButton(
-          id = "easy_button_mianus",
-          icon = "fas fa-chart-column",
-          title = "Show Predictive Modeling Results (TBD)",
-          position = "bottomleft",
-          onClick = JS("function(btn, map) { Shiny.setInputValue('mianus_model_toggle', Math.random(), {priority: 'event'}); }")
-        )
-      )
+      hideGroup("Model Layer")  # Hide model layer by default
   })
 }
 
