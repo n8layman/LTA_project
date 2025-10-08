@@ -9,8 +9,8 @@ library(DT)
 library(lubridate)
 library(leaflet.providers)
 library(leaflet.extras)
-library(readxl) 
-library(htmltools) 
+library(readxl)
+library(htmltools)
 
 # --- Configuration & Data Loading ---
 
@@ -102,7 +102,7 @@ mock_data <- data.frame(
   Date = sample(dates, n, replace = TRUE),
   # Use standardized Mianus name
   Site = sample(
-    c("Mohonk Preserve", "Mianus River Gorge"), 
+    c("Mohonk Preserve", "Mianus River Gorge"),
     n, replace = TRUE, prob = c(0.6, 0.4)
   ),
   Species = sample(
@@ -241,7 +241,7 @@ ui <- fluidPage(
         column(8, leafletOutput("mianus_map", height = "500px")),
         column(4, div(class = "site-summary-panel", h4("Data Summary", class = "text-lg font-semibold mb-3 text-gray-800"), uiOutput("site_summary_ui_mianus")))
       ),
-      div(class = "data-table-styled-container", h4("Raw Data: Mianus River Gorge Preserve", class = "text-lg font-semibold mb-3 text-gray-800"), DTOutput("mianus_data_table"))
+      div(class = "data-table-styled-container", h4("Mianus River Gorge Preserve Data", class = "text-lg font-semibold mb-3 text-gray-800"), DTOutput("mianus_data_table"))
     )
   )
 )
@@ -373,12 +373,12 @@ server <- function(input, output, session) {
   ))
   
   # --- Data and Summary Generation ---
-  
+
   generate_site_summary <- function(site_name) {
-    data <- filtered_data() %>% filter(Site == site_name) 
+    data <- filtered_data() %>% filter(Site == site_name)
     total_ticks <- sum(data$Count)
     unique_species <- length(unique(data$Species))
-    
+
     tagList(
       p(HTML(paste0("<strong>Site:</strong> ", site_name)), class = "text-gray-600"),
       p(HTML(paste0("<strong>Total Ticks Counted:</strong> ", format(total_ticks, big.mark = ","))), class = "text-gray-600"),
@@ -391,7 +391,7 @@ server <- function(input, output, session) {
   output$site_summary_ui_mianus <- renderUI({ generate_site_summary("Mianus River Gorge") })
   
   output$mohonk_data_table <- renderDT({ datatable(filtered_data() %>% filter(Site == "Mohonk Preserve") %>% select(-Site), options = list(pageLength = 10, dom = 'tip', searching = TRUE, scrollY = '300px'), rownames = FALSE) })
-  output$mianus_data_table <- renderDT({ datatable(filtered_data() %>% filter(Site == "Mianus River Gorge") %>% select(-Site), options = list(pageLength = 10, dom = 'tip', searching = TRUE, scrollY = '300px'), rownames = FALSE, caption = 'All data points for Mianus River Gorge Preserve.') })
+  output$mianus_data_table <- renderDT({ datatable(filtered_data() %>% filter(Site == "Mianus River Gorge") %>% select(-Site), options = list(pageLength = 10, dom = 'tip', searching = TRUE, scrollY = '300px'), rownames = FALSE) })
   
   # 1. Mohonk Map
   output$mohonk_map <- renderLeaflet({
@@ -614,7 +614,7 @@ server <- function(input, output, session) {
       addLayersControl(
         baseGroups = c("Default Map", "Topographic", "Satellite"),
         overlayGroups = c("Preserve Boundary", "Exclosures", "Transects", "Trails"),
-        options = layersControlOptions(collapsed = FALSE)
+        options = layersControlOptions(collapsed = TRUE)
       ) %>%
       hideGroup("Trails") %>%  # Hide trails by default
       hideGroup("Preserve Boundary") %>%  # Hide preserve boundary by default

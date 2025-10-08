@@ -18,3 +18,4 @@ _targets/objects
 *.egg-info
 
 admin/**
+2D.md
