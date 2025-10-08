@@ -7,10 +7,6 @@
         "URL": "https://cloud.r-project.org"
       },
       {
-        "Name": "MILESMCBAIN",
-        "URL": "https://milesmcbin.r-universe.dev"
-      },
-      {
         "Name": "ROPENSCI",
         "URL": "https://ropensci.r-universe.dev"
       }
