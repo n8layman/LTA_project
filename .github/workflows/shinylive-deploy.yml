@@ -36,21 +36,17 @@ jobs:
       - name: Install system dependencies
         run: |
           apt-get update
-          # Keep only the system libraries required by your specific R packages.
+          # --- MINIMAL DEPENDENCIES NEEDED ---
+          # Only installing core libraries for networking (curl/ssl), 
+          # XML processing, and C++ compilation (cmake), which are 
+          # often prerequisites for R packages like 'jsonlite' and others.
           apt-get install -y --no-install-recommends \
             libcurl4-openssl-dev \
             libssl-dev \
             libxml2-dev \
-            libgdal-dev \
-            libproj-dev \
-            libgeos-dev \
-            libudunits2-dev \
-            cmake \
-            gdal-bin \
-            libglpk-dev \
-            libpoppler-cpp-dev
+            cmake
 
-      # --- REMOVING renv: Installing required packages directly instead ---
+      # --- Installing required packages directly instead ---
       - name: Install required R packages
         run: |
           # The app.R uses: shiny, leaflet, jsonlite, dplyr, DT, lubridate, 
