@@ -23,22 +23,29 @@ jobs:
         uses: r-lib/actions/setup-r@v2
         with:
           r-version: '4.3.1'
+          use-public-rspm: true
+
+      - name: Setup renv
+        uses: r-lib/actions/setup-renv@v2
 
       - name: Install system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev libgdal-dev libproj-dev libgeos-dev libudunits2-dev
 
-      - name: Install R packages
-        run: |
-          install.packages(c("shiny", "leaflet", "jsonlite", "dplyr", "DT", "lubridate", "leaflet.providers", "leaflet.extras", "htmltools"))
-          install.packages("httpuv")
-        shell: Rscript {0}
-
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+          cache: 'pip'
+
+      - name: Cache Python packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
       - name: Install shinylive
         run: |
@@ -49,8 +56,8 @@ jobs:
           shinylive export app _site
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v4
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4
