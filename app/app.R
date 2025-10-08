@@ -447,29 +447,64 @@ server <- function(input, output, session) {
       group_by(Transect, Life_Stage) %>%
       summarize(Total = sum(Count), .groups = "drop")
 
-    # Create labels with life stage breakdown
+    # Create labels with life stage breakdown in table format and colored markers
     exclosures_with_labels <- exclosures_data %>%
       rowwise() %>%
       mutate(
-        adult_count = mohonk_summary %>% filter(Transect == Exclosure_Name, Life_Stage == "Adult") %>% pull(Total) %>% sum(),
-        nymph_count = mohonk_summary %>% filter(Transect == Exclosure_Name, Life_Stage == "Nymph") %>% pull(Total) %>% sum(),
-        label_text = paste0("<strong>", Exclosure_Name, "</strong><br>",
-                           "Adult: ", adult_count, "<br>",
-                           "Nymph: ", nymph_count)
+        adult_count = mohonk_summary %>% filter(Transect == Exclosure_Name, Life_Stage == "Adult") %>% pull(Total) %>% {if(length(.) > 0) sum(.) else 0},
+        nymph_count = mohonk_summary %>% filter(Transect == Exclosure_Name, Life_Stage == "Nymph") %>% pull(Total) %>% {if(length(.) > 0) sum(.) else 0},
+        total_count = adult_count + nymph_count,
+        marker_color = if(total_count == 0) "gray" else "red",
+        label_text = sprintf(
+          '<div style="font-family: sans-serif; font-size: 11px;">
+          <strong>%s</strong><br>
+          <table style="margin-top: 6px; border-collapse: collapse;">
+            <tr style="background-color: #f3f4f6;">
+              <th style="padding: 3px 6px; text-align: left; border: 1px solid #d1d5db; font-size: 10px;">Level</th>
+              <th style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">Adult</th>
+              <th style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">Nymph</th>
+              <th style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">Total</th>
+            </tr>
+            <tr>
+              <td style="padding: 3px 6px; border: 1px solid #d1d5db; font-size: 10px;">Transect</td>
+              <td style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">%d</td>
+              <td style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">%d</td>
+              <td style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">%d</td>
+            </tr>
+          </table>
+          </div>',
+          Exclosure_Name, adult_count, nymph_count, total_count
+        )
       ) %>%
       ungroup()
+
+    # Create custom icons for each marker based on color
+    icons_list <- lapply(exclosures_with_labels$marker_color, function(color) {
+      awesomeIcons(
+        icon = 'map-pin',
+        iconColor = 'white',
+        library = 'fa',
+        markerColor = color
+      )
+    })
 
     leaflet() %>%
       addProviderTiles(providers$OpenTopoMap, group = "Topographic") %>%
       addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") %>%
       addTiles(group = "Default Map") %>%
       setView(lng = lng, lat = lat, zoom = 12.5) %>%
-      addMarkers(
+      addAwesomeMarkers(
         data = exclosures_with_labels,
         lat = ~Latitude,
         lng = ~Longitude,
-        popup = ~lapply(label_text, HTML),
+        icon = icons_list,
         label = ~lapply(label_text, HTML),
+        labelOptions = labelOptions(
+          permanent = FALSE,
+          direction = "auto",
+          textOnly = FALSE,
+          style = list("background-color" = "white", "border" = "1px solid #ccc", "padding" = "8px")
+        ),
         group = "Exclosures"
       ) %>%
       addCircles(lng = lng, lat = lat, radius = 5000, color = "#FF0000", fillOpacity = 0.2, group = "Model Layer") %>%
@@ -483,20 +518,36 @@ server <- function(input, output, session) {
   
   # 2. Mianus River Map - With Preserve Boundary, Exclosures, and Transects
   output$mianus_map <- renderLeaflet({
-    lat <- SITE_COORDS[["Mianus River Gorge"]][1]
-    lng <- SITE_COORDS[["Mianus River Gorge"]][2]
-
     # Retrieve the pre-loaded GeoJSON data
     polygons_data <- polygons_data_list$geojson
     exclosures_data <- exclosures_data_list$geojson
     transects_data <- transects_data_list$geojson
     trails_data <- trails_data_list$geojson
 
+    # Calculate center of all transects
+    if (!is.null(transects_data) && length(transects_data$features) > 0) {
+      all_coords <- list()
+      for (i in seq_along(transects_data$features)) {
+        coords <- transects_data$features[[i]]$geometry$coordinates
+        for (coord in coords) {
+          all_coords[[length(all_coords) + 1]] <- coord
+        }
+      }
+      lngs <- sapply(all_coords, function(x) x[[1]])
+      lats <- sapply(all_coords, function(x) x[[2]])
+      center_lng <- mean(lngs)
+      center_lat <- mean(lats)
+    } else {
+      # Fallback to site coordinates
+      center_lat <- SITE_COORDS[["Mianus River Gorge"]][1]
+      center_lng <- SITE_COORDS[["Mianus River Gorge"]][2]
+    }
+
     map <- leaflet(options = leafletOptions(maxZoom = 20)) %>%
       addProviderTiles(providers$OpenTopoMap, group = "Topographic", options = providerTileOptions(maxZoom = 20)) %>%
       addProviderTiles(providers$Esri.WorldImagery, group = "Satellite", options = providerTileOptions(maxZoom = 20)) %>%
       addTiles(group = "Default Map", options = tileOptions(maxZoom = 20)) %>%
-      setView(lng = lng, lat = lat, zoom = 14.5)
+      setView(lng = center_lng, lat = center_lat, zoom = 17)
 
     # --- Add Preserve Boundary Polygons (FIRST - so they're on bottom) ---
     if (!is.null(polygons_data)) {
@@ -778,7 +829,7 @@ server <- function(input, output, session) {
 
     # Add Model Layer circle and Layers Control
     map %>%
-      addCircles(lng = lng, lat = lat, radius = 1000, color = "#0000FF", fillOpacity = 0.2, group = "Model Layer") %>%
+      addCircles(lng = center_lng, lat = center_lat, radius = 1000, color = "#0000FF", fillOpacity = 0.2, group = "Model Layer") %>%
       addLayersControl(
         baseGroups = c("Default Map", "Topographic", "Satellite"),
         overlayGroups = c("Preserve Boundary", "Exclosures", "Transects", "Trails", "Model Layer"),
@@ -786,6 +837,7 @@ server <- function(input, output, session) {
       ) %>%
       hideGroup("Trails") %>%  # Hide trails by default
       hideGroup("Preserve Boundary") %>%  # Hide preserve boundary by default
+      hideGroup("Exclosures") %>%  # Hide exclosures by default
       hideGroup("Model Layer")  # Hide model layer by default
   })
 }
