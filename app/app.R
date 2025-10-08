@@ -2,6 +2,7 @@
 #
 # This file is set up for shinylive deployment.
 library(shiny)
+library(munsell)
 library(leaflet)
 library(jsonlite)
 library(dplyr)
