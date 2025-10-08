@@ -9,8 +9,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    # Using a minimal R image ensures we start with very few packages installed.
     container:
-      image: rocker/shiny-verse:latest
+      image: rocker/r-ver:4.4.1 
 
     permissions:
       contents: write
@@ -35,6 +36,7 @@ jobs:
       - name: Install system dependencies
         run: |
           apt-get update
+          # Keep only the system libraries required by your specific R packages.
           apt-get install -y --no-install-recommends \
             libcurl4-openssl-dev \
             libssl-dev \
@@ -48,18 +50,13 @@ jobs:
             libglpk-dev \
             libpoppler-cpp-dev
 
-      - name: Cache renv packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.local/share/renv
-          key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-renv-
-
-      - name: Restore R packages with renv
+      # --- REMOVING renv: Installing required packages directly instead ---
+      - name: Install required R packages
         run: |
-          R -e "if (!requireNamespace('renv', quietly = TRUE)) install.packages('renv')"
-          R -e "renv::restore()"
+          # The app.R uses: shiny, leaflet, jsonlite, dplyr, DT, lubridate, 
+          # leaflet.providers, leaflet.extras, readxl, htmltools.
+          # shinylive is required for the export function.
+          R -e "install.packages(c('shiny', 'leaflet', 'jsonlite', 'dplyr', 'DT', 'lubridate', 'leaflet.providers', 'leaflet.extras', 'readxl', 'htmltools', 'shinylive'), repos = 'https://cloud.r-project.org/')"
 
       - name: Export to shinylive
         run: |
