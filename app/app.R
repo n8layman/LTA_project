@@ -1,19 +1,82 @@
-# Load required libraries
+# Shiny Application (app.R) to Display GeoJSON Polygons on a Leaflet Map
+#
+# This file is set up for shinylive deployment.
 library(shiny)
 library(leaflet)
-library(DT)
+library(jsonlite)
 library(dplyr)
+library(DT)
 library(lubridate)
 library(leaflet.providers)
 library(leaflet.extras)
 library(readxl) 
 library(htmltools) 
 
-# --- 2. Data Generation and Setup (UNCHANGED) ---
+# --- Configuration & Data Loading ---
+
+# Path to the GeoJSON file created by the conversion script
+GEOJSON_FILE_PATH <- "mianus_polygons.geojson"
+
+# --- 1. DATA SETUP: Standardized Site Coordinates ---
 SITE_COORDS <- list(
-  "Mohonk" = c(41.7711375, -74.135745),
-  "Mianus River Park" = c(41.08561763020252, -73.58839283678192) 
+  "Mohonk Preserve" = c(41.776, -74.135),
+  "Mianus River Gorge" = c(41.1767, -73.620) 
 )
+
+# Function to safely load and parse GeoJSON data (Made robust)
+load_geojson <- function(file_path) {
+  # Fallback coordinates
+  fallback_lon <- SITE_COORDS[["Mianus River Gorge"]][2] 
+  fallback_lat <- SITE_COORDS[["Mianus River Gorge"]][1]
+  
+  if (!file.exists(file_path)) {
+    warning(paste("GeoJSON file not found at:", file_path))
+    return(list(geojson = NULL, center = c(fallback_lon, fallback_lat)))
+  }
+  
+  geojson_string <- readLines(file_path, warn = FALSE) %>% 
+    paste(collapse = "\n")
+  
+  # Safely parse the GeoJSON string
+  data <- tryCatch({
+    jsonlite::fromJSON(geojson_string, simplifyVector = FALSE)
+  }, error = function(e) {
+    warning(paste("Error parsing GeoJSON:", e$message))
+    return(NULL)
+  })
+  
+  if (is.null(data)) {
+    warning("Parsed GeoJSON data is NULL. Using site coordinates for center.")
+    return(list(geojson = NULL, center = c(fallback_lon, fallback_lat)))
+  }
+  
+  # Find the center of the bounding box for map focus
+  if (!is.null(data$bbox) && length(data$bbox) >= 4) {
+    bbox <- data$bbox
+    center_lon <- (bbox[1] + bbox[3]) / 2
+    center_lat <- (bbox[2] + bbox[4]) / 2
+  } else {
+    # Fallback to the Mianus site coordinates
+    center_lon <- fallback_lon
+    center_lat <- fallback_lat
+  }
+  
+  return(list(
+    geojson = data,
+    center = c(center_lon, center_lat)
+  ))
+}
+
+# Load the data once at app startup
+geojson_data_list <- load_geojson(GEOJSON_FILE_PATH)
+
+if (is.null(geojson_data_list$geojson)) {
+  warning("GeoJSON data could not be loaded. Please ensure polygons.geojson is in app/GIS_MRG.")
+}
+
+
+# --- 2. Data Generation and Setup ---
+
 set.seed(42)
 start_date <- ymd("2023-04-01")
 end_date <- ymd("2024-09-30")
@@ -22,7 +85,11 @@ n <- 500
 
 mock_data <- data.frame(
   Date = sample(dates, n, replace = TRUE),
-  Site = sample(names(SITE_COORDS), n, replace = TRUE, prob = c(0.6, 0.4)),
+  # Use standardized Mianus name
+  Site = sample(
+    c("Mohonk Preserve", "Mianus River Gorge"), 
+    n, replace = TRUE, prob = c(0.6, 0.4)
+  ),
   Species = sample(
     c("Ixodes scapularis (Blacklegged)", "Amblyomma americanum (Lone Star)", "Dermacentmaus variabilis (Dog Tick)"),
     n, replace = TRUE, prob = c(0.5, 0.3, 0.2)
@@ -151,19 +218,20 @@ ui <- fluidPage(
       div(class = "data-table-styled-container", h4("Mohonk Preserve Data", class = "text-lg font-semibold mb-3 text-gray-800"), DTOutput("mohonk_data_table"))
     ),
     
-    # Tab 2: Mianus River Park Site View
-    tabPanel(title = "Mianus River Park, CT/NY", value = "Mianus River Park",
-      h3("Mianus River Park - Location and Data Overview", class = "text-xl font-semibold mb-4 text-gray-700"),
+    # Tab 2: Mianus River Gorge Preserve Site View
+    tabPanel(title = "Mianus River Gorge Preserve, CT/NY", 
+      value = "Mianus River Gorge",
+      h3("Mianus River Gorge Preserve - Location and Data Overview", class = "text-xl font-semibold mb-4 text-gray-700"),
       fluidRow(
         column(8, leafletOutput("mianus_map", height = "500px")),
         column(4, div(class = "site-summary-panel", h4("Data Summary", class = "text-lg font-semibold mb-3 text-gray-800"), uiOutput("site_summary_ui_mianus")))
       ),
-      div(class = "data-table-styled-container", h4("Raw Data: Mianus River Park", class = "text-lg font-semibold mb-3 text-gray-800"), DTOutput("mianus_data_table"))
+      div(class = "data-table-styled-container", h4("Raw Data: Mianus River Gorge Preserve", class = "text-lg font-semibold mb-3 text-gray-800"), DTOutput("mianus_data_table"))
     )
   )
 )
 
-# --- 4. Server Logic (UNCHANGED, except for the EasyButton call) ---
+# --- 4. Server Logic ---
 
 server <- function(input, output, session) {
 
@@ -172,6 +240,80 @@ server <- function(input, output, session) {
   # --- Toggle State Reactive Values ---
   mohonk_model_state <- reactiveVal(FALSE) 
   mianus_model_state <- reactiveVal(FALSE)
+  
+  # ------------------------------------------------------------------
+  # 4a. GEOJSON STYLING AND INTERACTION FUNCTIONS (Mianus Map)
+  # ------------------------------------------------------------------
+  
+  # 1. JavaScript function for INITIAL style (passed to 'style' argument)
+  # This uses pure JS to avoid R serialization issues.
+  polygon_style_js <- JS("function(feature) {
+    // Blue (#00A0B0) for Done (1), Red (#E54028) for Not Done (0)
+    var color = feature.properties.Done == 1 ? '#00A0B0' : '#E54028';
+    
+    return {
+      fillColor: color,
+      weight: 2,
+      opacity: 1,
+      color: 'white',
+      fillOpacity: 0.5
+    };
+  }")
+  
+  # 2. JavaScript function for HOVER, POPUP, and CLICK interactions (passed to 'onEachFeature' argument)
+  on_each_feature_interactions <- JS(
+    "function(feature, layer) {
+      
+      // 1. Define highlight style for hover
+      var highlightStyle = {
+        weight: 5,
+        color: '#F9D030', // Bright yellow outline for hover
+        dashArray: '',
+        fillOpacity: 0.7
+      };
+      
+      // 2. Define original style (references the styling function passed to 'style')
+      var originalStyle = layer.options.style(feature); // Retrieve base style from the main style function
+
+      // 3. Event Handlers: Mouseover, Mouseout, Click
+      layer.on({
+        mouseover: function(e) {
+          layer.setStyle(highlightStyle); // Apply highlight style
+          // Bring the highlighted layer to the front for visibility
+          if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+            layer.bringToFront();
+          }
+        },
+        mouseout: function(e) {
+          layer.setStyle(originalStyle); // Reset to original style
+        },
+        click: function(e) {
+          // Zoom to the feature on click
+          e.target._map.fitBounds(e.target.getBounds());
+        }
+      });
+
+      // 4. Popup and Tooltip Binding
+      if (feature.properties) {
+        var status = feature.properties.Done == 1 ? 'Yes' : 'No';
+        var colorClass = feature.properties.Done == 1 ? 'text-green-600 font-bold' : 'text-red-600 font-bold';
+
+        var label = '<div class=\"font-sans text-sm\">' +
+                    '<strong>Area ID: ' + feature.properties.Area + '</strong>' +
+                    '<br>Year Planned: ' + feature.properties.YearPlanne + 
+                    '<br>Done: <span class=\"' + colorClass + '\">' + status + '</span>' +
+                    '</div>';
+                    
+        layer.bindPopup(label);
+        // Sticky tooltip showing the Area ID
+        layer.bindTooltip('Area ' + feature.properties.Area, { sticky: true });
+      }
+    }"
+  )
+  
+  # ------------------------------------------------------------------
+  # 4b. MODEL AND DATA LOGIC (UNCHANGED)
+  # ------------------------------------------------------------------
   
   # --- Mohonk Model Layer Toggle Logic ---
   observeEvent(input$mohonk_model_toggle, {
@@ -183,7 +325,7 @@ server <- function(input, output, session) {
   observeEvent(mohonk_model_state(), {
     proxy <- leafletProxy("mohonk_map", session)
     if (mohonk_model_state()) {
-      proxy %>% addCircles(lng = SITE_COORDS[["Mohonk"]][2], lat = SITE_COORDS[["Mohonk"]][1], radius = 5000, color = "#FF0000", fillOpacity = 0.2, group = "Model Layer", layerId = "Model Layer")
+      proxy %>% addCircles(lng = SITE_COORDS[["Mohonk Preserve"]][2], lat = SITE_COORDS[["Mohonk Preserve"]][1], radius = 5000, color = "#FF0000", fillOpacity = 0.2, group = "Model Layer", layerId = "Model Layer")
     } else {
       proxy %>% removeShape(layerId = "Model Layer") 
     }
@@ -199,7 +341,7 @@ server <- function(input, output, session) {
   observeEvent(mianus_model_state(), {
     proxy <- leafletProxy("mianus_map", session)
     if (mianus_model_state()) {
-      proxy %>% addCircles(lng = SITE_COORDS[["Mianus River Park"]][2], lat = SITE_COORDS[["Mianus River Park"]][1], radius = 1000, color = "#0000FF", fillOpacity = 0.2, group = "Mianus Model Layer", layerId = "Mianus Model Layer")
+      proxy %>% addCircles(lng = SITE_COORDS[["Mianus River Gorge"]][2], lat = SITE_COORDS[["Mianus River Gorge"]][1], radius = 1000, color = "#0000FF", fillOpacity = 0.2, group = "Mianus Model Layer", layerId = "Mianus Model Layer")
     } else {
       proxy %>% removeShape(layerId = "Mianus Model Layer") 
     }
@@ -214,7 +356,7 @@ server <- function(input, output, session) {
      });"
   ))
   
-  # --- Data and Summary Generation (UNCHANGED) ---
+  # --- Data and Summary Generation ---
   
   generate_site_summary <- function(site_name) {
     data <- filtered_data() %>% filter(Site == site_name) 
@@ -229,23 +371,25 @@ server <- function(input, output, session) {
     )
   }
   
-  output$site_summary_ui <- renderUI({ generate_site_summary("Mohonk") })
-  output$site_summary_ui_mianus <- renderUI({ generate_site_summary("Mianus River Park") })
-  output$mohonk_data_table <- renderDT({ datatable(filtered_data() %>% filter(Site == "Mohonk") %>% select(-Site), options = list(pageLength = 10, dom = 'tip', searching = TRUE, scrollY = '300px'), rownames = FALSE) })
-  output$mianus_data_table <- renderDT({ datatable(filtered_data() %>% filter(Site == "Mianus River Park") %>% select(-Site), options = list(pageLength = 10, dom = 'tip', searching = TRUE, scrollY = '300px'), rownames = FALSE, caption = 'All data points for Mianus River Park.') })
+  output$site_summary_ui <- renderUI({ generate_site_summary("Mohonk Preserve") })
+  output$site_summary_ui_mianus <- renderUI({ generate_site_summary("Mianus River Gorge") })
+  
+  output$mohonk_data_table <- renderDT({ datatable(filtered_data() %>% filter(Site == "Mohonk Preserve") %>% select(-Site), options = list(pageLength = 10, dom = 'tip', searching = TRUE, scrollY = '300px'), rownames = FALSE) })
+  output$mianus_data_table <- renderDT({ datatable(filtered_data() %>% filter(Site == "Mianus River Gorge") %>% select(-Site), options = list(pageLength = 10, dom = 'tip', searching = TRUE, scrollY = '300px'), rownames = FALSE, caption = 'All data points for Mianus River Gorge Preserve.') })
   
   # 1. Mohonk Map
   output$mohonk_map <- renderLeaflet({
-    lat <- SITE_COORDS[["Mohonk"]][1]
-    lng <- SITE_COORDS[["Mohonk"]][2]
+    lat <- SITE_COORDS[["Mohonk Preserve"]][1]
+    lng <- SITE_COORDS[["Mohonk Preserve"]][2]
     
     leaflet() %>%
       addProviderTiles(providers$OpenTopoMap, group = "Topographic") %>% 
       addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") %>%
       addTiles(group = "Default Map") %>%
-      addLayersControl(baseGroups = c("Default Map", "Topographic", "Satellite"), options = layersControlOptions(collapsed = TRUE)) %>%
-      setView(lng = lng, lat = lat, zoom = 12.25) %>%
+      setView(lng = lng, lat = lat, zoom = 12.5) %>%
       addMarkers(data = exclosures_data, lat = ~Latitude, lng = ~Longitude, popup = ~paste("Exclosure:", Exclosure_Name), label = ~Exclosure_Name) %>%
+      
+      addLayersControl(baseGroups = c("Default Map", "Topographic", "Satellite"), options = layersControlOptions(collapsed = TRUE)) %>%
       
       addEasyButton(
         easyButton(
@@ -258,19 +402,75 @@ server <- function(input, output, session) {
       )
   })
   
-  # 2. Mianus River Map
+  # 2. Mianus River Map - Using JS for Style and Interactions to fix serialization error
   output$mianus_map <- renderLeaflet({
-    lat <- SITE_COORDS[["Mianus River Park"]][1]
-    lng <- SITE_COORDS[["Mianus River Park"]][2]
+    lat <- SITE_COORDS[["Mianus River Gorge"]][1]
+    lng <- SITE_COORDS[["Mianus River Gorge"]][2]
     
-    leaflet() %>%
+    # Retrieve the pre-loaded GeoJSON data
+    geojson_data <- geojson_data_list$geojson
+    
+    map <- leaflet() %>%
       addProviderTiles(providers$OpenTopoMap, group = "Topographic") %>%
       addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") %>% 
       addTiles(group = "Default Map") %>%
-      addLayersControl(baseGroups = c("Default Map", "Topographic", "Satellite"), options = layersControlOptions(collapsed = TRUE)) %>%
-      setView(lng = lng, lat = lat, zoom = 14) %>%
-      addMarkers(lng = lng, lat = lat, popup = "<b>Mianus River Park</b><br>Regional tick and wildlife study site.", label = "Mianus River Park") %>%
-      
+      setView(lng = lng, lat = lat, zoom = 14.5) 
+
+    # Conditionally add GeoJSON if it was loaded successfully
+    if (!is.null(geojson_data)) {
+
+      # Extract features and convert to spatial data
+      for (i in seq_along(geojson_data$features)) {
+        feature <- geojson_data$features[[i]]
+        coords <- feature$geometry$coordinates
+
+        # Get properties
+        area <- feature$properties$Area
+        done <- feature$properties$Done
+        year_planned <- feature$properties$YearPlanne
+
+        # Set color based on Done status
+        fill_color <- if (done == 1) "#00A0B0" else "#E54028"
+        status_text <- if (done == 1) "Yes" else "No"
+
+        # Create popup content
+        popup_content <- sprintf(
+          '<div style="font-family: sans-serif; font-size: 12px;"><strong>Area ID: %s</strong><br>Year Planned: %s<br>Done: <span style="color: %s; font-weight: bold;">%s</span></div>',
+          area, year_planned,
+          if (done == 1) "#059669" else "#DC2626",
+          status_text
+        )
+
+        # Add polygon
+        map <- map %>%
+          addPolygons(
+            lng = sapply(coords[[1]], function(x) x[[1]]),
+            lat = sapply(coords[[1]], function(x) x[[2]]),
+            fillColor = fill_color,
+            fillOpacity = 0.5,
+            color = "white",
+            weight = 2,
+            opacity = 1,
+            group = "Boundary Polygons",
+            popup = popup_content,
+            label = paste("Area", area),
+            highlightOptions = highlightOptions(
+              weight = 5,
+              color = "#F9D030",
+              fillOpacity = 0.7,
+              bringToFront = TRUE
+            )
+          )
+      }
+    }
+    
+    # Add Layers Control and EasyButton
+    map %>%
+      addLayersControl(
+        baseGroups = c("Default Map", "Topographic", "Satellite"), 
+        overlayGroups = c("Boundary Polygons"),
+        options = layersControlOptions(collapsed = TRUE)
+      ) %>%
       addEasyButton(
         easyButton(
           id = "easy_button_mianus", 
