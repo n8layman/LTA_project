@@ -206,7 +206,24 @@ This template provides a solid foundation for reproducible research and analysis
 
 ### Deployment & Hosting
 
-- **Shiny Applications**: Add deployment configurations for shinyapps.io or Shiny Server
+- **Shiny Applications with shinylive**: Deploy Shiny apps as static sites on GitHub Pages
+
+  1. Export your Shiny app using shinylive:
+     ```r
+     shinylive::export("app", "docs")
+     ```
+
+  2. Enable GitHub Pages in your repository settings:
+     - Go to Settings > Pages
+     - Under "Source", select "Deploy from a branch"
+     - Select the `main` branch and `/docs` folder
+     - Click "Save"
+
+  3. Your app will be available at `https://yourusername.github.io/repository-name/`
+
+  Note: shinylive allows you to run Shiny applications entirely in the browser without a server, making it ideal for static hosting on GitHub Pages.
+
+- **Shiny Server/shinyapps.io**: Add deployment configurations for traditional server-based hosting
 - **Plumber APIs**: Create RESTful APIs to expose your models
 - **Quarto Publishing**: Set up workflows for publishing interactive documents and dashboards
 - **Static Site Generation**: Configure GitHub Pages for documentation sites

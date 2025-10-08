@@ -14,8 +14,11 @@ library(htmltools)
 
 # --- Configuration & Data Loading ---
 
-# Path to the GeoJSON file created by the conversion script
-GEOJSON_FILE_PATH <- "mianus_polygons.geojson"
+# Paths to the GeoJSON files created by the conversion script
+POLYGONS_FILE_PATH <- "mianus_polygons.geojson"
+EXCLOSURES_FILE_PATH <- "mianus_exclosures.geojson"
+TRANSECTS_FILE_PATH <- "mianus_transects.geojson"
+TRAILS_FILE_PATH <- "mianus_trails.geojson"
 
 # --- 1. DATA SETUP: Standardized Site Coordinates ---
 SITE_COORDS <- list(
@@ -68,10 +71,22 @@ load_geojson <- function(file_path) {
 }
 
 # Load the data once at app startup
-geojson_data_list <- load_geojson(GEOJSON_FILE_PATH)
+polygons_data_list <- load_geojson(POLYGONS_FILE_PATH)
+exclosures_data_list <- load_geojson(EXCLOSURES_FILE_PATH)
+transects_data_list <- load_geojson(TRANSECTS_FILE_PATH)
+trails_data_list <- load_geojson(TRAILS_FILE_PATH)
 
-if (is.null(geojson_data_list$geojson)) {
-  warning("GeoJSON data could not be loaded. Please ensure polygons.geojson is in app/GIS_MRG.")
+if (is.null(polygons_data_list$geojson)) {
+  warning("Polygons GeoJSON data could not be loaded. Please ensure mianus_polygons.geojson is in app directory.")
+}
+if (is.null(exclosures_data_list$geojson)) {
+  warning("Exclosures GeoJSON data could not be loaded. Please ensure mianus_exclosures.geojson is in app directory.")
+}
+if (is.null(transects_data_list$geojson)) {
+  warning("Transects GeoJSON data could not be loaded. Please ensure mianus_transects.geojson is in app directory.")
+}
+if (is.null(trails_data_list$geojson)) {
+  warning("Trails GeoJSON data could not be loaded. Please ensure mianus_trails.geojson is in app directory.")
 }
 
 
@@ -219,7 +234,7 @@ ui <- fluidPage(
     ),
     
     # Tab 2: Mianus River Gorge Preserve Site View
-    tabPanel(title = "Mianus River Gorge Preserve, CT/NY", 
+    tabPanel(title = "Mianus River Gorge Preserve, CT/NY",
       value = "Mianus River Gorge",
       h3("Mianus River Gorge Preserve - Location and Data Overview", class = "text-xl font-semibold mb-4 text-gray-700"),
       fluidRow(
@@ -343,9 +358,10 @@ server <- function(input, output, session) {
     if (mianus_model_state()) {
       proxy %>% addCircles(lng = SITE_COORDS[["Mianus River Gorge"]][2], lat = SITE_COORDS[["Mianus River Gorge"]][1], radius = 1000, color = "#0000FF", fillOpacity = 0.2, group = "Mianus Model Layer", layerId = "Mianus Model Layer")
     } else {
-      proxy %>% removeShape(layerId = "Mianus Model Layer") 
+      proxy %>% removeShape(layerId = "Mianus Model Layer")
     }
   })
+
 
   # --- CUSTOM JAVASCRIPT FOR TOGGLING EASYBUTTON ACTIVE CLASS ---
   session$sendCustomMessage("set-attribute", message = list(code = 
@@ -402,26 +418,69 @@ server <- function(input, output, session) {
       )
   })
   
-  # 2. Mianus River Map - Using JS for Style and Interactions to fix serialization error
+  # 2. Mianus River Map - With Preserve Boundary, Exclosures, and Transects
   output$mianus_map <- renderLeaflet({
     lat <- SITE_COORDS[["Mianus River Gorge"]][1]
     lng <- SITE_COORDS[["Mianus River Gorge"]][2]
-    
+
     # Retrieve the pre-loaded GeoJSON data
-    geojson_data <- geojson_data_list$geojson
-    
+    polygons_data <- polygons_data_list$geojson
+    exclosures_data <- exclosures_data_list$geojson
+    transects_data <- transects_data_list$geojson
+    trails_data <- trails_data_list$geojson
+
     map <- leaflet() %>%
       addProviderTiles(providers$OpenTopoMap, group = "Topographic") %>%
-      addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") %>% 
+      addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") %>%
       addTiles(group = "Default Map") %>%
-      setView(lng = lng, lat = lat, zoom = 14.5) 
+      setView(lng = lng, lat = lat, zoom = 14.5)
 
-    # Conditionally add GeoJSON if it was loaded successfully
-    if (!is.null(geojson_data)) {
+    # --- Add Preserve Boundary Polygons (FIRST - so they're on bottom) ---
+    if (!is.null(polygons_data)) {
+      for (i in seq_along(polygons_data$features)) {
+        feature <- polygons_data$features[[i]]
+        coords <- feature$geometry$coordinates
 
-      # Extract features and convert to spatial data
-      for (i in seq_along(geojson_data$features)) {
-        feature <- geojson_data$features[[i]]
+        # Get properties
+        name <- feature$properties$Name
+        acres <- feature$properties$Acres
+        nhp_name <- feature$properties$NHP_Name
+
+        # Create popup content
+        popup_content <- sprintf(
+          '<div style="font-family: sans-serif; font-size: 12px;"><strong>%s</strong><br>Area: %.2f acres<br>NHP: %s</div>',
+          ifelse(!is.null(name) && name != "", name, "Unnamed Parcel"),
+          ifelse(!is.null(acres), acres, 0),
+          ifelse(!is.null(nhp_name), nhp_name, "N/A")
+        )
+
+        # Add polygon - green for preserve boundaries
+        map <- map %>%
+          addPolygons(
+            lng = sapply(coords[[1]], function(x) x[[1]]),
+            lat = sapply(coords[[1]], function(x) x[[2]]),
+            fillColor = "#10B981",
+            fillOpacity = 0.2,
+            color = "#059669",
+            weight = 2,
+            opacity = 0.8,
+            group = "Preserve Boundary",
+            popup = popup_content,
+            label = ifelse(!is.null(name) && name != "", name, "Parcel"),
+            highlightOptions = highlightOptions(
+              weight = 3,
+              color = "#34D399",
+              fillOpacity = 0.4,
+              bringToFront = FALSE  # Keep preserve boundary on bottom
+            )
+          )
+      }
+    }
+
+    # --- Add Exclosures ---
+    if (!is.null(exclosures_data)) {
+      for (i in seq_along(exclosures_data$features)) {
+        feature <- exclosures_data$features[[i]]
         coords <- feature$geometry$coordinates
 
         # Get properties
@@ -429,15 +488,18 @@ server <- function(input, output, session) {
         done <- feature$properties$Done
         year_planned <- feature$properties$YearPlanne
 
-        # Set color based on Done status
-        fill_color <- if (done == 1) "#00A0B0" else "#E54028"
-        status_text <- if (done == 1) "Yes" else "No"
+        # Set color - purple for exclosures
+        fill_color <- if (!is.null(done) && done == 1) "#9333EA" else "#C084FC"
+        status_text <- if (!is.null(done) && done == 1) "Yes" else "No"
 
-        # Create popup content
+        # Create unique label using sequential ID
+        unique_label <- paste0("Exclosure #", i)
+
+        # Create popup content with area and year details
         popup_content <- sprintf(
-          '<div style="font-family: sans-serif; font-size: 12px;"><strong>Area ID: %s</strong><br>Year Planned: %s<br>Done: <span style="color: %s; font-weight: bold;">%s</span></div>',
-          area, year_planned,
-          if (done == 1) "#059669" else "#DC2626",
+          '<div style="font-family: sans-serif; font-size: 12px;"><strong>Exclosure #%s</strong><br>Area: %s<br>Year Planned: %s<br>Done: <span style="color: %s; font-weight: bold;">%s</span></div>',
+          i, area, year_planned,
+          if (!is.null(done) && done == 1) "#059669" else "#DC2626",
           status_text
         )
 
@@ -447,33 +509,118 @@ server <- function(input, output, session) {
             lng = sapply(coords[[1]], function(x) x[[1]]),
             lat = sapply(coords[[1]], function(x) x[[2]]),
             fillColor = fill_color,
-            fillOpacity = 0.5,
-            color = "white",
+            fillOpacity = 0.4,
+            color = "#7C3AED",
             weight = 2,
             opacity = 1,
-            group = "Boundary Polygons",
+            group = "Exclosures",
             popup = popup_content,
-            label = paste("Area", area),
+            label = unique_label,
             highlightOptions = highlightOptions(
-              weight = 5,
-              color = "#F9D030",
+              weight = 4,
+              color = "#A78BFA",
               fillOpacity = 0.7,
               bringToFront = TRUE
             )
           )
       }
     }
-    
+
+    # --- Add Transects ---
+    if (!is.null(transects_data)) {
+      for (i in seq_along(transects_data$features)) {
+        feature <- transects_data$features[[i]]
+        coords <- feature$geometry$coordinates
+
+        # Get properties
+        segm_code <- feature$properties$SegmCode
+        site <- feature$properties$Site
+        pair <- feature$properties$Pair
+        treatm <- feature$properties$Treatm
+        transect <- feature$properties$Transect
+        segment <- feature$properties$Segment
+
+        # Color code by treatment type
+        line_color <- if (!is.null(treatm) && treatm == "Unf") "#EF4444" else "#10B981"
+
+        # Create popup content
+        popup_content <- sprintf(
+          '<div style="font-family: sans-serif; font-size: 12px;"><strong>Transect: %s</strong><br>Site: %s<br>Pair: %s<br>Treatment: %s<br>Segment: %s</div>',
+          segm_code, site, pair, treatm, segment
+        )
+
+        # Add polyline
+        map <- map %>%
+          addPolylines(
+            lng = sapply(coords, function(x) x[[1]]),
+            lat = sapply(coords, function(x) x[[2]]),
+            color = line_color,
+            weight = 3,
+            opacity = 0.8,
+            group = "Transects",
+            popup = popup_content,
+            label = segm_code,
+            highlightOptions = highlightOptions(
+              weight = 5,
+              color = "#FBBF24",
+              opacity = 1,
+              bringToFront = TRUE
+            )
+          )
+      }
+    }
+
+    # --- Add Trails ---
+    if (!is.null(trails_data)) {
+      for (i in seq_along(trails_data$features)) {
+        feature <- trails_data$features[[i]]
+        coords <- feature$geometry$coordinates
+
+        # Get properties
+        track_name <- feature$properties$TRACK
+        color_name <- feature$properties$Color
+        geotrans <- feature$properties$GEOTRANS
+
+        # Create popup content
+        popup_content <- sprintf(
+          '<div style="font-family: sans-serif; font-size: 12px;"><strong>Trail: %s</strong><br>Color: %s</div>',
+          ifelse(!is.null(track_name), track_name, "Unnamed Trail"),
+          ifelse(!is.null(color_name), color_name, "N/A")
+        )
+
+        # Add polyline in dark grey
+        map <- map %>%
+          addPolylines(
+            lng = sapply(coords, function(x) x[[1]]),
+            lat = sapply(coords, function(x) x[[2]]),
+            color = "#4B5563",  # Dark grey
+            weight = 2,
+            opacity = 0.7,
+            group = "Trails",
+            popup = popup_content,
+            label = ifelse(!is.null(track_name), track_name, "Trail"),
+            highlightOptions = highlightOptions(
+              weight = 4,
+              color = "#1F2937",
+              opacity = 1,
+              bringToFront = TRUE
+            )
+          )
+      }
+    }
+
     # Add Layers Control and EasyButton
     map %>%
       addLayersControl(
-        baseGroups = c("Default Map", "Topographic", "Satellite"), 
-        overlayGroups = c("Boundary Polygons"),
-        options = layersControlOptions(collapsed = TRUE)
+        baseGroups = c("Default Map", "Topographic", "Satellite"),
+        overlayGroups = c("Preserve Boundary", "Exclosures", "Transects", "Trails"),
+        options = layersControlOptions(collapsed = FALSE)
       ) %>%
+      hideGroup("Trails") %>%  # Hide trails by default
+      hideGroup("Preserve Boundary") %>%  # Hide preserve boundary by default
       addEasyButton(
         easyButton(
-          id = "easy_button_mianus", 
+          id = "easy_button_mianus",
           icon = "fas fa-chart-column",
           title = "Show Predictive Modeling Results (TBD)",
           position = "bottomleft",
