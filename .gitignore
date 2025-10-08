@@ -16,3 +16,5 @@ _targets/objects
 # pixi environments
 .pixi
 *.egg-info
+
+admin/**

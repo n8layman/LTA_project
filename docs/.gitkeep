@@ -1,0 +1,2 @@
+# This folder will contain the Shinylive static export
+# Generated via: shinylive::export(appdir = "app", destdir = "docs")
