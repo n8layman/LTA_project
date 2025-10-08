@@ -19,33 +19,32 @@ jobs:
       id-token: write
 
     steps:
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Cache Docker layers
-        uses: actions/cache@v4
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-docker-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-docker-
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # --- NEW: Cache R packages to skip re-downloading/re-compiling every time ---
+      # The key is based on the OS and a hash of this workflow file, so if the packages 
+      # or installation steps change, the cache is invalidated.
+      - name: Cache R packages
+        uses: actions/cache@v4
+        with:
+          path: /usr/local/lib/R/site-library
+          key: ${{ runner.os }}-R-${{ hashFiles('.Rprofile') }}-${{ hashFiles('app/app.R') }}
+          restore-keys: |
+            ${{ runner.os }}-R-
+
       # --- Minimal system dependencies for compiling non-base R packages ---
-      # libarchive-dev is required by the 'archive' package, a dependency of 'shinylive', if binaries are unavailable.
+      # libarchive-dev is still needed for shinylive's dependency if the R package cache is missed.
       - name: Install system dependencies for extensions
         run: |
           apt-get update
           apt-get install -y --no-install-recommends \
             libarchive-dev
 
-      # Installing packages using CRAN precompiled binaries.
-      # If binaries are unavailable, it will fall back to source installation.
+      # Installing packages using the default source type (required for Linux/rocker images).
       - name: Install required R packages
         run: |
-          R -e "install.packages(c('leaflet.providers', 'leaflet.extras', 'shinylive'), repos = 'https://cloud.r-project.org/', type = 'binary')"
+          R -e "install.packages(c('leaflet.providers', 'leaflet.extras', 'shinylive'), repos = 'https://cloud.r-project.org/')"
 
       - name: Export to shinylive
         run: |
