@@ -4,13 +4,11 @@
 library(shiny)
 library(munsell)
 library(leaflet)
-library(jsonlite)
-library(dplyr)
 library(DT)
-library(lubridate)
 library(leaflet.providers)
-library(htmltools)
-library(ggplot2)
+
+# Source helper functions
+source("helpers.R")
 
 # --- Configuration & Data Loading ---
 
@@ -26,27 +24,6 @@ SITE_COORDS <- list(
   "Mianus River Gorge" = c(41.171636, -73.620278) 
 )
 
-# Function to safely load and parse GeoJSON data
-load_geojson <- function(file_path) {
-  if (!file.exists(file_path)) {
-    warning(paste("GeoJSON file not found at:", file_path))
-    return(NULL)
-  }
-
-  geojson_string <- readLines(file_path, warn = FALSE) %>%
-    paste(collapse = "\n")
-
-  # Safely parse the GeoJSON string
-  data <- tryCatch({
-    jsonlite::fromJSON(geojson_string, simplifyVector = FALSE)
-  }, error = function(e) {
-    warning(paste("Error parsing GeoJSON:", e$message))
-    return(NULL)
-  })
-
-  return(data)
-}
-
 # Load the data once at app startup
 polygons_data <- load_geojson(POLYGONS_FILE_PATH)
 exclosures_data <- load_geojson(EXCLOSURES_FILE_PATH)
@@ -57,18 +34,16 @@ trails_data <- load_geojson(TRAILS_FILE_PATH)
 # --- 2. Load Tick Data from CSV ---
 
 # Read tick data from CSV file
-tick_data <- read.csv("tick_data.csv", stringsAsFactors = FALSE) %>%
-  mutate(Date = ymd(Date)) %>%
+tick_data <- load_tick_data("tick_data.csv") %>%
   arrange(Date, Site, Transect)
 
 # Mohonk exclosures data (for markers on Mohonk map)
-mohonk_exclosures <- data.frame(
-  Exclosure_Name = c("Cedar Drive Loop", "Canaan Rd", "Glory Hill", "Undercliff Rd"),
-  Latitude = c(41.79766, 41.78495, 41.74764, 41.75430),
-  Longitude = c(-74.11761, -74.10986, -74.14738, -74.16813)
-)
-min_date <- min(tick_data$Date)
-max_date <- max(tick_data$Date)
+mohonk_exclosures <- read.csv("mohonk_exclosures.csv", stringsAsFactors = FALSE)
+
+# Get date range
+date_range <- get_date_range(tick_data)
+min_date <- date_range[1]
+max_date <- date_range[2]
 
 # --- 3. User Interface (UI) ---
 
@@ -204,67 +179,30 @@ server <- function(input, output, session) {
 
   # --- Data and Summary Generation ---
 
-  generate_site_summary <- function(site_name) {
-    data <- filtered_data() %>% filter(Site == site_name)
-    total_ticks <- sum(data$Count)
-    unique_species <- length(unique(data$Species))
+  output$site_summary_ui <- renderUI({
+    generate_site_summary(filtered_data(), "Mohonk Preserve", min_date, max_date)
+  })
+  output$site_summary_ui_mianus <- renderUI({
+    generate_site_summary(filtered_data(), "Mianus River Gorge", min_date, max_date)
+  })
 
-    tagList(
-      p(HTML(paste0("<strong>Site:</strong> ", site_name)), class = "text-gray-600"),
-      p(HTML(paste0("<strong>Total Ticks Counted:</strong> ", format(total_ticks, big.mark = ","))), class = "text-gray-600"),
-      p(HTML(paste0("<strong>Unique Species Found:</strong> ", unique_species)), class = "text-gray-600"),
-      p(paste0("The summary above reflects all data collected between ", min_date, " and ", max_date, " at this site."), class = "text-sm text-gray-500 mt-2")
-    )
-  }
-  
-  output$site_summary_ui <- renderUI({ generate_site_summary("Mohonk Preserve") })
-  output$site_summary_ui_mianus <- renderUI({ generate_site_summary("Mianus River Gorge") })
+  output$mohonk_species_plot <- renderPlot({
+    generate_species_plot(filtered_data(), "Mohonk Preserve")
+  })
+  output$mianus_species_plot <- renderPlot({
+    generate_species_plot(filtered_data(), "Mianus River Gorge")
+  })
 
-  # Generate species distribution plots by life stage
-  generate_species_plot <- function(site_name) {
-    data <- filtered_data() %>%
-      filter(Site == site_name) %>%
-      group_by(Species, Life_Stage) %>%
-      summarize(Total = sum(Count), .groups = "drop") %>%
-      mutate(
-        Species_Abbrev = case_when(
-          Species == "Ixodes scapularis (Blacklegged)" ~ "I. scap",
-          Species == "Amblyomma americanum (Lone Star)" ~ "A. amer",
-          Species == "Dermacentmaus variabilis (Dog Tick)" ~ "D. var",
-          TRUE ~ Species
-        )
-      )
-
-    ggplot(data, aes(x = Species_Abbrev, y = Total, fill = Life_Stage)) +
-      geom_bar(stat = "identity", position = "stack", width = 0.6) +
-      scale_fill_manual(
-        values = c("Adult" = "#3B82F6", "Nymph" = "#10B981"),
-        labels = c("Adult", "Nymph")
-      ) +
-      labs(x = NULL, y = "Count", fill = NULL) +
-      theme_minimal() +
-      theme(
-        axis.text.x = element_text(size = 11),
-        axis.text.y = element_text(size = 11),
-        axis.title.y = element_text(size = 11),
-        legend.title = element_blank(),
-        legend.text = element_text(size = 10),
-        legend.position = "bottom",
-        plot.margin = margin(5, 5, 5, 5)
-      )
-  }
-
-  output$mohonk_species_plot <- renderPlot({ generate_species_plot("Mohonk Preserve") })
-  output$mianus_species_plot <- renderPlot({ generate_species_plot("Mianus River Gorge") })
-
-  output$mohonk_data_table <- renderDT({ datatable(filtered_data() %>% filter(Site == "Mohonk Preserve") %>% select(-Site), options = list(pageLength = 10, dom = 'tip', searching = TRUE, scrollY = '300px'), rownames = FALSE) })
-  output$mianus_data_table <- renderDT({ datatable(filtered_data() %>% filter(Site == "Mianus River Gorge") %>% select(-Site), options = list(pageLength = 10, dom = 'tip', searching = TRUE, scrollY = '300px'), rownames = FALSE) })
-  
-  # Helper function to safely get count from summary data
-  get_count <- function(df) {
-    result <- df %>% pull(Total)
-    if (length(result) > 0) sum(result) else 0
-  }
+  output$mohonk_data_table <- renderDT({
+    datatable(filtered_data() %>% filter(Site == "Mohonk Preserve") %>% select(-Site),
+              options = list(pageLength = 10, dom = 'tip', searching = TRUE, scrollY = '300px'),
+              rownames = FALSE)
+  })
+  output$mianus_data_table <- renderDT({
+    datatable(filtered_data() %>% filter(Site == "Mianus River Gorge") %>% select(-Site),
+              options = list(pageLength = 10, dom = 'tip', searching = TRUE, scrollY = '300px'),
+              rownames = FALSE)
+  })
 
   # 1. Mohonk Map
   output$mohonk_map <- renderLeaflet({
@@ -272,10 +210,7 @@ server <- function(input, output, session) {
     lng <- SITE_COORDS[["Mohonk Preserve"]][2]
 
     # Calculate life stage counts for each exclosure
-    mohonk_summary <- filtered_data() %>%
-      filter(Site == "Mohonk Preserve") %>%
-      group_by(Transect, Life_Stage) %>%
-      summarize(Total = sum(Count), .groups = "drop")
+    mohonk_summary <- summarize_by_transect(filtered_data(), "Mohonk Preserve")
 
     # Create labels with life stage breakdown in table format and colored markers
     exclosures_with_labels <- mohonk_exclosures %>%
@@ -285,25 +220,9 @@ server <- function(input, output, session) {
         nymph_count = get_count(mohonk_summary %>% filter(Transect == Exclosure_Name, Life_Stage == "Nymph")),
         total_count = adult_count + nymph_count,
         marker_color = if(total_count == 0) "gray" else "red",
-        label_text = sprintf(
-          '<div style="font-family: sans-serif; font-size: 11px;">
-          <strong>%s</strong><br>
-          <table style="margin-top: 6px; border-collapse: collapse;">
-            <tr style="background-color: #f3f4f6;">
-              <th style="padding: 3px 6px; text-align: left; border: 1px solid #d1d5db; font-size: 10px;">Level</th>
-              <th style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">Adult</th>
-              <th style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">Nymph</th>
-              <th style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">Total</th>
-            </tr>
-            <tr>
-              <td style="padding: 3px 6px; border: 1px solid #d1d5db; font-size: 10px;">Transect</td>
-              <td style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">%d</td>
-              <td style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">%d</td>
-              <td style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">%d</td>
-            </tr>
-          </table>
-          </div>',
-          Exclosure_Name, adult_count, nymph_count, total_count
+        label_text = create_tick_tooltip(
+          title = Exclosure_Name,
+          create_table_row("Transect", adult_count, nymph_count, total_count)
         )
       ) %>%
       ungroup()
@@ -352,125 +271,20 @@ server <- function(input, output, session) {
     center_lat <- SITE_COORDS[["Mianus River Gorge"]][1]
     center_lng <- SITE_COORDS[["Mianus River Gorge"]][2]
 
-    map <- leaflet(options = leafletOptions(maxZoom = 20)) %>%
-      addProviderTiles(providers$OpenTopoMap, group = "Topographic", options = providerTileOptions(maxZoom = 20)) %>%
-      addProviderTiles(providers$Esri.WorldImagery, group = "Satellite", options = providerTileOptions(maxZoom = 20)) %>%
-      addTiles(group = "Default Map", options = tileOptions(maxZoom = 20)) %>%
-      setView(lng = center_lng, lat = center_lat, zoom = 17)
+    # Initialize map with base tiles
+    map <- init_leaflet_map(center_lng, center_lat, zoom = 17, max_zoom = 20)
 
-    # --- Add Preserve Boundary Polygons (FIRST - so they're on bottom) ---
-    if (!is.null(polygons_data)) {
-      for (i in seq_along(polygons_data$features)) {
-        feature <- polygons_data$features[[i]]
-        coords <- feature$geometry$coordinates
-
-        # Get properties
-        name <- feature$properties$Name
-        acres <- feature$properties$Acres
-        nhp_name <- feature$properties$NHP_Name
-
-        # Create popup content
-        popup_content <- sprintf(
-          '<div style="font-family: sans-serif; font-size: 12px;"><strong>%s</strong><br>Area: %.2f acres<br>NHP: %s</div>',
-          ifelse(!is.null(name) && name != "", name, "Unnamed Parcel"),
-          ifelse(!is.null(acres), acres, 0),
-          ifelse(!is.null(nhp_name), nhp_name, "N/A")
-        )
-
-        # Add polygon - green for preserve boundaries
-        map <- map %>%
-          addPolygons(
-            lng = sapply(coords[[1]], function(x) x[[1]]),
-            lat = sapply(coords[[1]], function(x) x[[2]]),
-            fillColor = "#10B981",
-            fillOpacity = 0.2,
-            color = "#059669",
-            weight = 2,
-            opacity = 0.8,
-            group = "Preserve Boundary",
-            popup = popup_content,
-            label = ifelse(!is.null(name) && name != "", name, "Parcel"),
-            highlightOptions = highlightOptions(
-              weight = 3,
-              color = "#34D399",
-              fillOpacity = 0.4,
-              bringToFront = FALSE  # Keep preserve boundary on bottom
-            )
-          )
-      }
-    }
-
-    # --- Add Exclosures ---
-    if (!is.null(exclosures_data)) {
-      for (i in seq_along(exclosures_data$features)) {
-        feature <- exclosures_data$features[[i]]
-        coords <- feature$geometry$coordinates
-
-        # Get properties
-        area <- feature$properties$Area
-        done <- feature$properties$Done
-        year_planned <- feature$properties$YearPlanne
-
-        # Set color - purple for exclosures
-        fill_color <- if (!is.null(done) && done == 1) "#9333EA" else "#C084FC"
-        status_text <- if (!is.null(done) && done == 1) "Yes" else "No"
-
-        # Create unique label using sequential ID
-        unique_label <- paste0("Exclosure #", i)
-
-        # Create popup content with area and year details
-        popup_content <- sprintf(
-          '<div style="font-family: sans-serif; font-size: 12px;"><strong>Exclosure #%s</strong><br>Area: %s<br>Year Planned: %s<br>Done: <span style="color: %s; font-weight: bold;">%s</span></div>',
-          i, area, year_planned,
-          if (!is.null(done) && done == 1) "#059669" else "#DC2626",
-          status_text
-        )
-
-        # Add polygon
-        map <- map %>%
-          addPolygons(
-            lng = sapply(coords[[1]], function(x) x[[1]]),
-            lat = sapply(coords[[1]], function(x) x[[2]]),
-            fillColor = fill_color,
-            fillOpacity = 0.15,
-            color = "#7C3AED",
-            weight = 2,
-            opacity = 0.7,
-            group = "Exclosures"
-          )
-      }
-    }
+    # Add layers in order (bottom to top)
+    map <- add_preserve_polygons(map, polygons_data)
+    map <- add_exclosure_polygons(map, exclosures_data)
 
     # --- Add Transects ---
     if (!is.null(transects_data)) {
-      # Calculate counts at different hierarchical levels
-      mianus_data <- filtered_data() %>%
-        filter(Site == "Mianus River Gorge")
-
-      # Extract hierarchy: MRG-1-Fen-4-A -> Transect: MRG-1, Line: MRG-1-Fen-4, Segment: MRG-1-Fen-4-A
-      # For data, we need to create hierarchy columns
-      mianus_data_with_hierarchy <- mianus_data %>%
-        mutate(
-          # Extract transect number (e.g., "MRG-1" from "MRG-1-Fen-4")
-          Transect_Num = sub("^(MRG-\\d+).*", "\\1", Transect),
-          # Line is the Transect column (e.g., "MRG-1-Fen-4")
-          Line = Transect
-        )
-
-      # Level 1: Transect totals (e.g., all of MRG-1)
-      transect_summary <- mianus_data_with_hierarchy %>%
-        group_by(Transect_Num, Life_Stage) %>%
-        summarize(Total = sum(Count), .groups = "drop")
-
-      # Level 2: Line totals (e.g., all segments in MRG-1-Fen-4)
-      line_summary <- mianus_data_with_hierarchy %>%
-        group_by(Line, Life_Stage) %>%
-        summarize(Total = sum(Count), .groups = "drop")
-
-      # Level 3: Segment totals (e.g., just MRG-1-Fen-4-A)
-      segment_summary <- mianus_data %>%
-        group_by(Segment, Life_Stage) %>%
-        summarize(Total = sum(Count), .groups = "drop")
+      # Calculate hierarchical counts (transect, line, segment levels)
+      summaries <- summarize_mianus_hierarchical(filtered_data())
+      transect_summary <- summaries$transect
+      line_summary <- summaries$line
+      segment_summary <- summaries$segment
 
       for (i in seq_along(transects_data$features)) {
         feature <- transects_data$features[[i]]
@@ -506,41 +320,12 @@ server <- function(input, output, session) {
           line_color <- if (!is.null(treatm) && treatm == "Unf") "#EF4444" else "#7C3AED"  # Red or Purple
         }
 
-        # Create table-style tooltip content
-        tooltip_content <- sprintf(
-          '<div style="font-family: sans-serif; font-size: 11px;">
-          <strong>%s</strong><br>
-          <table style="margin-top: 6px; border-collapse: collapse;">
-            <tr style="background-color: #f3f4f6;">
-              <th style="padding: 3px 6px; text-align: left; border: 1px solid #d1d5db; font-size: 10px;">Level</th>
-              <th style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">Adult</th>
-              <th style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">Nymph</th>
-              <th style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">Total</th>
-            </tr>
-            <tr>
-              <td style="padding: 3px 6px; border: 1px solid #d1d5db; font-size: 10px;">Transect</td>
-              <td style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">%d</td>
-              <td style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">%d</td>
-              <td style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">%d</td>
-            </tr>
-            <tr style="background-color: #f9fafb;">
-              <td style="padding: 3px 6px; border: 1px solid #d1d5db; font-size: 10px;">Line</td>
-              <td style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">%d</td>
-              <td style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">%d</td>
-              <td style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">%d</td>
-            </tr>
-            <tr>
-              <td style="padding: 3px 6px; border: 1px solid #d1d5db; font-size: 10px;">Segment</td>
-              <td style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">%d</td>
-              <td style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">%d</td>
-              <td style="padding: 3px 6px; text-align: right; border: 1px solid #d1d5db; font-size: 10px;">%d</td>
-            </tr>
-          </table>
-          </div>',
-          segm_code,
-          t_adult, t_nymph, t_total,
-          l_adult, l_nymph, l_total,
-          s_adult, s_nymph, s_total
+        # Create table-style tooltip content using unified template
+        tooltip_content <- create_tick_tooltip(
+          title = segm_code,
+          create_table_row("Transect", t_adult, t_nymph, t_total),
+          create_table_row("Line", l_adult, l_nymph, l_total, bgcolor = "#f9fafb"),
+          create_table_row("Segment", s_adult, s_nymph, s_total)
         )
 
         # Add polyline
@@ -569,44 +354,8 @@ server <- function(input, output, session) {
       }
     }
 
-    # --- Add Trails ---
-    if (!is.null(trails_data)) {
-      for (i in seq_along(trails_data$features)) {
-        feature <- trails_data$features[[i]]
-        coords <- feature$geometry$coordinates
-
-        # Get properties
-        track_name <- feature$properties$TRACK
-        color_name <- feature$properties$Color
-        geotrans <- feature$properties$GEOTRANS
-
-        # Create popup content
-        popup_content <- sprintf(
-          '<div style="font-family: sans-serif; font-size: 12px;"><strong>Trail: %s</strong><br>Color: %s</div>',
-          ifelse(!is.null(track_name), track_name, "Unnamed Trail"),
-          ifelse(!is.null(color_name), color_name, "N/A")
-        )
-
-        # Add polyline in dark grey
-        map <- map %>%
-          addPolylines(
-            lng = sapply(coords, function(x) x[[1]]),
-            lat = sapply(coords, function(x) x[[2]]),
-            color = "#4B5563",  # Dark grey
-            weight = 2,
-            opacity = 0.7,
-            group = "Trails",
-            popup = popup_content,
-            label = ifelse(!is.null(track_name), track_name, "Trail"),
-            highlightOptions = highlightOptions(
-              weight = 4,
-              color = "#1F2937",
-              opacity = 1,
-              bringToFront = TRUE
-            )
-          )
-      }
-    }
+    # Add trails
+    map <- add_trail_polylines(map, trails_data)
 
     # Add Model Layer circle and Layers Control
     map %>%
