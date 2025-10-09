@@ -25,23 +25,19 @@ TRAILS_FILE_PATH <- "mianus_trails.geojson"
 # --- 1. DATA SETUP: Standardized Site Coordinates ---
 SITE_COORDS <- list(
   "Mohonk Preserve" = c(41.776, -74.135),
-  "Mianus River Gorge" = c(41.1767, -73.620) 
+  "Mianus River Gorge" = c(41.171636, -73.620278) 
 )
 
-# Function to safely load and parse GeoJSON data (Made robust)
+# Function to safely load and parse GeoJSON data
 load_geojson <- function(file_path) {
-  # Fallback coordinates
-  fallback_lon <- SITE_COORDS[["Mianus River Gorge"]][2] 
-  fallback_lat <- SITE_COORDS[["Mianus River Gorge"]][1]
-  
   if (!file.exists(file_path)) {
     warning(paste("GeoJSON file not found at:", file_path))
-    return(list(geojson = NULL, center = c(fallback_lon, fallback_lat)))
+    return(NULL)
   }
-  
-  geojson_string <- readLines(file_path, warn = FALSE) %>% 
+
+  geojson_string <- readLines(file_path, warn = FALSE) %>%
     paste(collapse = "\n")
-  
+
   # Safely parse the GeoJSON string
   data <- tryCatch({
     jsonlite::fromJSON(geojson_string, simplifyVector = FALSE)
@@ -49,47 +45,15 @@ load_geojson <- function(file_path) {
     warning(paste("Error parsing GeoJSON:", e$message))
     return(NULL)
   })
-  
-  if (is.null(data)) {
-    warning("Parsed GeoJSON data is NULL. Using site coordinates for center.")
-    return(list(geojson = NULL, center = c(fallback_lon, fallback_lat)))
-  }
-  
-  # Find the center of the bounding box for map focus
-  if (!is.null(data$bbox) && length(data$bbox) >= 4) {
-    bbox <- data$bbox
-    center_lon <- (bbox[1] + bbox[3]) / 2
-    center_lat <- (bbox[2] + bbox[4]) / 2
-  } else {
-    # Fallback to the Mianus site coordinates
-    center_lon <- fallback_lon
-    center_lat <- fallback_lat
-  }
-  
-  return(list(
-    geojson = data,
-    center = c(center_lon, center_lat)
-  ))
+
+  return(data)
 }
 
 # Load the data once at app startup
-polygons_data_list <- load_geojson(POLYGONS_FILE_PATH)
-exclosures_data_list <- load_geojson(EXCLOSURES_FILE_PATH)
-transects_data_list <- load_geojson(TRANSECTS_FILE_PATH)
-trails_data_list <- load_geojson(TRAILS_FILE_PATH)
-
-if (is.null(polygons_data_list$geojson)) {
-  warning("Polygons GeoJSON data could not be loaded. Please ensure mianus_polygons.geojson is in app directory.")
-}
-if (is.null(exclosures_data_list$geojson)) {
-  warning("Exclosures GeoJSON data could not be loaded. Please ensure mianus_exclosures.geojson is in app directory.")
-}
-if (is.null(transects_data_list$geojson)) {
-  warning("Transects GeoJSON data could not be loaded. Please ensure mianus_transects.geojson is in app directory.")
-}
-if (is.null(trails_data_list$geojson)) {
-  warning("Trails GeoJSON data could not be loaded. Please ensure mianus_trails.geojson is in app directory.")
-}
+polygons_data <- load_geojson(POLYGONS_FILE_PATH)
+exclosures_data_geojson <- load_geojson(EXCLOSURES_FILE_PATH)
+transects_data <- load_geojson(TRANSECTS_FILE_PATH)
+trails_data <- load_geojson(TRAILS_FILE_PATH)
 
 
 # --- 2. Load Tick Data from CSV ---
@@ -450,30 +414,9 @@ server <- function(input, output, session) {
   
   # 2. Mianus River Map - With Preserve Boundary, Exclosures, and Transects
   output$mianus_map <- renderLeaflet({
-    # Retrieve the pre-loaded GeoJSON data
-    polygons_data <- polygons_data_list$geojson
-    exclosures_data <- exclosures_data_list$geojson
-    transects_data <- transects_data_list$geojson
-    trails_data <- trails_data_list$geojson
-
-    # Calculate center of all transects
-    if (!is.null(transects_data) && length(transects_data$features) > 0) {
-      all_coords <- list()
-      for (i in seq_along(transects_data$features)) {
-        coords <- transects_data$features[[i]]$geometry$coordinates
-        for (coord in coords) {
-          all_coords[[length(all_coords) + 1]] <- coord
-        }
-      }
-      lngs <- sapply(all_coords, function(x) x[[1]])
-      lats <- sapply(all_coords, function(x) x[[2]])
-      center_lng <- mean(lngs)
-      center_lat <- mean(lats)
-    } else {
-      # Fallback to site coordinates
-      center_lat <- SITE_COORDS[["Mianus River Gorge"]][1]
-      center_lng <- SITE_COORDS[["Mianus River Gorge"]][2]
-    }
+    # Use hard-coded Mianus River Gorge coordinates
+    center_lat <- SITE_COORDS[["Mianus River Gorge"]][1]
+    center_lng <- SITE_COORDS[["Mianus River Gorge"]][2]
 
     map <- leaflet(options = leafletOptions(maxZoom = 20)) %>%
       addProviderTiles(providers$OpenTopoMap, group = "Topographic", options = providerTileOptions(maxZoom = 20)) %>%
