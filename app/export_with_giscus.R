@@ -40,7 +40,8 @@ export_with_giscus <- function(
     "DT",              # For data tables
     "ggplot2",         # For plots
     "glue",            # For string interpolation
-    "jsonlite"         # For JSON parsing
+    "jsonlite",        # For JSON parsing
+    "munsell"          # For color operations (leaflet dependency)
   )
 
   message("Including packages: ", paste(required_packages, collapse = ", "))
