@@ -116,42 +116,58 @@ server <- function(input, output, session) {
     generate_species_plot(filtered_data(), "Mianus River Gorge")
   })
   
-  # --- Data Tables ---
-output$mohonk_data_table <- renderDT({
-  datatable(
-    filtered_data() %>%
-      filter(SiteName == "Mohonk Preserve") %>%
-      select(-SiteName, -SegmCode),
-    options = list(
-      pageLength = 10,
-      scrollY = '300px',
-      autoWidth = TRUE,
-      dom = 'tip'  # 't' = table, 'i' = info, 'p' = pagination; no global search needed
-    ),
-    filter = "top",
-    rownames = FALSE,
-    selection = list(mode = "single", target = "row")
-  )
-})
+    # --- Data Tables ---
+  output$mohonk_data_table <- renderDT({
+    datatable(
+      filtered_data() %>%
+        filter(SiteName == "Mohonk Preserve"),
+      extensions = 'Buttons',   # Enable Buttons extension
+      options = list(
+        dom = 'Btip',            # B = buttons, t = table, i = info, p = pagination
+        buttons = list(
+          list(
+            extend = "excel",
+            text = "Download"     # Button label
+          )
+        ),
+        pageLength = 10,
+        scrollY = '300px',
+        autoWidth = TRUE,
+        columnDefs = list(
+          list(visible = FALSE, targets = c(2,3)) 
+        )
+      ),
+      filter = "top",
+      rownames = FALSE,
+      selection = list(mode = "single", target = "row")
+    )
+  })
 
-
-
-output$mianus_data_table <- renderDT({
-  datatable(
-    filtered_data() %>%
-      filter(SiteName == "Mianus River Gorge") %>%
-      select(-SiteName, -SegmCode),
-    options = list(
-      pageLength = 10,
-      scrollY = '300px',
-      autoWidth = TRUE,
-      dom = 'tip'  # 't' = table, 'i' = info, 'p' = pagination; no global search needed
-    ),
-    filter = "top", 
-    rownames = FALSE,
-    selection = list(mode = "single", target = "row")
-  )
-})
+  output$mianus_data_table <- renderDT({
+    datatable(
+      filtered_data() %>%
+        filter(SiteName == "Mianus River Gorge"),
+        extensions = 'Buttons',   # Enable Buttons extension
+        options = list(
+          dom = 'Btip',            # B = buttons, t = table, i = info, p = pagination
+          buttons = list(
+            list(
+              extend = "excel",
+              text = "Download"     # Button label
+            )
+          ),
+          pageLength = 10,
+          scrollY = '300px',
+          autoWidth = TRUE,
+          columnDefs = list(
+            list(visible = FALSE, targets = c(2,3)) 
+          )
+        ),
+        filter = "top",
+        rownames = FALSE,
+        selection = list(mode = "single", target = "row")
+      )
+    })
 
   # --- Row Selection Observers ---
 
