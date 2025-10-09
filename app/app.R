@@ -92,88 +92,19 @@ if (is.null(trails_data_list$geojson)) {
 }
 
 
-# --- 2. Data Generation and Setup ---
+# --- 2. Load Tick Data from CSV ---
 
-set.seed(42)
-start_date <- ymd("2023-04-01")
-end_date <- ymd("2024-09-30")
-dates <- seq(start_date, end_date, by = "day")
-
-# Define all possible transects
-mohonk_transects <- c("Cedar Drive Loop", "Canaan Rd", "Glory Hill", "Undercliff Rd")
-
-# All individual Mianus transect SEGMENTS (each line on the map)
-mianus_transect_segments <- c(
-  "MRG-1-Fen-0-A", "MRG-1-Fen-0-B", "MRG-1-Fen-0-C", "MRG-1-Fen-0-D", "MRG-1-Fen-0-F",
-  "MRG-1-Fen-1-A", "MRG-1-Fen-1-B", "MRG-1-Fen-1-C", "MRG-1-Fen-1-D", "MRG-1-Fen-1-E", "MRG-1-Fen-1-F",
-  "MRG-1-Fen-2-A", "MRG-1-Fen-2-B", "MRG-1-Fen-2-C", "MRG-1-Fen-2-D", "MRG-1-Fen-2-E", "MRG-1-Fen-2-F",
-  "MRG-1-Fen-3-A", "MRG-1-Fen-3-B", "MRG-1-Fen-3-C", "MRG-1-Fen-3-D", "MRG-1-Fen-3-F",
-  "MRG-1-Fen-4-A",
-  "MRG-1-Unf-0-A", "MRG-1-Unf-0-B", "MRG-1-Unf-0-C", "MRG-1-Unf-0-D", "MRG-1-Unf-0-E", "MRG-1-Unf-0-F",
-  "MRG-1-Unf-1-A", "MRG-1-Unf-1-B", "MRG-1-Unf-1-C", "MRG-1-Unf-1-D", "MRG-1-Unf-1-E", "MRG-1-Unf-1-F",
-  "MRG-1-Unf-2-A", "MRG-1-Unf-2-B", "MRG-1-Unf-2-C", "MRG-1-Unf-2-D", "MRG-1-Unf-2-E", "MRG-1-Unf-2-F",
-  "MRG-1-Unf-3-A", "MRG-1-Unf-3-B", "MRG-1-Unf-3-C", "MRG-1-Unf-3-D", "MRG-1-Unf-3-E", "MRG-1-Unf-3-F",
-  "MRG-1-Unf-4-A", "MRG-1-Unf-4-B", "MRG-1-Unf-4-C", "MRG-1-Unf-4-D", "MRG-1-Unf-4-E", "MRG-1-Unf-4-F",
-  "MRG-2-Fen-0-A", "MRG-2-Fen-0-B", "MRG-2-Fen-0-C", "MRG-2-Fen-0-D", "MRG-2-Fen-0-E", "MRG-2-Fen-0-F", "MRG-2-Fen-0-G", "MRG-2-Fen-0-H",
-  "MRG-2-Fen-1-A", "MRG-2-Fen-1-B", "MRG-2-Fen-1-C", "MRG-2-Fen-1-D", "MRG-2-Fen-1-E", "MRG-2-Fen-1-F", "MRG-2-Fen-1-G", "MRG-2-Fen-1-H",
-  "MRG-2-Fen-2-A", "MRG-2-Fen-2-B", "MRG-2-Fen-2-C", "MRG-2-Fen-2-D", "MRG-2-Fen-2-E", "MRG-2-Fen-2-F", "MRG-2-Fen-2-G", "MRG-2-Fen-2-H",
-  "MRG-2-Fen-3-A", "MRG-2-Fen-3-B", "MRG-2-Fen-3-C", "MRG-2-Fen-3-D", "MRG-2-Fen-3-E", "MRG-2-Fen-3-F", "MRG-2-Fen-3-G", "MRG-2-Fen-3-H",
-  "MRG-2-Fen-4-A", "MRG-2-Fen-4-B", "MRG-2-Fen-4-C", "MRG-2-Fen-4-D", "MRG-2-Fen-4-E", "MRG-2-Fen-4-F", "MRG-2-Fen-4-G", "MRG-2-Fen-4-H",
-  "MRG-2-Unf-0-A", "MRG-2-Unf-0-B", "MRG-2-Unf-0-C", "MRG-2-Unf-0-D", "MRG-2-Unf-0-E", "MRG-2-Unf-0-F", "MRG-2-Unf-0-G", "MRG-2-Unf-0-H",
-  "MRG-2-Unf-1-A", "MRG-2-Unf-1-B", "MRG-2-Unf-1-C", "MRG-2-Unf-1-D", "MRG-2-Unf-1-E", "MRG-2-Unf-1-F", "MRG-2-Unf-1-G", "MRG-2-Unf-1-H",
-  "MRG-2-Unf-2-A", "MRG-2-Unf-2-B", "MRG-2-Unf-2-C", "MRG-2-Unf-2-D", "MRG-2-Unf-2-E", "MRG-2-Unf-2-F", "MRG-2-Unf-2-G", "MRG-2-Unf-2-H",
-  "MRG-2-Unf-3-A", "MRG-2-Unf-3-B", "MRG-2-Unf-3-C", "MRG-2-Unf-3-D", "MRG-2-Unf-3-E", "MRG-2-Unf-3-F", "MRG-2-Unf-3-G", "MRG-2-Unf-3-H",
-  "MRG-2-Unf-4-A", "MRG-2-Unf-4-B", "MRG-2-Unf-4-C", "MRG-2-Unf-4-D", "MRG-2-Unf-4-E", "MRG-2-Unf-4-F", "MRG-2-Unf-4-G", "MRG-2-Unf-4-H"
-)
-
-# Generate detections using Poisson distribution
-# Lambda chosen so P(X=0) = 50%, which gives lambda ≈ 0.69
-# P(X=0) = e^(-lambda), so lambda = -ln(0.5) ≈ 0.69
-
-all_transect_segments <- c(mohonk_transects, mianus_transect_segments)
-mock_data_list <- list()
-
-for (segment in all_transect_segments) {
-  # Poisson distribution: 50% chance of 0 detections per segment
-  n_detections <- rpois(1, lambda = 0.69)
-
-  if (n_detections > 0) {
-    # Determine site based on transect name
-    site <- if (segment %in% mohonk_transects) "Mohonk Preserve" else "Mianus River Gorge"
-
-    # For Mianus, store both the full segment code and base transect
-    if (site == "Mianus River Gorge") {
-      transect <- sub("-[A-Z]$", "", segment)  # Base transect (e.g., MRG-1-Unf-0)
-      segment_code <- segment  # Full segment (e.g., MRG-1-Unf-0-A)
-    } else {
-      transect <- segment
-      segment_code <- segment
-    }
-
-    mock_data_list[[length(mock_data_list) + 1]] <- data.frame(
-      Date = sample(dates, n_detections, replace = TRUE),
-      Site = site,
-      Transect = transect,
-      Segment = segment_code,
-      Species = sample(
-        c("Ixodes scapularis (Blacklegged)", "Amblyomma americanum (Lone Star)", "Dermacentmaus variabilis (Dog Tick)"),
-        n_detections, replace = TRUE, prob = c(0.5, 0.3, 0.2)
-      ),
-      Life_Stage = sample(c("Adult", "Nymph"), n_detections, replace = TRUE, prob = c(0.4, 0.6)),
-      Count = round(rlnorm(n_detections, meanlog = 1.5, sdlog = 0.8)) + 1
-    )
-  }
-}
-
-mock_data <- bind_rows(mock_data_list) %>%
+# Read tick data from CSV file
+tick_data <- read.csv("tick_data.csv", stringsAsFactors = FALSE) %>%
+  mutate(Date = ymd(Date)) %>%
   arrange(Date, Site, Transect)
 exclosures_data <- data.frame(
   Exclosure_Name = c("Cedar Drive Loop", "Canaan Rd", "Glory Hill", "Undercliff Rd"),
   Latitude = c(41.79766, 41.78495, 41.74764, 41.75430),
   Longitude = c(-74.11761, -74.10986, -74.14738, -74.16813)
 )
-min_date <- min(mock_data$Date)
-max_date <- max(mock_data$Date)
+min_date <- min(tick_data$Date)
+max_date <- max(tick_data$Date)
 
 # --- 3. User Interface (UI) ---
 
@@ -305,7 +236,7 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
 
-  filtered_data <- reactive({ mock_data })
+  filtered_data <- reactive({ tick_data })
   
   
   # ------------------------------------------------------------------

@@ -1,0 +1,99 @@
+Date,Site,Transect,Segment,Species,Life_Stage,Count
+2023-04-10,Mianus River Gorge,MRG-1-Fen-3,MRG-1-Fen-3-F,Ixodes scapularis (Blacklegged),Adult,4
+2023-04-12,Mianus River Gorge,MRG-1-Unf-4,MRG-1-Unf-4-E,Dermacentmaus variabilis (Dog Tick),Nymph,4
+2023-04-16,Mianus River Gorge,MRG-1-Unf-2,MRG-1-Unf-2-D,Ixodes scapularis (Blacklegged),Adult,15
+2023-04-26,Mianus River Gorge,MRG-2-Unf-2,MRG-2-Unf-2-B,Dermacentmaus variabilis (Dog Tick),Adult,5
+2023-04-27,Mianus River Gorge,MRG-2-Fen-0,MRG-2-Fen-0-B,Ixodes scapularis (Blacklegged),Nymph,18
+2023-05-07,Mianus River Gorge,MRG-1-Fen-3,MRG-1-Fen-3-B,Dermacentmaus variabilis (Dog Tick),Nymph,3
+2023-05-07,Mianus River Gorge,MRG-2-Fen-1,MRG-2-Fen-1-C,Ixodes scapularis (Blacklegged),Adult,5
+2023-05-24,Mianus River Gorge,MRG-1-Unf-3,MRG-1-Unf-3-F,Ixodes scapularis (Blacklegged),Nymph,6
+2023-05-24,Mianus River Gorge,MRG-2-Fen-2,MRG-2-Fen-2-C,Ixodes scapularis (Blacklegged),Nymph,15
+2023-05-24,Mianus River Gorge,MRG-2-Unf-0,MRG-2-Unf-0-F,Dermacentmaus variabilis (Dog Tick),Nymph,3
+2023-05-29,Mianus River Gorge,MRG-2-Unf-0,MRG-2-Unf-0-A,Ixodes scapularis (Blacklegged),Nymph,6
+2023-06-15,Mianus River Gorge,MRG-1-Unf-2,MRG-1-Unf-2-A,Ixodes scapularis (Blacklegged),Nymph,2
+2023-06-17,Mianus River Gorge,MRG-1-Unf-4,MRG-1-Unf-4-B,Ixodes scapularis (Blacklegged),Nymph,4
+2023-06-21,Mianus River Gorge,MRG-1-Unf-3,MRG-1-Unf-3-D,Ixodes scapularis (Blacklegged),Nymph,5
+2023-06-23,Mianus River Gorge,MRG-2-Unf-4,MRG-2-Unf-4-B,Ixodes scapularis (Blacklegged),Adult,3
+2023-07-06,Mianus River Gorge,MRG-2-Unf-2,MRG-2-Unf-2-B,Dermacentmaus variabilis (Dog Tick),Nymph,3
+2023-07-11,Mianus River Gorge,MRG-1-Fen-4,MRG-1-Fen-4-A,Ixodes scapularis (Blacklegged),Nymph,5
+2023-07-16,Mianus River Gorge,MRG-1-Fen-1,MRG-1-Fen-1-B,Dermacentmaus variabilis (Dog Tick),Nymph,7
+2023-07-25,Mianus River Gorge,MRG-2-Fen-3,MRG-2-Fen-3-G,Ixodes scapularis (Blacklegged),Nymph,9
+2023-08-01,Mianus River Gorge,MRG-2-Unf-1,MRG-2-Unf-1-C,Ixodes scapularis (Blacklegged),Nymph,9
+2023-08-14,Mianus River Gorge,MRG-2-Unf-3,MRG-2-Unf-3-H,Dermacentmaus variabilis (Dog Tick),Nymph,6
+2023-08-24,Mianus River Gorge,MRG-1-Unf-0,MRG-1-Unf-0-E,Ixodes scapularis (Blacklegged),Adult,6
+2023-08-27,Mianus River Gorge,MRG-2-Unf-1,MRG-2-Unf-1-G,Ixodes scapularis (Blacklegged),Nymph,8
+2023-08-31,Mohonk Preserve,Cedar Drive Loop,Cedar Drive Loop,Amblyomma americanum (Lone Star),Nymph,5
+2023-09-06,Mianus River Gorge,MRG-2-Fen-2,MRG-2-Fen-2-A,Amblyomma americanum (Lone Star),Nymph,6
+2023-09-12,Mohonk Preserve,Canaan Rd,Canaan Rd,Ixodes scapularis (Blacklegged),Nymph,29
+2023-09-15,Mianus River Gorge,MRG-2-Unf-0,MRG-2-Unf-0-E,Ixodes scapularis (Blacklegged),Nymph,6
+2023-09-17,Mianus River Gorge,MRG-1-Fen-4,MRG-1-Fen-4-A,Ixodes scapularis (Blacklegged),Adult,4
+2023-09-18,Mianus River Gorge,MRG-1-Fen-4,MRG-1-Fen-4-A,Ixodes scapularis (Blacklegged),Adult,3
+2023-09-21,Mianus River Gorge,MRG-2-Unf-0,MRG-2-Unf-0-B,Amblyomma americanum (Lone Star),Adult,7
+2023-09-26,Mianus River Gorge,MRG-2-Fen-3,MRG-2-Fen-3-E,Ixodes scapularis (Blacklegged),Nymph,3
+2023-10-10,Mianus River Gorge,MRG-1-Fen-1,MRG-1-Fen-1-A,Amblyomma americanum (Lone Star),Adult,13
+2023-10-10,Mianus River Gorge,MRG-2-Fen-4,MRG-2-Fen-4-F,Ixodes scapularis (Blacklegged),Nymph,4
+2023-10-18,Mianus River Gorge,MRG-1-Fen-3,MRG-1-Fen-3-F,Dermacentmaus variabilis (Dog Tick),Nymph,3
+2023-10-19,Mianus River Gorge,MRG-2-Fen-1,MRG-2-Fen-1-A,Ixodes scapularis (Blacklegged),Nymph,4
+2023-10-30,Mianus River Gorge,MRG-2-Fen-0,MRG-2-Fen-0-E,Amblyomma americanum (Lone Star),Adult,15
+2023-10-30,Mianus River Gorge,MRG-2-Unf-2,MRG-2-Unf-2-C,Amblyomma americanum (Lone Star),Adult,5
+2023-11-10,Mianus River Gorge,MRG-1-Fen-2,MRG-1-Fen-2-B,Dermacentmaus variabilis (Dog Tick),Adult,4
+2023-11-10,Mianus River Gorge,MRG-2-Unf-1,MRG-2-Unf-1-G,Ixodes scapularis (Blacklegged),Nymph,8
+2023-11-13,Mianus River Gorge,MRG-2-Unf-2,MRG-2-Unf-2-D,Dermacentmaus variabilis (Dog Tick),Adult,4
+2023-11-24,Mianus River Gorge,MRG-1-Fen-0,MRG-1-Fen-0-C,Amblyomma americanum (Lone Star),Nymph,6
+2023-11-26,Mianus River Gorge,MRG-1-Fen-4,MRG-1-Fen-4-A,Amblyomma americanum (Lone Star),Adult,1
+2023-12-03,Mianus River Gorge,MRG-2-Fen-2,MRG-2-Fen-2-H,Dermacentmaus variabilis (Dog Tick),Nymph,2
+2023-12-05,Mianus River Gorge,MRG-2-Unf-3,MRG-2-Unf-3-H,Ixodes scapularis (Blacklegged),Adult,3
+2023-12-06,Mianus River Gorge,MRG-2-Fen-0,MRG-2-Fen-0-C,Ixodes scapularis (Blacklegged),Nymph,2
+2023-12-07,Mianus River Gorge,MRG-1-Fen-0,MRG-1-Fen-0-A,Amblyomma americanum (Lone Star),Adult,3
+2023-12-11,Mianus River Gorge,MRG-1-Fen-3,MRG-1-Fen-3-F,Ixodes scapularis (Blacklegged),Nymph,9
+2023-12-12,Mianus River Gorge,MRG-2-Unf-4,MRG-2-Unf-4-C,Amblyomma americanum (Lone Star),Adult,14
+2023-12-23,Mianus River Gorge,MRG-2-Unf-1,MRG-2-Unf-1-C,Amblyomma americanum (Lone Star),Nymph,9
+2023-12-24,Mianus River Gorge,MRG-2-Fen-1,MRG-2-Fen-1-B,Dermacentmaus variabilis (Dog Tick),Nymph,3
+2023-12-25,Mianus River Gorge,MRG-1-Unf-4,MRG-1-Unf-4-E,Ixodes scapularis (Blacklegged),Nymph,5
+2024-01-10,Mianus River Gorge,MRG-1-Unf-3,MRG-1-Unf-3-B,Dermacentmaus variabilis (Dog Tick),Adult,4
+2024-01-12,Mianus River Gorge,MRG-2-Fen-1,MRG-2-Fen-1-D,Amblyomma americanum (Lone Star),Nymph,3
+2024-01-17,Mianus River Gorge,MRG-1-Unf-0,MRG-1-Unf-0-E,Ixodes scapularis (Blacklegged),Nymph,3
+2024-01-21,Mianus River Gorge,MRG-1-Unf-3,MRG-1-Unf-3-A,Amblyomma americanum (Lone Star),Adult,6
+2024-01-26,Mianus River Gorge,MRG-2-Fen-1,MRG-2-Fen-1-H,Ixodes scapularis (Blacklegged),Nymph,5
+2024-02-05,Mianus River Gorge,MRG-1-Fen-0,MRG-1-Fen-0-F,Ixodes scapularis (Blacklegged),Adult,4
+2024-02-15,Mohonk Preserve,Cedar Drive Loop,Cedar Drive Loop,Amblyomma americanum (Lone Star),Adult,7
+2024-02-25,Mianus River Gorge,MRG-2-Unf-4,MRG-2-Unf-4-E,Ixodes scapularis (Blacklegged),Adult,9
+2024-03-02,Mianus River Gorge,MRG-1-Unf-4,MRG-1-Unf-4-F,Ixodes scapularis (Blacklegged),Adult,10
+2024-03-13,Mianus River Gorge,MRG-1-Fen-1,MRG-1-Fen-1-B,Ixodes scapularis (Blacklegged),Nymph,4
+2024-03-13,Mianus River Gorge,MRG-1-Unf-0,MRG-1-Unf-0-E,Amblyomma americanum (Lone Star),Adult,25
+2024-03-21,Mohonk Preserve,Canaan Rd,Canaan Rd,Dermacentmaus variabilis (Dog Tick),Nymph,14
+2024-03-25,Mianus River Gorge,MRG-1-Unf-3,MRG-1-Unf-3-A,Ixodes scapularis (Blacklegged),Adult,5
+2024-03-30,Mianus River Gorge,MRG-2-Unf-1,MRG-2-Unf-1-C,Ixodes scapularis (Blacklegged),Nymph,6
+2024-03-31,Mianus River Gorge,MRG-2-Fen-3,MRG-2-Fen-3-G,Dermacentmaus variabilis (Dog Tick),Adult,5
+2024-04-03,Mianus River Gorge,MRG-1-Fen-2,MRG-1-Fen-2-A,Ixodes scapularis (Blacklegged),Nymph,5
+2024-04-09,Mianus River Gorge,MRG-2-Unf-2,MRG-2-Unf-2-E,Ixodes scapularis (Blacklegged),Nymph,3
+2024-04-11,Mianus River Gorge,MRG-2-Fen-4,MRG-2-Fen-4-D,Ixodes scapularis (Blacklegged),Adult,8
+2024-04-13,Mianus River Gorge,MRG-2-Fen-1,MRG-2-Fen-1-G,Amblyomma americanum (Lone Star),Nymph,3
+2024-04-24,Mianus River Gorge,MRG-1-Unf-0,MRG-1-Unf-0-F,Ixodes scapularis (Blacklegged),Nymph,11
+2024-04-27,Mianus River Gorge,MRG-2-Fen-4,MRG-2-Fen-4-E,Dermacentmaus variabilis (Dog Tick),Nymph,3
+2024-05-02,Mianus River Gorge,MRG-2-Unf-2,MRG-2-Unf-2-H,Ixodes scapularis (Blacklegged),Adult,2
+2024-05-08,Mianus River Gorge,MRG-2-Unf-0,MRG-2-Unf-0-A,Ixodes scapularis (Blacklegged),Nymph,8
+2024-05-13,Mianus River Gorge,MRG-2-Fen-2,MRG-2-Fen-2-F,Amblyomma americanum (Lone Star),Adult,5
+2024-05-25,Mianus River Gorge,MRG-1-Fen-3,MRG-1-Fen-3-A,Ixodes scapularis (Blacklegged),Nymph,3
+2024-05-31,Mianus River Gorge,MRG-1-Unf-3,MRG-1-Unf-3-C,Amblyomma americanum (Lone Star),Nymph,7
+2024-06-02,Mianus River Gorge,MRG-2-Fen-3,MRG-2-Fen-3-E,Dermacentmaus variabilis (Dog Tick),Adult,6
+2024-06-15,Mianus River Gorge,MRG-1-Unf-3,MRG-1-Unf-3-C,Dermacentmaus variabilis (Dog Tick),Adult,2
+2024-06-30,Mianus River Gorge,MRG-2-Fen-0,MRG-2-Fen-0-D,Amblyomma americanum (Lone Star),Adult,5
+2024-07-07,Mianus River Gorge,MRG-2-Fen-1,MRG-2-Fen-1-D,Amblyomma americanum (Lone Star),Adult,4
+2024-07-09,Mianus River Gorge,MRG-2-Unf-2,MRG-2-Unf-2-G,Dermacentmaus variabilis (Dog Tick),Nymph,9
+2024-07-12,Mianus River Gorge,MRG-2-Fen-0,MRG-2-Fen-0-H,Dermacentmaus variabilis (Dog Tick),Nymph,3
+2024-07-18,Mianus River Gorge,MRG-2-Unf-0,MRG-2-Unf-0-E,Ixodes scapularis (Blacklegged),Nymph,8
+2024-07-24,Mianus River Gorge,MRG-1-Unf-0,MRG-1-Unf-0-B,Ixodes scapularis (Blacklegged),Adult,7
+2024-08-03,Mianus River Gorge,MRG-2-Unf-4,MRG-2-Unf-4-A,Dermacentmaus variabilis (Dog Tick),Nymph,8
+2024-08-05,Mianus River Gorge,MRG-1-Unf-4,MRG-1-Unf-4-F,Ixodes scapularis (Blacklegged),Nymph,3
+2024-08-18,Mianus River Gorge,MRG-1-Unf-4,MRG-1-Unf-4-F,Amblyomma americanum (Lone Star),Nymph,6
+2024-08-26,Mianus River Gorge,MRG-2-Fen-2,MRG-2-Fen-2-C,Ixodes scapularis (Blacklegged),Adult,11
+2024-08-29,Mianus River Gorge,MRG-1-Unf-2,MRG-1-Unf-2-B,Ixodes scapularis (Blacklegged),Nymph,1
+2024-08-29,Mohonk Preserve,Undercliff Rd,Undercliff Rd,Amblyomma americanum (Lone Star),Adult,5
+2024-09-07,Mianus River Gorge,MRG-1-Unf-4,MRG-1-Unf-4-B,Ixodes scapularis (Blacklegged),Nymph,4
+2024-09-08,Mianus River Gorge,MRG-2-Unf-1,MRG-2-Unf-1-B,Ixodes scapularis (Blacklegged),Adult,7
+2024-09-10,Mianus River Gorge,MRG-2-Fen-3,MRG-2-Fen-3-C,Ixodes scapularis (Blacklegged),Nymph,12
+2024-09-17,Mianus River Gorge,MRG-2-Unf-1,MRG-2-Unf-1-D,Amblyomma americanum (Lone Star),Adult,4
+2024-09-20,Mianus River Gorge,MRG-1-Unf-4,MRG-1-Unf-4-F,Ixodes scapularis (Blacklegged),Nymph,6
+2024-09-21,Mianus River Gorge,MRG-1-Unf-4,MRG-1-Unf-4-C,Amblyomma americanum (Lone Star),Nymph,12
+2024-09-27,Mianus River Gorge,MRG-1-Fen-2,MRG-1-Fen-2-C,Ixodes scapularis (Blacklegged),Nymph,9
