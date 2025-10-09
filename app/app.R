@@ -109,7 +109,9 @@ ui <- shiny::fluidPage(
           shiny::tags$li(shiny::strong("Dog Tick"), " (", shiny::em("Dermacentor variabilis"), "): Vector of Rocky Mountain spotted fever")
         ),
         shiny::h4("Using This Application", class = "text-lg font-semibold mt-4 mb-2 text-gray-700"),
-        shiny::p("Navigate between site tabs to explore interactive maps, data tables, and visualizations. Maps display tick abundance by location with color-coded markers. Click on table rows to highlight specific locations on the map. Download buttons allow you to export filtered data for further analysis.")
+        shiny::p("Navigate between site tabs to explore interactive maps, data tables, and visualizations. Maps display tick abundance by location with color-coded markers. Click on table rows to highlight specific locations on the map. Download buttons allow you to export filtered data for further analysis."),
+        shiny::h4("Contact", class = "text-lg font-semibold mt-4 mb-2 text-gray-700"),
+        shiny::p(shiny::HTML('For more information about this project, please contact: <a href="mailto:nichargregory1@gmail.com" style="color: #3B82F6;">nichargregory1@gmail.com</a>'))
       )
     )
   )

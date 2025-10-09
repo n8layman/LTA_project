@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - dev
   workflow_dispatch:
 
 jobs:
@@ -44,7 +45,7 @@ jobs:
       # Installing packages using the default source type (required for Linux/rocker images).
       - name: Install required R packages
         run: |
-          R -e "install.packages(c('leaflet.providers', 'leaflet.extras', 'shinylive'), repos = 'https://cloud.r-project.org/')"
+          R -e "install.packages(c('leaflet.providers', 'shinylive'), repos = 'https://cloud.r-project.org/')"
 
       - name: Export to shinylive with giscus
         run: |
