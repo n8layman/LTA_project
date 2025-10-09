@@ -34,13 +34,13 @@ transects_data <- load_geojson(TRANSECTS_FILE_PATH)
 trails_data <- load_geojson(TRAILS_FILE_PATH)
 
 # --- Load Tick Data ---
-tick_data <- load_tick_data("tick_data_new.csv") %>%
-  arrange(Date, SiteName, Transect)
+tick_data <- load_tick_data("tick_data_processed.csv") %>%
+  arrange(SiteName, Transect, Segment)
 
 # Mohonk exclosures data
 mohonk_exclosures <- read.csv("mohonk_exclosures.csv", stringsAsFactors = FALSE)
 
-# Date range
+# Date range (optional - will be NA if no dates in data)
 date_range <- get_date_range(tick_data)
 min_date <- date_range[1]
 max_date <- date_range[2]
@@ -152,9 +152,9 @@ server <- function(input, output, session) {
       ) %>%
       ungroup()
     
-    icons_list <- lapply(exclosures_with_labels$marker_color, function(color) {
+    icons_list <- unname(lapply(exclosures_with_labels$marker_color, function(color) {
       awesomeIcons(icon = 'map-pin', iconColor = 'white', library = 'fa', markerColor = color)
-    })
+    }))
     
     leaflet() %>%
       addProviderTiles(providers$OpenTopoMap, group = "Topographic") %>%
@@ -226,28 +226,35 @@ server <- function(input, output, session) {
         segm_code <- segment_data$SegmCode
         line_color <- segment_data$line_color
         
-        # Extract Transect/Line/Segment info
-        transect_id <- sub("MRG-(\\d+)-.*", "\\1", segm_code)
-        line_code <- sub("-[A-Z]$", "", segm_code)
-        type_id <- sub("MRG-\\d+-([A-Za-z]+)-.*", "\\1", segm_code)
-        line_num <- sub("MRG-\\d+-[A-Za-z]+-(\\d+)-[A-Z]$", "\\1", segm_code)
-        
-        t_adult <- get_count(transect_summary %>% filter(Transect == transect_id), "Adult")
-        t_nymph <- get_count(transect_summary %>% filter(Transect == transect_id), "Nymph")
+        # Extract hierarchy info from SegmCode
+        # SegmCode format: MRG-1-Unf-2-B
+        # where: 1=Pair, Unf=Treatment, 2=Line number, B=Segment
+        # New hierarchy: Transect = Pair + Treatment, Line = Number, Segment = Letter
+        pair_num <- sub("MRG-(\\d+)-.*", "\\1", segm_code)  # 1
+        treatm_type <- sub("MRG-\\d+-([A-Za-z]+)-.*", "\\1", segm_code)  # Unf or Fen
+        line_num <- sub("MRG-\\d+-[A-Za-z]+-(\\d+)-[A-Z]$", "\\1", segm_code)  # 2
+
+        # Build codes for lookups
+        transect_code <- paste(pair_num, treatm_type, sep = "-")  # "1-Unf"
+        line_code <- paste(pair_num, treatm_type, line_num, sep = "-")  # "1-Unf-2"
+
+        # Get counts for each level
+        t_adult <- get_count(transect_summary %>% filter(Transect_Code == transect_code), "Adult")
+        t_nymph <- get_count(transect_summary %>% filter(Transect_Code == transect_code), "Nymph")
         t_total <- t_adult + t_nymph
-        
+
         l_adult <- get_count(line_summary %>% filter(Line_Code == line_code), "Adult")
         l_nymph <- get_count(line_summary %>% filter(Line_Code == line_code), "Nymph")
         l_total <- l_adult + l_nymph
-        
+
         s_adult <- segment_data$Adult_Count
         s_nymph <- segment_data$Nymph_Count
         s_total <- segment_data$Total_Ticks
-        
+
         tooltip_content <- create_tick_tooltip(
           title = segm_code,
-          create_table_row(paste("Transect", transect_id), t_adult, t_nymph, t_total),
-          create_table_row(paste("Line", line_num, " (", type_id, ")", sep=""), l_adult, l_nymph, l_total, bgcolor = "#f9fafb"),
+          create_table_row(paste("Transect (Pair", pair_num, treatm_type, ")", sep = " "), t_adult, t_nymph, t_total),
+          create_table_row(paste("Line", line_num), l_adult, l_nymph, l_total, bgcolor = "#f9fafb"),
           create_table_row("Segment", s_adult, s_nymph, s_total)
         )
         

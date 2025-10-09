@@ -1,0 +1,389 @@
+LT_Site,Code,Site_location,Pair,Fence/Unf,Transect #,Segment,SqMSampled,TickCount,All_BL_Ticks,BL_Adults,BL_Nymphs,BL_Larva,All_Dg_Ticks,Dg_Adults,Dg_Nymphs,Dg_Larva,All_ALH_Ticks,ALH_Adults,ALH_Nymphs,ALH_Larva,Collectors,Iders,Temp,RH,DampDry,CloudCover,Canopy cover
+MRG,120a,MRG1,1,Unf,0,a,9.00,0,0,0,0,0,0,0,0,0,0,0,0,0,Rachel/Jean-Luc,,68,87%,Damp,100%,
+MRG,120b,MRG1,1,Unf,0,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,120c,MRG1,1,Unf,0,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,120d,MRG1,1,Unf,0,d,8.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,120e,MRG1,1,Unf,0,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,120f,MRG1,1,Unf,0,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,121a,MRG1,1,Unf,1,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,Cliff/Lanier,,,,,,
+MRG,121b,MRG1,1,Unf,1,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,121c,MRG1,1,Unf,1,c,10.00,1,1,0,1,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,121d,MRG1,1,Unf,1,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,121e,MRG1,1,Unf,1,e,8.66,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,121f,MRG1,1,Unf,1,f,10.00,1,1,0,1,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,122a,MRG1,1,Unf,2,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,Rachel/Jean-Luc,,,,,,
+MRG,122b,MRG1,1,Unf,2,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,122c,MRG1,1,Unf,2,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,122d,MRG1,1,Unf,2,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,122e,MRG1,1,Unf,2,e,9.00,1,1,0,1,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,122f,MRG1,1,Unf,2,f,10.00,1,1,0,0,1,0,0,0,0,0,0,0,0,,,,,,,
+MRG,123a,MRG1,1,Unf,3,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,Cliff/Lanier,,,,,,
+MRG,123b,MRG1,1,Unf,3,b,10.00,1,1,0,1,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,123c,MRG1,1,Unf,3,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,123d,MRG1,1,Unf,3,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,123e,MRG1,1,Unf,3,e,9.67,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,123f,MRG1,1,Unf,3,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,124a,MRG1,1,Unf,4,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,Rachel/Jean-Luc,,,,,,
+MRG,124b,MRG1,1,Unf,4,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,124c,MRG1,1,Unf,4,c,10.00,1,1,0,1,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,124d,MRG1,1,Unf,4,d,10.00,1,1,0,1,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,124e,MRG1,1,Unf,4,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,124f,MRG1,1,Unf,4,f,9.00,0,0,0,0,0,0,0,0,0,0,0,0,0,Emily/Tina,,,,,,
+MRG,120a,MRG1,1,Fence,0,a,9.50,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,120b,MRG1,1,Fence,0,b,6.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,120c,MRG1,1,Fence,0,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,120d,MRG1,1,Fence,0,d,8.50,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,120e,MRG1,1,Fence,0,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,124a,MRG1,1,Fence,4,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,Emily/Tina,,,,,,
+MRG,124b,MRG1,1,Fence,4,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,124c,MRG1,1,Fence,4,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,124d,MRG1,1,Fence,4,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,Cliff/Lanier,,,,,,
+MRG,124e,MRG1,1,Fence,4,e,10.00,1,1,0,1,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,124f,MRG1,1,Fence,4,f,10.00,1,1,0,1,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,220a,MRG1,2,Fence,0,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,220b,MRG1,2,Fence,0,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,220c,MRG1,2,Fence,0,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,220d,MRG1,2,Fence,0,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,220e,MRG1,2,Fence,0,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,220f,MRG1,2,Fence,0,f,9.67,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,220g,MRG1,2,Fence,0,g,9.67,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,220h,MRG1,2,Fence,0,h,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,221a,MRG1,2,Fence,1,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,Emily/Charlotte,,,,,,
+MRG,221b,MRG1,2,Fence,1,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,221c,MRG1,2,Fence,1,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,221d,MRG1,2,Fence,1,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,221e,MRG1,2,Fence,1,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,221f,MRG1,2,Fence,1,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,221g,MRG1,2,Fence,1,g,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,221h,MRG1,2,Fence,1,h,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,222a,MRG1,2,Fence,2,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,Rachel/Jean-Luc,,,,,,
+MRG,222b,MRG1,2,Fence,2,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,222c,MRG1,2,Fence,2,c,0.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,222d,MRG1,2,Fence,2,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,222e,MRG1,2,Fence,2,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,222f,MRG1,2,Fence,2,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,222g,MRG1,2,Fence,2,g,10.00,1,1,0,1,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,222h,MRG1,2,Fence,2,h,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,220a,MRG1,2,Unf,0,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,Cliff/Lanier,,,,,,
+MRG,220b,MRG1,2,Unf,0,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,220c,MRG1,2,Unf,0,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,220d,MRG1,2,Unf,0,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,220e,MRG1,2,Unf,0,e,0.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,220f,MRG1,2,Unf,0,f,7.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,220g,MRG1,2,Unf,0,g,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,220h,MRG1,2,Unf,0,h,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,221a,MRG1,2,Unf,1,a,9.00,0,0,0,0,0,0,0,0,0,0,0,0,0,Emily/Charlotte,,,,,,
+MRG,221b,MRG1,2,Unf,1,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,221c,MRG1,2,Unf,1,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,221d,MRG1,2,Unf,1,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,221e,MRG1,2,Unf,1,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,221f,MRG1,2,Unf,1,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,221g,MRG1,2,Unf,1,g,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,221h,MRG1,2,Unf,1,h,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,223a,MRG1,2,Unf,3,a,7.00,0,0,0,0,0,0,0,0,0,0,0,0,0,Rachel/Jean-Luc,,,,,,
+MRG,223b,MRG1,2,Unf,3,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,223c,MRG1,2,Unf,3,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,223d,MRG1,2,Unf,3,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,223e,MRG1,2,Unf,3,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,223f,MRG1,2,Unf,3,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,223g,MRG1,2,Unf,3,g,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,223h,MRG1,2,Unf,3,h,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,321a,MRG1,3,Trailside,1,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,Cliff/Lanier,,,,,,
+MRG,321b,MRG1,3,Trailside,1,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,321c,MRG1,3,Trailside,1,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,321d,MRG1,3,Trailside,1,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,321e,MRG1,3,Trailside,1,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,321f,MRG1,3,Trailside,1,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,321g,MRG1,3,Trailside,1,g,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,321h,MRG1,3,Trailside,1,h,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,322a,MRG1,3,Trailside,2,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,Emily/Charlotte,,,,,,
+MRG,322b,MRG1,3,Trailside,2,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,322c,MRG1,3,Trailside,2,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,322d,MRG1,3,Trailside,2,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,322e,MRG1,3,Trailside,2,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,322f,MRG1,3,Trailside,2,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,322g,MRG1,3,Trailside,2,g,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,322h,MRG1,3,Trailside,2,h,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,323a,MRG1,3,Trailside,3,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,Rachel/Jean-Luc,,,,,,
+MRG,323b,MRG1,3,Trailside,3,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,323c,MRG1,3,Trailside,3,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,323d,MRG1,3,Trailside,3,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,323e,MRG1,3,Trailside,3,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,323f,MRG1,3,Trailside,3,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,323g,MRG1,3,Trailside,3,g,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,323h,MRG1,3,Trailside,3,h,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,121a,MRG1,1,Fence,1,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,Chris/Charlotte,,,,,,
+MRG,121b,MRG1,1,Fence,1,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,121c,MRG1,1,Fence,1,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,121d,MRG1,1,Fence,1,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,121e,MRG1,1,Fence,1,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,121f,MRG1,1,Fence,1,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,122a,MRG1,1,Fence,2,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,Chris/Charlotte,,,,,,
+MRG,122b,MRG1,1,Fence,2,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,122c,MRG1,1,Fence,2,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,122d,MRG1,1,Fence,2,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,122e,MRG1,1,Fence,2,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,122f,MRG1,1,Fence,2,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,123a,MRG1,1,Fence,3,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,Chris/Charlotte,,,,,,
+MRG,123b,MRG1,1,Fence,3,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,123c,MRG1,1,Fence,3,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,123d,MRG1,1,Fence,3,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,123e,MRG1,1,Fence,3,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,123f,MRG1,1,Fence,3,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,223a,MRG1,2,Fence,3,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,Chris/Nichar,,,,,,
+MRG,223b,MRG1,2,Fence,3,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,223c,MRG1,2,Fence,3,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,223d,MRG1,2,Fence,3,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,223e,MRG1,2,Fence,3,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,223f,MRG1,2,Fence,3,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,223g,MRG1,2,Fence,3,g,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,223h,MRG1,2,Fence,3,h,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,222a,MRG1,2,Unf,2,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,Chris/Nichar,,,,,,
+MRG,222b,MRG1,2,Unf,2,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,222c,MRG1,2,Unf,2,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,222d,MRG1,2,Unf,2,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,222e,MRG1,2,Unf,2,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,222f,MRG1,2,Unf,2,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,222g,MRG1,2,Unf,2,g,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,222h,MRG1,2,Unf,2,h,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,320a,MRG1,3,Trailside,0,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,Chris/Nichar,,,,,,
+MRG,320b,MRG1,3,Trailside,0,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,320c,MRG1,3,Trailside,0,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,320d,MRG1,3,Trailside,0,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,320e,MRG1,3,Trailside,0,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,320f,MRG1,3,Trailside,0,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,320g,MRG1,3,Trailside,0,g,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,320h,MRG1,3,Trailside,0,h,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,22Body,MRG1,2,Body Ticks,,,,2,1,0,1,0,1,1,0,0,0,0,0,0,,,,,,,
+MRG,120a,MRG2,1,Unf,0,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,120b,MRG2,1,Unf,0,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,120c,MRG2,1,Unf,0,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,120d,MRG2,1,Unf,0,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,120e,MRG2,1,Unf,0,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,120f,MRG2,1,Unf,0,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,121a,MRG2,1,Unf,1,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,121b,MRG2,1,Unf,1,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,121c,MRG2,1,Unf,1,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,121d,MRG2,1,Unf,1,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,121e,MRG2,1,Unf,1,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,121f,MRG2,1,Unf,1,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,122a,MRG2,1,Unf,2,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,122b,MRG2,1,Unf,2,b,10.00,2,2,0,2,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,122c,MRG2,1,Unf,2,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,122d,MRG2,1,Unf,2,d,10.00,1,1,0,1,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,122e,MRG2,1,Unf,2,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,122f,MRG2,1,Unf,2,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,123a,MRG2,1,Unf,3,a,10.00,1,1,0,1,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,123b,MRG2,1,Unf,3,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,123c,MRG2,1,Unf,3,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,123d,MRG2,1,Unf,3,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,123e,MRG2,1,Unf,3,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,123f,MRG2,1,Unf,3,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,124a,MRG2,1,Unf,4,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,124b,MRG2,1,Unf,4,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,124c,MRG2,1,Unf,4,c,10.00,1,1,0,1,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,124d,MRG2,1,Unf,4,d,10.00,1,1,0,1,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,124e,MRG2,1,Unf,4,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,124f,MRG2,1,Unf,4,f,10.00,1,1,0,1,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,110a,MRG2,1,Fence,0,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,110b,MRG2,1,Fence,0,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,110c,MRG2,1,Fence,0,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,110d,MRG2,1,Fence,0,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,110e,MRG2,1,Fence,0,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,110f,MRG2,1,Fence,0,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,111a,MRG2,1,Fence,1,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,111b,MRG2,1,Fence,1,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,111c,MRG2,1,Fence,1,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,111d,MRG2,1,Fence,1,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,111e,MRG2,1,Fence,1,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,111f,MRG2,1,Fence,1,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,112a,MRG2,1,Fence,2,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,112b,MRG2,1,Fence,2,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,112c,MRG2,1,Fence,2,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,112d,MRG2,1,Fence,2,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,112e,MRG2,1,Fence,2,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,112f,MRG2,1,Fence,2,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,113a,MRG2,1,Fence,3,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,113b,MRG2,1,Fence,3,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,113c,MRG2,1,Fence,3,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,113d,MRG2,1,Fence,3,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,113e,MRG2,1,Fence,3,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,113f,MRG2,1,Fence,3,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,114a,MRG2,1,Fence,4,a,10.00,1,1,0,1,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,114b,MRG2,1,Fence,4,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,114c,MRG2,1,Fence,4,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,114d,MRG2,1,Fence,4,d,10.00,1,1,0,1,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,114e,MRG2,1,Fence,4,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,114f,MRG2,1,Fence,4,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,212a,MRG2,2,Fence,2,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,212b,MRG2,2,Fence,2,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,212c,MRG2,2,Fence,2,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,212d,MRG2,2,Fence,2,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,212e,MRG2,2,Fence,2,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,212f,MRG2,2,Fence,2,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,212g,MRG2,2,Fence,2,g,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,212h,MRG2,2,Fence,2,h,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,220a,MRG2,2,Unf,0,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,220b,MRG2,2,Unf,0,b,10.00,1,1,0,1,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,220c,MRG2,2,Unf,0,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,220d,MRG2,2,Unf,0,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,220e,MRG2,2,Unf,0,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,220f,MRG2,2,Unf,0,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,220g,MRG2,2,Unf,0,g,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,220h,MRG2,2,Unf,0,h,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,222a,MRG2,2,Unf,2,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,222b,MRG2,2,Unf,2,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,222c,MRG2,2,Unf,2,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,222d,MRG2,2,Unf,2,d,10.00,2,2,0,2,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,222e,MRG2,2,Unf,2,e,10.00,1,1,0,1,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,222f,MRG2,2,Unf,2,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,222g,MRG2,2,Unf,2,g,10.00,1,1,0,1,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,222h,MRG2,2,Unf,2,h,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,FR3Na,MRG2,FR3,Trailside,N,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,FR3Nb,MRG2,FR3,Trailside,N,b,10.00,1,1,0,1,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,FR3Nc,MRG2,FR3,Trailside,N,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,FR3Nd,MRG2,FR3,Trailside,N,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,FR3Ne,MRG2,FR3,Trailside,N,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,FR3Nf,MRG2,FR3,Trailside,N,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,FR3Ng,MRG2,FR3,Trailside,N,g,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,FR3Nh,MRG2,FR3,Trailside,N,h,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,210a,MRG2,2,Fence,0,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,210b,MRG2,2,Fence,0,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,210c,MRG2,2,Fence,0,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,210d,MRG2,2,Fence,0,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,210e,MRG2,2,Fence,0,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,210f,MRG2,2,Fence,0,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,210g,MRG2,2,Fence,0,g,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,210h,MRG2,2,Fence,0,h,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,211h,MRG2,2,Fence,1,h,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,211g,MRG2,2,Fence,1,g,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,211f,MRG2,2,Fence,1,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,211e,MRG2,2,Fence,1,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,211d,MRG2,2,Fence,1,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,211c,MRG2,2,Fence,1,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,211b,MRG2,2,Fence,1,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,211a,MRG2,2,Fence,1,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,321a,MRG2,3,Unf,1,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,321b,MRG2,3,Unf,1,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,321c,MRG2,3,Unf,1,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,321d,MRG2,3,Unf,1,d,10.00,1,1,0,1,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,321e,MRG2,3,Unf,1,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,321f,MRG2,3,Unf,1,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,321g,MRG2,3,Unf,1,g,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,321h,MRG2,3,Unf,1,h,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,322a,MRG2,3,Unf,2,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,322b,MRG2,3,Unf,2,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,322c,MRG2,3,Unf,2,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,322d,MRG2,3,Unf,2,d,10.00,1,1,0,1,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,322e,MRG2,3,Unf,2,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,322f,MRG2,3,Unf,2,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,322g,MRG2,3,Unf,2,g,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,322h,MRG2,3,Unf,2,h,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,221a,MRG2,2,Unf,1,a,10.00,1,1,0,1,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,221b,MRG2,2,Unf,1,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,221c,MRG2,2,Unf,1,c,10.00,2,2,0,2,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,221d,MRG2,2,Unf,1,d,10.00,1,1,0,1,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,221e,MRG2,2,Unf,1,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,221f,MRG2,2,Unf,1,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,221g,MRG2,2,Unf,1,g,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,221h,MRG2,2,Unf,1,h,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,223h,MRG2,2,Unf,3,h,10.00,3,3,0,3,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,223g,MRG2,2,Unf,3,g,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,223f,MRG2,2,Unf,3,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,223e,MRG2,2,Unf,3,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,223d,MRG2,2,Unf,3,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,223c,MRG2,2,Unf,3,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,223b,MRG2,2,Unf,3,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,223a,MRG2,2,Unf,3,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,FR3Sa,MRG2,FR3,Trailside,S,a,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,FR3Sb,MRG2,FR3,Trailside,S,b,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,FR3Sc,MRG2,FR3,Trailside,S,c,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,FR3Sd,MRG2,FR3,Trailside,S,d,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,FR3Se,MRG2,FR3,Trailside,S,e,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,FR3Sf,MRG2,FR3,Trailside,S,f,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,FR3Sg,MRG2,FR3,Trailside,S,g,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MRG,FR3Sh,MRG2,FR3,Trailside,S,h,10.00,0,0,0,0,0,0,0,0,0,0,0,0,0,,,,,,,
+MOH,3-1-A,Spring Farm (Site 3),,Unf,A,1,,2,2,0,2,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,75
+MOH,3-1-B,Spring Farm (Site 3),,Unf,B,1,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,75
+MOH,3-1-C,Spring Farm (Site 3),,Unf,C,1,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,75
+MOH,3-1-D,Spring Farm (Site 3),,Unf,D,1,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,75
+MOH,3-1-E,Spring Farm (Site 3),,Unf,E,1,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,75
+MOH,3-1-F,Spring Farm (Site 3),,Unf,F,1,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,75
+MOH,3-1-G,Spring Farm (Site 3),,Unf,G,1,,1,1,0,1,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,75
+MOH,3-1-H,Spring Farm (Site 3),,Unf,H,1,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,75
+MOH,3-1-I,Spring Farm (Site 3),,Unf,I,1,,1,1,0,1,?,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,75
+MOH,3-1-J,Spring Farm (Site 3),,Unf,J,1,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,75
+MOH,3-1-ext1,Spring Farm (Site 3),,Unf,ext1,1,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,75
+MOH,3-1-ext2,Spring Farm (Site 3),,Unf,ext2,1,,1,1,0,1,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,75
+MOH,3-2-A,Spring Farm (Site 3),,Fen,A,2,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,75
+MOH,3-2-B,Spring Farm (Site 3),,Fen,B,2,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,75
+MOH,3-2-C,Spring Farm (Site 3),,Fen,C,2,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,75
+MOH,3-2-D,Spring Farm (Site 3),,Fen,D,2,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,75
+MOH,3-2-E,Spring Farm (Site 3),,Fen,E,2,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,75
+MOH,3-2-F,Spring Farm (Site 3),,Fen,F,2,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,75
+MOH,3-2-G,Spring Farm (Site 3),,Fen,G,2,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,75
+MOH,3-2-H,Spring Farm (Site 3),,Fen,H,2,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,75
+MOH,3-2-I,Spring Farm (Site 3),,Fen,I,2,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,75
+MOH,3-2-J,Spring Farm (Site 3),,Fen,J,2,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,75
+MOH,3-3-A,Spring Farm (Site 3),,Roadside,A,3,,1,1,0,1,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,65
+MOH,3-3-B,Spring Farm (Site 3),,Roadside,B,3,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,65
+MOH,3-3-C,Spring Farm (Site 3),,Roadside,C,3,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,65
+MOH,3-3-D,Spring Farm (Site 3),,Roadside,D,3,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,65
+MOH,3-3-E,Spring Farm (Site 3),,Roadside,E,3,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,65
+MOH,3-3-F,Spring Farm (Site 3),,Roadside,F,3,,1,1,0,1,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,65
+MOH,3-3-G,Spring Farm (Site 3),,Roadside,G,3,,1,1,0,1,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,65
+MOH,3-3-H,Spring Farm (Site 3),,Roadside,H,3,,1,1,0,1,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,65
+MOH,3-3-I,Spring Farm (Site 3),,Roadside,I,3,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,65
+MOH,3-3-J,Spring Farm (Site 3),,Roadside,J,3,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,65
+MOH,3-4-A,Spring Farm (Site 3),,Roadside,A,4,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,65
+MOH,3-4-B,Spring Farm (Site 3),,Roadside,B,4,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,65
+MOH,3-4-C,Spring Farm (Site 3),,Roadside,C,4,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,65
+MOH,3-4-D,Spring Farm (Site 3),,Roadside,D,4,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,65
+MOH,3-4-E,Spring Farm (Site 3),,Roadside,E,4,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,65
+MOH,3-4-F,Spring Farm (Site 3),,Roadside,F,4,,1,1,0,1,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,65
+MOH,3-4-G,Spring Farm (Site 3),,Roadside,G,4,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,65
+MOH,3-4-H,Spring Farm (Site 3),,Roadside,H,4,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,65
+MOH,3-4-I,Spring Farm (Site 3),,Roadside,I,4,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,65
+MOH,3-4-J,Spring Farm (Site 3),,Roadside,J,4,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,66,74,Damp,100,65
+MOH,4-1-A,Canaan Road (Site 4),,Unf,A,1,,2,2,0,2,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,100,75
+MOH,4-1-B,Canaan Road (Site 4),,Unf,B,1,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,100,75
+MOH,4-1-C,Canaan Road (Site 4),,Unf,C,1,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,100,75
+MOH,4-1-D,Canaan Road (Site 4),,Unf,D,1,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,100,75
+MOH,4-1-E,Canaan Road (Site 4),,Unf,E,1,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,100,75
+MOH,4-1-F,Canaan Road (Site 4),,Unf,F,1,,1,1,0,1,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,100,75
+MOH,4-1-G,Canaan Road (Site 4),,Unf,G,1,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,100,75
+MOH,4-1-H,Canaan Road (Site 4),,Unf,H,1,,1,1,0,1,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,100,75
+MOH,4-1-I,Canaan Road (Site 4),,Unf,I,1,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,100,75
+MOH,4-1-J,Canaan Road (Site 4),,Unf,J,1,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,100,75
+MOH,4-1-ext1,Canaan Road (Site 4),,Unf,ext1,1,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,100,75
+MOH,4-1-ext2,Canaan Road (Site 4),,Unf,ext2,1,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,100,75
+MOH,4-2-A,Canaan Road (Site 4),,Fen,A,2,,1,1,0,1,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,100,75
+MOH,4-2-B,Canaan Road (Site 4),,Fen,B,2,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,100,75
+MOH,4-2-C,Canaan Road (Site 4),,Fen,C,2,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,100,75
+MOH,4-2-D,Canaan Road (Site 4),,Fen,D,2,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,100,75
+MOH,4-2-E,Canaan Road (Site 4),,Fen,E,2,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,100,75
+MOH,4-2-F,Canaan Road (Site 4),,Fen,F,2,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,100,75
+MOH,4-2-G,Canaan Road (Site 4),,Fen,G,2,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,100,75
+MOH,4-2-H,Canaan Road (Site 4),,Fen,H,2,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,100,75
+MOH,4-2-I,Canaan Road (Site 4),,Fen,I,2,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,100,75
+MOH,4-2-J,Canaan Road (Site 4),,Fen,J,2,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,100,75
+MOH,4-3-A,Canaan Road (Site 4),,Roadside,A,3,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,101,25
+MOH,4-3-B,Canaan Road (Site 4),,Roadside,B,3,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,102,25
+MOH,4-3-C,Canaan Road (Site 4),,Roadside,C,3,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,103,25
+MOH,4-3-D,Canaan Road (Site 4),,Roadside,D,3,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,104,25
+MOH,4-3-E,Canaan Road (Site 4),,Roadside,E,3,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,105,25
+MOH,4-3-F,Canaan Road (Site 4),,Roadside,F,3,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,106,25
+MOH,4-3-G,Canaan Road (Site 4),,Roadside,G,3,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,107,25
+MOH,4-3-H,Canaan Road (Site 4),,Roadside,H,3,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,108,25
+MOH,4-3-I,Canaan Road (Site 4),,Roadside,I,3,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,109,25
+MOH,4-3-J,Canaan Road (Site 4),,Roadside,J,3,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,110,25
+MOH,4-4-A,Canaan Road (Site 4),,Roadside,A,4,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,111,25
+MOH,4-4-B,Canaan Road (Site 4),,Roadside,B,4,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,112,25
+MOH,4-4-C,Canaan Road (Site 4),,Roadside,C,4,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,113,25
+MOH,4-4-D,Canaan Road (Site 4),,Roadside,D,4,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,114,25
+MOH,4-4-E,Canaan Road (Site 4),,Roadside,E,4,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,115,25
+MOH,4-4-F,Canaan Road (Site 4),,Roadside,F,4,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,116,25
+MOH,4-4-G,Canaan Road (Site 4),,Roadside,G,4,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,117,25
+MOH,4-4-H,Canaan Road (Site 4),,Roadside,H,4,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,118,25
+MOH,4-4-I,Canaan Road (Site 4),,Roadside,I,4,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,119,25
+MOH,4-4-J,Canaan Road (Site 4),,Roadside,J,4,,0,0,0,0,0,0,0,0,0,0,0,0,0,"Megan Napoli, Asher Wilkinson, Assorted Volunteers",?,72,62,Damp,120,25

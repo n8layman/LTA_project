@@ -1,6 +1,5 @@
 # ---- helpers.R (Updated for New Schema) ----
 library(dplyr)
-library(lubridate)
 library(ggplot2)
 library(leaflet)
 library(htmltools)
@@ -14,12 +13,12 @@ TICK_COUNT_TOOLTIP_TEMPLATE <- paste(readLines("tick_count_tooltip.html"), colla
 TABLE_ROW_TEMPLATE <- paste(readLines("table_row.html"), collapse = "\n")
 
 # 1. Create table row for tooltip
-create_table_row <- function(level, adults, nimphs, total, bgcolor = "") {
+create_table_row <- function(level, adults, nymphs, total, bgcolor = "") {
   glue(TABLE_ROW_TEMPLATE,
        bgcolor = if (bgcolor != "") glue(' style="background-color: {bgcolor};"') else "",
        level = level,
        adults = adults,
-       nimphs = nimphs,
+       nymphs = nymphs,
        total = total
   )
 }
@@ -39,34 +38,38 @@ load_tick_data <- function(file_path) {
   if (!file.exists(file_path)) {
     warning(paste("Tick data file not found at:", file_path))
     return(data.frame(
-      Date = as.Date(character()),
       SiteName = character(),
       SegmCode = character(),
       Pair = character(),
       Treatm = character(),
       Transect = character(),
       Segment = character(),
+      Species = character(),
       Adults = numeric(),
-      Nimphs = numeric(),
+      Nymphs = numeric(),
+      Larva = numeric(),
       Total = numeric(),
       stringsAsFactors = FALSE
     ))
   }
-  
+
   tick_data <- read.csv(file_path, stringsAsFactors = FALSE)
-  
-  # Convert Date
-  tick_data$Date <- lubridate::ymd(tick_data$Date)
-  
+
   # Trim character columns
   tick_data$SegmCode <- trimws(tick_data$SegmCode)
   tick_data$SiteName <- trimws(tick_data$SiteName)
-  
+  if ("Species" %in% names(tick_data)) {
+    tick_data$Species <- trimws(tick_data$Species)
+  }
+
   # Ensure numeric columns
   tick_data$Adults <- as.numeric(tick_data$Adults)
-  tick_data$Nimphs <- as.numeric(tick_data$Nimphs)
+  tick_data$Nymphs <- as.numeric(tick_data$Nymphs)
   tick_data$Total <- as.numeric(tick_data$Total)
-  
+  if ("Larva" %in% names(tick_data)) {
+    tick_data$Larva <- as.numeric(tick_data$Larva)
+  }
+
   return(tick_data)
 }
 
@@ -107,7 +110,7 @@ summarize_by_transect <- function(data, SiteName) {
     group_by(Transect) %>%
     summarize(
       adults = sum(Adults, na.rm = TRUE),
-      nymphs = sum(Nimphs, na.rm = TRUE),
+      nymphs = sum(Nymphs, na.rm = TRUE),
       total = sum(Total, na.rm = TRUE),
       .groups = "drop"
     )
@@ -120,7 +123,7 @@ get_segment_tick_totals <- function(data) {
     group_by(SegmCode) %>%
     summarize(
       Adult_Count = sum(Adults, na.rm = TRUE),
-      Nymph_Count = sum(Nimphs, na.rm = TRUE),
+      Nymph_Count = sum(Nymphs, na.rm = TRUE),
       Total_Ticks = sum(Total, na.rm = TRUE),
       .groups = "drop"
     )
@@ -129,39 +132,48 @@ get_segment_tick_totals <- function(data) {
 # 8. Hierarchical summaries for Mianus
 summarize_mianus_hierarchical <- function(data) {
   mianus_data <- data %>% filter(SiteName == "Mianus River Gorge")
-  
+
   list(
+    # Transect = Pair + Treatment (e.g., "1-Unf", "1-Fen")
     transect = mianus_data %>%
-      group_by(Transect) %>%
+      mutate(
+        Transect_Code = paste(Pair, Treatm, sep = "-")
+      ) %>%
+      group_by(Transect_Code) %>%
       summarize(
         Adult = sum(Adults, na.rm = TRUE),
-        Nymph = sum(Nimphs, na.rm = TRUE),
+        Nymph = sum(Nymphs, na.rm = TRUE),
         Total = sum(Total, na.rm = TRUE),
         .groups = "drop"
       ),
-    
+
+    # Line = the number within a transect (0, 1, 2, 3, 4)
+    # Line_Code = Pair-Treatment-Number (e.g., "1-Unf-2")
     line = mianus_data %>%
-      group_by(Transect, Treatm, Segment) %>%
+      mutate(
+        Line_Code = paste(Pair, Treatm, Transect, sep = "-")
+      ) %>%
+      group_by(Line_Code) %>%
       summarize(
         Adult = sum(Adults, na.rm = TRUE),
-        Nymph = sum(Nimphs, na.rm = TRUE),
+        Nymph = sum(Nymphs, na.rm = TRUE),
         Total = sum(Total, na.rm = TRUE),
         .groups = "drop"
-      ) %>%
-      mutate(Line_Code = paste0("MRG-", Transect, "-", Treatm, "-", Segment)),
-    
+      ),
+
+    # Segment = individual segment (A, B, C, etc.)
     segment = mianus_data %>%
       group_by(SegmCode) %>%
       summarize(
         Adult = sum(Adults, na.rm = TRUE),
-        Nymph = sum(Nimphs, na.rm = TRUE),
+        Nymph = sum(Nymphs, na.rm = TRUE),
         Total = sum(Total, na.rm = TRUE),
         .groups = "drop"
       )
   )
 }
 
-# 9. Get date range safely
+# 9. Get date range safely (returns NA when no dates available)
 get_date_range <- function(df) {
   if ("Date" %in% names(df) && nrow(df) > 0) {
     c(min(df$Date, na.rm = TRUE), max(df$Date, na.rm = TRUE))
@@ -171,23 +183,31 @@ get_date_range <- function(df) {
 }
 
 # 10. Site summary UI block
-generate_site_summary <- function(data, SiteName, min_date, max_date) {
+generate_site_summary <- function(data, SiteName, min_date = NA, max_date = NA) {
   site_data <- data %>% filter(SiteName == SiteName)
   total_ticks <- sum(site_data$Total, na.rm = TRUE)
   unique_species <- length(unique(site_data$Species))
-  
-  tagList(
+
+  summary_items <- list(
     p(HTML(paste0("<strong>Site:</strong> ", SiteName)), class = "text-gray-600"),
     p(HTML(paste0("<strong>Total Ticks Counted:</strong> ", format(total_ticks, big.mark = ","))), class = "text-gray-600"),
-    p(HTML(paste0("<strong>Unique Species Found:</strong> ", unique_species)), class = "text-gray-600"),
-    p(paste0(
-      "Data collected between ",
-      ifelse(!is.na(min_date), min_date, "N/A"),
-      " and ",
-      ifelse(!is.na(max_date), max_date, "N/A"),
-      "."
-    ), class = "text-sm text-gray-500 mt-2")
+    p(HTML(paste0("<strong>Unique Species Found:</strong> ", unique_species)), class = "text-gray-600")
   )
+
+  # Only add date range if dates are available
+  if (!is.na(min_date) && !is.na(max_date)) {
+    summary_items <- c(summary_items, list(
+      p(paste0(
+        "Data collected between ",
+        min_date,
+        " and ",
+        max_date,
+        "."
+      ), class = "text-sm text-gray-500 mt-2")
+    ))
+  }
+
+  do.call(tagList, summary_items)
 }
 
 # 11. Generate stacked bar plot of tick species by life stage
@@ -196,7 +216,7 @@ generate_species_plot <- function(data, SiteName) {
     filter(SiteName == SiteName) %>%
     select(-Total) %>%   # drop original Total to avoid duplicate columns
     pivot_longer(
-      cols = c(Adults, Nimphs),
+      cols = c(Adults, Nymphs),
       names_to = "Life_Stage",
       values_to = "Count"
     ) %>%
@@ -210,12 +230,12 @@ generate_species_plot <- function(data, SiteName) {
         TRUE ~ Species
       )
     )
-  
+
   ggplot(plot_data, aes(x = Species_Abbrev, y = Total, fill = Life_Stage)) +
     geom_bar(stat = "identity", position = "stack", width = 0.6) +
     scale_fill_manual(
-      values = c("Adult" = "#3B82F6", "Nymph" = "#10B981"),
-      labels = c("Adult", "Nymph")
+      values = c("Adults" = "#3B82F6", "Nymphs" = "#10B981"),
+      labels = c("Adults", "Nymphs")
     ) +
     labs(x = NULL, y = "Count", fill = NULL) +
     theme_minimal() +
