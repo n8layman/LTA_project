@@ -5,6 +5,7 @@
 # Load core packages
 library(dplyr)   # For %>% pipe operator and data manipulation
 library(leaflet) # For mapping - too many functions to use explicit namespacing
+library(munsell) # Necessary to specify as dependency to get ggplot2 to work with shinylive
 
 # Source helper functions
 source("helpers.R")
