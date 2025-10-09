@@ -1,0 +1,80 @@
+/* --- www/styles.css --- */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f7f9fc;
+}
+
+/* --- Base UI Styling --- */
+.tab-content {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0 0.5rem 0.5rem 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+              0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.leaflet-container {
+  border-radius: 0.5rem;
+  box-shadow: none;
+  border: 1px solid #e5e7eb;
+  height: 500px;
+}
+
+.site-summary-panel {
+  height: 500px;
+  padding: 1.5rem;
+  background-color: #f9f9f9;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  margin-left: 1rem;
+}
+
+.data-table-styled-container {
+  background-color: #f9f9f9;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+/* --- Enable Font Awesome inside Leaflet EasyButtons --- */
+.easy-button-button i.fa,
+.easy-button-button i.fas,
+.easy-button-button i.far,
+.easy-button-button i.fab {
+  font-family: 'Font Awesome 6 Free' !important;
+  font-weight: 900 !important;
+  font-size: 18px !important;      /* Icon size */
+  line-height: 36px !important;
+  vertical-align: middle;
+}
+
+/* --- Resize and tighten EasyButton --- */
+.easy-button-button {
+  width: 36px !important;
+  height: 36px !important;
+  line-height: 36px !important;
+  padding: 0 !important;
+  border-radius: 6px !important;
+  font-size: 18px !important;
+  color: #333;
+  transition: all 0.2s ease;
+  background-color: white !important;
+  border: 1px solid #ddd !important;
+}
+
+.easy-button-button:hover {
+  color: #007bff !important;
+  background-color: #f0f0f0 !important;
+}
+
+.easy-button-button.active {
+  color: #fff !important;
+  background-color: #007bff !important;
+  border-color: #007bff !important;
+}
