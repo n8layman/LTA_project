@@ -1,0 +1,2690 @@
+{
+  "type": "FeatureCollection",
+  "name": "mianus_transects",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-0-A",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "0",
+        "Segment": "A"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6198, 41.171],
+          [-73.6197, 41.171]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-0-B",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "0",
+        "Segment": "B"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6197, 41.171],
+          [-73.6195, 41.1709]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-0-C",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "0",
+        "Segment": "C"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6195, 41.1709],
+          [-73.6194, 41.1709]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-0-D",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "0",
+        "Segment": "D"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6194, 41.1709],
+          [-73.6193, 41.1709]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-0-E",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "0",
+        "Segment": "E"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6193, 41.1709],
+          [-73.6192, 41.1709]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-0-F",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "0",
+        "Segment": "F"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6192, 41.1709],
+          [-73.6191, 41.1709]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-1-E",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "1",
+        "Segment": "E"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6193, 41.1708],
+          [-73.6192, 41.1708]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-1-D",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "1",
+        "Segment": "D"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6194, 41.1708],
+          [-73.6193, 41.1708]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-1-A",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "1",
+        "Segment": "A"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6198, 41.1709],
+          [-73.6197, 41.1709]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-1-C",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "1",
+        "Segment": "C"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6195, 41.1709],
+          [-73.6194, 41.1708]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-1-B",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "1",
+        "Segment": "B"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6197, 41.1709],
+          [-73.6195, 41.1709]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-1-F",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "1",
+        "Segment": "F"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6192, 41.1708],
+          [-73.6191, 41.1708]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-2-B",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "2",
+        "Segment": "B"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6197, 41.1708],
+          [-73.6195, 41.1708]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-2-C",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "2",
+        "Segment": "C"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6195, 41.1708],
+          [-73.6194, 41.1708]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-2-F",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "2",
+        "Segment": "F"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6192, 41.1707],
+          [-73.6191, 41.1707]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-2-A",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "2",
+        "Segment": "A"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6198, 41.1708],
+          [-73.6197, 41.1708]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-2-D",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "2",
+        "Segment": "D"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6194, 41.1708],
+          [-73.6193, 41.1707]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-2-E",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "2",
+        "Segment": "E"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6193, 41.1707],
+          [-73.6192, 41.1707]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-3-D",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "3",
+        "Segment": "D"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6194, 41.1707],
+          [-73.6193, 41.1707]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-3-A",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "3",
+        "Segment": "A"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6198, 41.1707],
+          [-73.6197, 41.1707]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-3-E",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "3",
+        "Segment": "E"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6193, 41.1707],
+          [-73.6192, 41.1707]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-3-F",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "3",
+        "Segment": "F"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6192, 41.1707],
+          [-73.6191, 41.1707]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-3-B",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "3",
+        "Segment": "B"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6197, 41.1707],
+          [-73.6195, 41.1707]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-3-C",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "3",
+        "Segment": "C"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6195, 41.1707],
+          [-73.6194, 41.1707]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-0-F",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "0",
+        "Segment": "F"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6191, 41.171],
+          [-73.619, 41.171]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-0-A",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "0",
+        "Segment": "A"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6197, 41.171],
+          [-73.6196, 41.171]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-0-B",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "0",
+        "Segment": "B"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6196, 41.171],
+          [-73.6195, 41.171]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-0-C",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "0",
+        "Segment": "C"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6195, 41.171],
+          [-73.6194, 41.171]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-0-D",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "0",
+        "Segment": "D"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6194, 41.171],
+          [-73.6193, 41.171]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG- -Fen-0-E",
+        "Site": "MRG",
+        "Treatm": "Fen",
+        "Transect": "0",
+        "Segment": "E"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6193, 41.171],
+          [-73.6191, 41.171]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-1-E",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "1",
+        "Segment": "E"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6192, 41.1711],
+          [-73.6191, 41.1711]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-1-F",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "1",
+        "Segment": "F"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6191, 41.1711],
+          [-73.619, 41.1711]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-2-A",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "2",
+        "Segment": "A"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6197, 41.1712],
+          [-73.6195, 41.1712]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-2-B",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "2",
+        "Segment": "B"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6195, 41.1712],
+          [-73.6194, 41.1712]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-2-C",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "2",
+        "Segment": "C"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6194, 41.1712],
+          [-73.6193, 41.1712]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-2-D",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "2",
+        "Segment": "D"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6193, 41.1712],
+          [-73.6192, 41.1712]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-2-E",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "2",
+        "Segment": "E"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6192, 41.1712],
+          [-73.6191, 41.1712]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-2-F",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "2",
+        "Segment": "F"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6191, 41.1712],
+          [-73.619, 41.1712]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-1-A",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "1",
+        "Segment": "A"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6197, 41.1711],
+          [-73.6196, 41.1711]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-1-B",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "1",
+        "Segment": "B"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6196, 41.1711],
+          [-73.6195, 41.1711]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-1-C",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "1",
+        "Segment": "C"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6195, 41.1711],
+          [-73.6193, 41.1711]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-1-D",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "1",
+        "Segment": "D"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6193, 41.1711],
+          [-73.6192, 41.1711]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-3-B",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "3",
+        "Segment": "B"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6196, 41.1713],
+          [-73.6195, 41.1713]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-4-B",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "4",
+        "Segment": "B"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6197, 41.1706],
+          [-73.6195, 41.1706]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-4-F",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "4",
+        "Segment": "F"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6192, 41.1706],
+          [-73.6191, 41.1706]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-4-C",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "4",
+        "Segment": "C"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6195, 41.1706],
+          [-73.6194, 41.1706]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-4-E",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "4",
+        "Segment": "E"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6193, 41.1706],
+          [-73.6192, 41.1706]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-4-A",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "4",
+        "Segment": "A"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6198, 41.1706],
+          [-73.6197, 41.1706]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Unf-4-D",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Unf",
+        "Transect": "4",
+        "Segment": "D"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6194, 41.1706],
+          [-73.6193, 41.1706]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-3-F",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "3",
+        "Segment": "F"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6191, 41.1713],
+          [-73.619, 41.1713]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-3-A",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "3",
+        "Segment": "A"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6193, 41.1713],
+          [-73.6191, 41.1713]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-3-D",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "3",
+        "Segment": "D"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6194, 41.1713],
+          [-73.6193, 41.1713]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-3-C",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "3",
+        "Segment": "C"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6195, 41.1713],
+          [-73.6194, 41.1713]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-4-A",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "4",
+        "Segment": "A"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6196, 41.1714],
+          [-73.6195, 41.1714]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-4-A",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "4",
+        "Segment": "A"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6194, 41.1714],
+          [-73.6193, 41.1714]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-4-A",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "4",
+        "Segment": "A"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6193, 41.1714],
+          [-73.6192, 41.1714]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-3-A",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "3",
+        "Segment": "A"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6196, 41.1713],
+          [-73.6196, 41.1713]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-4-A",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "4",
+        "Segment": "A"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6195, 41.1714],
+          [-73.6194, 41.1714]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-4-A",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "4",
+        "Segment": "A"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6192, 41.1714],
+          [-73.619, 41.1714]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-1-Fen-4-A",
+        "Site": "MRG",
+        "Pair": "1",
+        "Treatm": "Fen",
+        "Transect": "4",
+        "Segment": "A"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.619, 41.1715],
+          [-73.619, 41.1714]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-0-A",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "0",
+        "Segment": "A"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.62, 41.172],
+          [-73.6201, 41.172]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-0-B",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "0",
+        "Segment": "B"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6201, 41.172],
+          [-73.6202, 41.1719]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-0-C",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "0",
+        "Segment": "C"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6202, 41.1719],
+          [-73.6203, 41.1719]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-0-D",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "0",
+        "Segment": "D"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6203, 41.1719],
+          [-73.6204, 41.1719]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-0-E",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "0",
+        "Segment": "E"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6204, 41.1719],
+          [-73.6206, 41.1719]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-0-E",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "0",
+        "Segment": "E"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6204, 41.1719],
+          [-73.6206, 41.1719]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-0-G",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "0",
+        "Segment": "G"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6207, 41.1719],
+          [-73.6208, 41.1719]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-0-F",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "0",
+        "Segment": "F"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6206, 41.1719],
+          [-73.6207, 41.1719]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-0-H",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "0",
+        "Segment": "H"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6208, 41.1719],
+          [-73.6209, 41.1719]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-1-A",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "1",
+        "Segment": "A"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6199, 41.1721],
+          [-73.6201, 41.172]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-1-B",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "1",
+        "Segment": "B"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6201, 41.172],
+          [-73.6202, 41.172]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-1-C",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "1",
+        "Segment": "C"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6202, 41.172],
+          [-73.6203, 41.172]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-1-D",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "1",
+        "Segment": "D"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6203, 41.172],
+          [-73.6204, 41.172]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-1-E",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "1",
+        "Segment": "E"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6204, 41.172],
+          [-73.6205, 41.172]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-1-F",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "1",
+        "Segment": "F"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6205, 41.172],
+          [-73.6207, 41.172]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-1-G",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "1",
+        "Segment": "G"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6207, 41.172],
+          [-73.6208, 41.172]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-1-H",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "1",
+        "Segment": "H"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6208, 41.172],
+          [-73.6209, 41.172]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-2-A",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "2",
+        "Segment": "A"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6199, 41.1721],
+          [-73.62, 41.1721]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-2-B",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "2",
+        "Segment": "B"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.62, 41.1721],
+          [-73.6202, 41.1721]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-2-C",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "2",
+        "Segment": "C"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6202, 41.1721],
+          [-73.6203, 41.1721]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-2-D",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "2",
+        "Segment": "D"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6203, 41.1721],
+          [-73.6204, 41.1721]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-2-E",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "2",
+        "Segment": "E"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6204, 41.1721],
+          [-73.6205, 41.1721]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-2-F",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "2",
+        "Segment": "F"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6205, 41.1721],
+          [-73.6206, 41.1721]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-2-G",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "2",
+        "Segment": "G"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6206, 41.1721],
+          [-73.6208, 41.1721]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-2-H",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "2",
+        "Segment": "H"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6208, 41.1721],
+          [-73.6209, 41.1721]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-3-A",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "3",
+        "Segment": "A"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6199, 41.1722],
+          [-73.62, 41.1722]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-3-B",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "3",
+        "Segment": "B"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.62, 41.1722],
+          [-73.6202, 41.1722]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-3-C",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "3",
+        "Segment": "C"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6202, 41.1722],
+          [-73.6203, 41.1722]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-3-D",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "3",
+        "Segment": "D"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6203, 41.1722],
+          [-73.6204, 41.1722]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-3-E",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "3",
+        "Segment": "E"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6204, 41.1722],
+          [-73.6205, 41.1722]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-3-F",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "3",
+        "Segment": "F"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6205, 41.1722],
+          [-73.6206, 41.1722]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-3-G",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "3",
+        "Segment": "G"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6206, 41.1722],
+          [-73.6208, 41.1722]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-3-H",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "3",
+        "Segment": "H"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6208, 41.1722],
+          [-73.6209, 41.1721]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-4-B",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "4",
+        "Segment": "B"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.62, 41.1723],
+          [-73.6201, 41.1723]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-4-G",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "4",
+        "Segment": "G"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6206, 41.1723],
+          [-73.6207, 41.1723]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-4-C",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "4",
+        "Segment": "C"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6201, 41.1723],
+          [-73.6203, 41.1723]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-4-E",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "4",
+        "Segment": "E"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6204, 41.1723],
+          [-73.6205, 41.1723]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-4-H",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "4",
+        "Segment": "H"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6207, 41.1723],
+          [-73.6209, 41.1722]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-4-A",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "4",
+        "Segment": "A"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6199, 41.1723],
+          [-73.62, 41.1723]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-4-F",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "4",
+        "Segment": "F"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6205, 41.1723],
+          [-73.6206, 41.1723]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Fen-4-D",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Fen",
+        "Transect": "4",
+        "Segment": "D"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6203, 41.1723],
+          [-73.6204, 41.1723]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-0-A",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "0",
+        "Segment": "A"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.621, 41.1719],
+          [-73.6211, 41.1719]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-0-B",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "0",
+        "Segment": "B"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6211, 41.1719],
+          [-73.6212, 41.1719]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-0-C",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "0",
+        "Segment": "C"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6212, 41.1719],
+          [-73.6213, 41.1719]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-0-D",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "0",
+        "Segment": "D"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6213, 41.1719],
+          [-73.6215, 41.172]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-0-E",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "0",
+        "Segment": "E"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6215, 41.172],
+          [-73.6216, 41.172]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-0-F",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "0",
+        "Segment": "F"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6216, 41.172],
+          [-73.6217, 41.172]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-0-G",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "0",
+        "Segment": "G"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6217, 41.172],
+          [-73.6218, 41.172]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-0-H",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "0",
+        "Segment": "H"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6218, 41.172],
+          [-73.6219, 41.172]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-1-B",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "1",
+        "Segment": "B"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6211, 41.172],
+          [-73.6212, 41.172]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-1-F",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "1",
+        "Segment": "F"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6216, 41.1721],
+          [-73.6217, 41.1721]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-1-E",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "1",
+        "Segment": "E"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6215, 41.172],
+          [-73.6216, 41.1721]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-1-C",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "1",
+        "Segment": "C"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6212, 41.172],
+          [-73.6214, 41.172]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-1-A",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "1",
+        "Segment": "A"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.621, 41.172],
+          [-73.6211, 41.172]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-1-D",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "1",
+        "Segment": "D"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6214, 41.172],
+          [-73.6215, 41.172]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-1-G",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "1",
+        "Segment": "G"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6217, 41.1721],
+          [-73.6218, 41.1721]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-1-H",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "1",
+        "Segment": "H"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6218, 41.1721],
+          [-73.622, 41.1721]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-2-E",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "2",
+        "Segment": "E"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6215, 41.1721],
+          [-73.6216, 41.1722]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-2-D",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "2",
+        "Segment": "D"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6214, 41.1721],
+          [-73.6215, 41.1721]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-2-C",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "2",
+        "Segment": "C"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6212, 41.1721],
+          [-73.6214, 41.1721]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-2-B",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "2",
+        "Segment": "B"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6211, 41.1721],
+          [-73.6212, 41.1721]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-2-F",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "2",
+        "Segment": "F"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6216, 41.1722],
+          [-73.6217, 41.1722]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-2-G",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "2",
+        "Segment": "G"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6217, 41.1722],
+          [-73.6219, 41.1722]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-2-A",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "2",
+        "Segment": "A"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.621, 41.1721],
+          [-73.6211, 41.1721]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-2-H",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "2",
+        "Segment": "H"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6219, 41.1722],
+          [-73.622, 41.1722]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-3-D",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "3",
+        "Segment": "D"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6214, 41.1722],
+          [-73.6215, 41.1722]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-3-E",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "3",
+        "Segment": "E"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6215, 41.1722],
+          [-73.6216, 41.1722]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-3-B",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "3",
+        "Segment": "B"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6211, 41.1722],
+          [-73.6213, 41.1722]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-3-A",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "3",
+        "Segment": "A"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.621, 41.1722],
+          [-73.6211, 41.1722]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-3-C",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "3",
+        "Segment": "C"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6213, 41.1722],
+          [-73.6214, 41.1722]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-3-F",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "3",
+        "Segment": "F"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6216, 41.1722],
+          [-73.6217, 41.1723]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-3-G",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "3",
+        "Segment": "G"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6217, 41.1723],
+          [-73.6219, 41.1723]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-3-H",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "3",
+        "Segment": "H"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6219, 41.1723],
+          [-73.622, 41.1723]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-4-C",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "4",
+        "Segment": "C"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6213, 41.1723],
+          [-73.6214, 41.1723]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-4-E",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "4",
+        "Segment": "E"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6215, 41.1723],
+          [-73.6216, 41.1723]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-4-G",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "4",
+        "Segment": "G"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6218, 41.1724],
+          [-73.6219, 41.1724]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-4-H",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "4",
+        "Segment": "H"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6219, 41.1724],
+          [-73.622, 41.1724]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-4-F",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "4",
+        "Segment": "F"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6216, 41.1723],
+          [-73.6218, 41.1724]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-4-A",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "4",
+        "Segment": "A"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.621, 41.1723],
+          [-73.6212, 41.1723]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-4-B",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "4",
+        "Segment": "B"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6212, 41.1723],
+          [-73.6213, 41.1723]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Id": 0,
+        "SegmCode": "MRG-2-Unf-4-D",
+        "Site": "MRG",
+        "Pair": "2",
+        "Treatm": "Unf",
+        "Transect": "4",
+        "Segment": "D"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-73.6214, 41.1723],
+          [-73.6215, 41.1723]
+        ]
+      }
+    }
+  ]
+}
