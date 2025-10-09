@@ -20,11 +20,12 @@ POLYGONS_FILE_PATH <- "mianus_polygons.geojson"
 EXCLOSURES_FILE_PATH <- "mianus_exclosures.geojson"
 TRANSECTS_FILE_PATH <- "mianus_transects.geojson"
 TRAILS_FILE_PATH <- "mianus_trails.geojson"
+MOHONK_TRANSECTS_FILE_PATH <- "mohonk_transects.geojson"  # For future use
 
 # Standardized Site Coordinates
 SITE_COORDS <- list(
   "Mohonk Preserve" = c(41.776, -74.135),
-  "Mianus River Gorge" = c(41.171636, -73.620278) 
+  "Mianus River Gorge" = c(41.171636, -73.620278)
 )
 
 # Load GeoJSON data
@@ -32,6 +33,7 @@ polygons_data <- load_geojson(POLYGONS_FILE_PATH)
 exclosures_data <- load_geojson(EXCLOSURES_FILE_PATH)
 transects_data <- load_geojson(TRANSECTS_FILE_PATH)
 trails_data <- load_geojson(TRAILS_FILE_PATH)
+mohonk_transects_data <- load_geojson(MOHONK_TRANSECTS_FILE_PATH) 
 
 # --- Load Tick Data ---
 tick_data <- load_tick_data("tick_data_processed.csv") %>%
@@ -115,68 +117,176 @@ server <- function(input, output, session) {
   })
   
   # --- Data Tables ---
-  output$mohonk_data_table <- renderDT({
-    datatable(
-      filtered_data() %>% filter(SiteName == "Mohonk Preserve") %>% select(-SiteName),
-      options = list(pageLength = 10, dom = 'tip', searching = TRUE, scrollY = '300px'),
-      rownames = FALSE
-    )
+output$mohonk_data_table <- renderDT({
+  datatable(
+    filtered_data() %>%
+      filter(SiteName == "Mohonk Preserve") %>%
+      select(-SiteName, -SegmCode),
+    options = list(
+      pageLength = 10,
+      scrollY = '300px',
+      autoWidth = TRUE,
+      dom = 'tip'  # 't' = table, 'i' = info, 'p' = pagination; no global search needed
+    ),
+    filter = "top",
+    rownames = FALSE,
+    selection = list(mode = "single", target = "row")
+  )
+})
+
+
+
+output$mianus_data_table <- renderDT({
+  datatable(
+    filtered_data() %>%
+      filter(SiteName == "Mianus River Gorge") %>%
+      select(-SiteName, -SegmCode),
+    options = list(
+      pageLength = 10,
+      scrollY = '300px',
+      autoWidth = TRUE,
+      dom = 'tip'  # 't' = table, 'i' = info, 'p' = pagination; no global search needed
+    ),
+    filter = "top", 
+    rownames = FALSE,
+    selection = list(mode = "single", target = "row")
+  )
+})
+
+  # --- Row Selection Observers ---
+
+  # Mohonk table selection - highlight marker
+  observeEvent(input$mohonk_data_table_rows_selected, {
+    selected_row <- input$mohonk_data_table_rows_selected
+    if (!is.null(selected_row)) {
+      mohonk_data <- filtered_data() %>% filter(SiteName == "Mohonk Preserve")
+      selected_site_location <- mohonk_data[selected_row, "Site_location"]
+
+      # Find the exclosure matching this site location using Site_Match column
+      matching_exclosure <- mohonk_exclosures %>%
+        filter(Site_Match == selected_site_location)
+
+      if (nrow(matching_exclosure) > 0) {
+        leafletProxy("mohonk_map") %>%
+          setView(
+            lng = matching_exclosure$Longitude[1],
+            lat = matching_exclosure$Latitude[1],
+            zoom = 15
+          )
+      }
+    }
   })
-  
-  output$mianus_data_table <- renderDT({
-    datatable(
-      filtered_data() %>% filter(SiteName == "Mianus River Gorge") %>% select(-SiteName),
-      options = list(pageLength = 10, dom = 'tip', searching = TRUE, scrollY = '300px'),
-      rownames = FALSE
-    )
+
+  # Mianus table selection - highlight segment
+  observeEvent(input$mianus_data_table_rows_selected, {
+    selected_row <- input$mianus_data_table_rows_selected
+    if (!is.null(selected_row)) {
+      mianus_data <- filtered_data() %>% filter(SiteName == "Mianus River Gorge")
+      selected_segm_code <- mianus_data[selected_row, "SegmCode"]
+
+      # Find the segment in the transects GeoJSON
+      if (!is.null(transects_data)) {
+        for (i in seq_along(transects_data$features)) {
+          feature <- transects_data$features[[i]]
+          props <- feature$properties
+          if (!is.null(props$SegmCode) && trimws(props$SegmCode) == selected_segm_code) {
+            coords <- feature$geometry$coordinates
+            # Calculate center of the line
+            lngs <- sapply(coords, function(x) x[[1]])
+            lats <- sapply(coords, function(x) x[[2]])
+            center_lng <- mean(lngs)
+            center_lat <- mean(lats)
+
+            leafletProxy("mianus_map") %>%
+              setView(lng = center_lng, lat = center_lat, zoom = 18)
+            break
+          }
+        }
+      }
+    }
   })
-  
+
   # --- Mohonk Map ---
   output$mohonk_map <- renderLeaflet({
     lat <- SITE_COORDS[["Mohonk Preserve"]][1]
     lng <- SITE_COORDS[["Mohonk Preserve"]][2]
-    
-    mohonk_summary <- summarize_by_transect(filtered_data(), "Mohonk Preserve")
-    
+
+    # Summarize Mohonk data by Site_location (which maps to exclosure areas)
+    mohonk_summary <- filtered_data() %>%
+      filter(SiteName == "Mohonk Preserve") %>%
+      group_by(Site_location) %>%
+      summarize(
+        Adult = sum(Adults, na.rm = TRUE),
+        Nymph = sum(Nymphs, na.rm = TRUE),
+        Total = sum(Total, na.rm = TRUE),
+        .groups = "drop"
+      )
+
+    # Create labels with detailed transect breakdown for each exclosure
+    # Use Site_Match column to join with data (some locations may not have data yet)
     exclosures_with_labels <- mohonk_exclosures %>%
+      left_join(mohonk_summary, by = c("Site_Match" = "Site_location")) %>%
+      mutate(
+        Adult = replace_na(Adult, 0),
+        Nymph = replace_na(Nymph, 0),
+        Total = replace_na(Total, 0),
+        marker_color = if_else(Total == 0, "#9CA3AF", "#EF4444"),  # Gray or Red
+        marker_fill_opacity = 0.8
+      ) %>%
       rowwise() %>%
       mutate(
-        adult_count = get_count(mohonk_summary %>% filter(Transect == Exclosure_Name), "Adult"),
-        nymph_count = get_count(mohonk_summary %>% filter(Transect == Exclosure_Name), "Nymph"),
-        total_count = adult_count + nymph_count,
-        marker_color = if(total_count == 0) "gray" else "red",
-        label_text = create_tick_tooltip(
-          title = Exclosure_Name,
-          create_table_row("Transect", adult_count, nymph_count, total_count)
-        )
+        # Only create detailed tooltip if there's data (Site_Match is not empty)
+        label_text = if (!is.na(Site_Match) && Site_Match != "") {
+          create_mohonk_location_tooltip(filtered_data(), Site_Match, Exclosure_Name)
+        } else {
+          create_tick_tooltip(
+            title = Exclosure_Name,
+            create_table_row("Total", 0, 0, 0)
+          )
+        }
       ) %>%
       ungroup()
-    
-    icons_list <- unname(lapply(exclosures_with_labels$marker_color, function(color) {
-      awesomeIcons(icon = 'map-pin', iconColor = 'white', library = 'fa', markerColor = color)
-    }))
-    
-    leaflet() %>%
+
+    map <- leaflet() %>%
       addProviderTiles(providers$OpenTopoMap, group = "Topographic") %>%
       addProviderTiles(providers$Esri.WorldImagery, group = "Satellite") %>%
       addTiles(group = "Default Map") %>%
       setView(lng = lng, lat = lat, zoom = 12.5) %>%
-      addAwesomeMarkers(
+      addCircleMarkers(
         data = exclosures_with_labels,
         lat = ~Latitude,
         lng = ~Longitude,
-        icon = icons_list,
+        radius = 10,
+        color = ~marker_color,
+        fillColor = ~marker_color,
+        fillOpacity = ~marker_fill_opacity,
+        weight = 2,
+        opacity = 1,
         label = ~lapply(label_text, HTML),
         labelOptions = labelOptions(permanent = FALSE, direction = "auto"),
         group = "Exclosures"
       ) %>%
-      addCircles(lng = lng, lat = lat, radius = 5000, color = "#FF0000", fillOpacity = 0.2, group = "Model Layer") %>%
-      addLayersControl(
-        baseGroups = c("Default Map", "Topographic", "Satellite"),
-        overlayGroups = c("Exclosures", "Model Layer"),
-        options = layersControlOptions(collapsed = TRUE)
-      ) %>%
-      hideGroup("Model Layer")
+      addCircles(lng = lng, lat = lat, radius = 5000, color = "#FF0000", fillOpacity = 0.2, group = "Model Layer")
+
+    # Add transect lines if polygon data is available
+    if (!is.null(mohonk_transects_data)) {
+      map <- add_mohonk_transects(map, mohonk_transects_data, filtered_data())
+      map <- map %>%
+        addLayersControl(
+          baseGroups = c("Default Map", "Topographic", "Satellite"),
+          overlayGroups = c("Exclosures", "Mohonk Transects", "Model Layer"),
+          options = layersControlOptions(collapsed = TRUE)
+        )
+    } else {
+      map <- map %>%
+        addLayersControl(
+          baseGroups = c("Default Map", "Topographic", "Satellite"),
+          overlayGroups = c("Exclosures", "Model Layer"),
+          options = layersControlOptions(collapsed = TRUE)
+        )
+    }
+
+    map %>% hideGroup("Model Layer")
   })
   
   # --- Mianus Map ---
@@ -277,8 +387,52 @@ server <- function(input, output, session) {
       }
     }
     
-    map <- add_trail_polylines(map, trails_data)
-    
+    # Add trails with tick data highlighting
+    if (!is.null(trails_data)) {
+      # Get trailside tick summary (all trails combined since we don't have trail-specific mapping)
+      trailside_summary <- summarize_trailside_data(filtered_data())
+
+      has_ticks <- if (nrow(trailside_summary) > 0 && trailside_summary$Total[1] > 0) TRUE else FALSE
+      trail_color <- if (has_ticks) "#EF4444" else "#4B5563"  # Red if ticks, gray if none
+
+      # Create tooltip
+      if (nrow(trailside_summary) > 0) {
+        tooltip_content <- create_tick_tooltip(
+          title = "Trail Network (All Trailside Surveys)",
+          create_table_row("Total", trailside_summary$Adult[1], trailside_summary$Nymph[1], trailside_summary$Total[1])
+        )
+      } else {
+        tooltip_content <- create_tick_tooltip(
+          title = "Trail Network",
+          create_table_row("Total", 0, 0, 0)
+        )
+      }
+
+      # Add all trail segments with same color/tooltip
+      for (i in seq_along(trails_data$features)) {
+        feature <- trails_data$features[[i]]
+        coords <- feature$geometry$coordinates
+        trail_name <- feature$properties$TRACK
+
+        map <- map %>%
+          addPolylines(
+            lng = sapply(coords, function(x) x[[1]]),
+            lat = sapply(coords, function(x) x[[2]]),
+            color = trail_color,
+            weight = 3,
+            opacity = 0.7,
+            group = "Trails",
+            label = lapply(tooltip_content, HTML),
+            highlightOptions = highlightOptions(
+              weight = 5,
+              color = "#FBBF24",
+              opacity = 1,
+              bringToFront = TRUE
+            )
+          )
+      }
+    }
+
     map %>%
       addCircles(lng = center_lng, lat = center_lat, radius = 1000, color = "#0000FF", fillOpacity = 0.2, group = "Model Layer") %>%
       addLayersControl(
@@ -286,7 +440,6 @@ server <- function(input, output, session) {
         overlayGroups = c("Preserve Boundary", "Exclosures", "Transects", "Trails", "Model Layer"),
         options = layersControlOptions(collapsed = TRUE)
       ) %>%
-      hideGroup("Trails") %>%
       hideGroup("Preserve Boundary") %>%
       hideGroup("Exclosures") %>%
       hideGroup("Model Layer")

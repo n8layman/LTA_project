@@ -104,9 +104,9 @@ get_count <- function(df, stage = "Total") {
 }
 
 # 6. Summarize by transect
-summarize_by_transect <- function(data, SiteName) {
+summarize_by_transect <- function(data, site_name) {
   data %>%
-    filter(SiteName == SiteName) %>%
+    filter(SiteName == site_name) %>%
     group_by(Transect) %>%
     summarize(
       adults = sum(Adults, na.rm = TRUE),
@@ -135,9 +135,11 @@ summarize_mianus_hierarchical <- function(data) {
 
   list(
     # Transect = Pair + Treatment (e.g., "1-Unf", "1-Fen")
+    # Extract pair from SegmCode since Pair column contains Site_location
     transect = mianus_data %>%
       mutate(
-        Transect_Code = paste(Pair, Treatm, sep = "-")
+        PairNum = sub("MRG-(\\d+)-.*", "\\1", SegmCode),
+        Transect_Code = paste(PairNum, Treatm, sep = "-")
       ) %>%
       group_by(Transect_Code) %>%
       summarize(
@@ -151,7 +153,8 @@ summarize_mianus_hierarchical <- function(data) {
     # Line_Code = Pair-Treatment-Number (e.g., "1-Unf-2")
     line = mianus_data %>%
       mutate(
-        Line_Code = paste(Pair, Treatm, Transect, sep = "-")
+        PairNum = sub("MRG-(\\d+)-.*", "\\1", SegmCode),
+        Line_Code = paste(PairNum, Treatm, Transect, sep = "-")
       ) %>%
       group_by(Line_Code) %>%
       summarize(
@@ -183,13 +186,13 @@ get_date_range <- function(df) {
 }
 
 # 10. Site summary UI block
-generate_site_summary <- function(data, SiteName, min_date = NA, max_date = NA) {
-  site_data <- data %>% filter(SiteName == SiteName)
+generate_site_summary <- function(data, site_name, min_date = NA, max_date = NA) {
+  site_data <- data %>% filter(SiteName == site_name)
   total_ticks <- sum(site_data$Total, na.rm = TRUE)
   unique_species <- length(unique(site_data$Species))
 
   summary_items <- list(
-    p(HTML(paste0("<strong>Site:</strong> ", SiteName)), class = "text-gray-600"),
+    p(HTML(paste0("<strong>Site:</strong> ", site_name)), class = "text-gray-600"),
     p(HTML(paste0("<strong>Total Ticks Counted:</strong> ", format(total_ticks, big.mark = ","))), class = "text-gray-600"),
     p(HTML(paste0("<strong>Unique Species Found:</strong> ", unique_species)), class = "text-gray-600")
   )
@@ -211,9 +214,9 @@ generate_site_summary <- function(data, SiteName, min_date = NA, max_date = NA) 
 }
 
 # 11. Generate stacked bar plot of tick species by life stage
-generate_species_plot <- function(data, SiteName) {
+generate_species_plot <- function(data, site_name) {
   plot_data <- data %>%
-    filter(SiteName == SiteName) %>%
+    filter(SiteName == site_name) %>%
     select(-Total) %>%   # drop original Total to avoid duplicate columns
     pivot_longer(
       cols = c(Adults, Nymphs),
@@ -248,6 +251,138 @@ generate_species_plot <- function(data, SiteName) {
       legend.position = "bottom",
       plot.margin = margin(5, 5, 5, 5)
     )
+}
+
+# 12. Create detailed tooltip for Mohonk locations showing transect breakdown
+create_mohonk_location_tooltip <- function(data, site_location, exclosure_name) {
+  # Get transect-level summary for this location
+  transect_data <- data %>%
+    filter(SiteName == "Mohonk Preserve", Site_location == site_location) %>%
+    group_by(Transect) %>%
+    summarize(
+      Adults = sum(Adults, na.rm = TRUE),
+      Nymphs = sum(Nymphs, na.rm = TRUE),
+      Total = sum(Total, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    arrange(Transect)
+
+  # Calculate totals
+  total_adults <- sum(transect_data$Adults, na.rm = TRUE)
+  total_nymphs <- sum(transect_data$Nymphs, na.rm = TRUE)
+  total_ticks <- sum(transect_data$Total, na.rm = TRUE)
+
+  # Build rows for each transect
+  transect_rows <- lapply(seq_len(nrow(transect_data)), function(i) {
+    t <- transect_data[i, ]
+    create_table_row(
+      paste("Transect", t$Transect),
+      t$Adults,
+      t$Nymphs,
+      t$Total,
+      bgcolor = if (i %% 2 == 0) "#f9fafb" else ""
+    )
+  })
+
+  # Add total row
+  all_rows <- c(
+    transect_rows,
+    list(create_table_row("Total", total_adults, total_nymphs, total_ticks, bgcolor = "#e5e7eb"))
+  )
+
+  rows <- paste(all_rows, collapse = "\n")
+
+  glue(TICK_COUNT_TOOLTIP_TEMPLATE,
+       title = exclosure_name,
+       rows = rows
+  )
+}
+
+# 13. Summarize trailside tick data (all trails combined)
+summarize_trailside_data <- function(data) {
+  data %>%
+    filter(SiteName == "Mianus River Gorge", Treatm == "Trailside") %>%
+    summarize(
+      Adult = sum(Adults, na.rm = TRUE),
+      Nymph = sum(Nymphs, na.rm = TRUE),
+      Total = sum(Total, na.rm = TRUE),
+      .groups = "drop"
+    )
+}
+
+# 14. Add Mohonk transect lines to map (for when polygon data is available)
+add_mohonk_transects <- function(map, transects_data, tick_data) {
+  if (is.null(transects_data)) return(map)
+
+  # Get segment totals for coloring
+  segment_totals <- tick_data %>%
+    filter(SiteName == "Mohonk Preserve") %>%
+    group_by(SegmCode) %>%
+    summarize(
+      Adult_Count = sum(Adults, na.rm = TRUE),
+      Nymph_Count = sum(Nymphs, na.rm = TRUE),
+      Total_Ticks = sum(Total, na.rm = TRUE),
+      .groups = "drop"
+    )
+
+  # Get location-level summary for tooltips
+  location_summary <- tick_data %>%
+    filter(SiteName == "Mohonk Preserve") %>%
+    group_by(Site_location) %>%
+    summarize(
+      Adult = sum(Adults, na.rm = TRUE),
+      Nymph = sum(Nymphs, na.rm = TRUE),
+      Total = sum(Total, na.rm = TRUE),
+      .groups = "drop"
+    )
+
+  for (i in seq_along(transects_data$features)) {
+    feature <- transects_data$features[[i]]
+    coords <- feature$geometry$coordinates
+    props <- feature$properties
+
+    segm_code <- trimws(props$SegmCode)
+    site_location <- props$Site_location  # Assuming this will be in the GeoJSON
+
+    # Get segment data for coloring
+    segment_data <- segment_totals %>% filter(SegmCode == segm_code)
+    if (nrow(segment_data) == 0) {
+      segment_data <- data.frame(Adult_Count = 0, Nymph_Count = 0, Total_Ticks = 0)
+    }
+
+    line_color <- if (segment_data$Total_Ticks[1] == 0) "#9CA3AF" else "#EF4444"
+
+    # Get location totals for tooltip
+    location_data <- location_summary %>% filter(Site_location == site_location)
+    if (nrow(location_data) == 0) {
+      location_data <- data.frame(Adult = 0, Nymph = 0, Total = 0)
+    }
+
+    tooltip_content <- create_tick_tooltip(
+      title = segm_code,
+      create_table_row("Location", location_data$Adult[1], location_data$Nymph[1], location_data$Total[1]),
+      create_table_row("Segment", segment_data$Adult_Count[1], segment_data$Nymph_Count[1], segment_data$Total_Ticks[1])
+    )
+
+    map <- map %>%
+      addPolylines(
+        lng = sapply(coords, function(x) x[[1]]),
+        lat = sapply(coords, function(x) x[[2]]),
+        color = line_color,
+        weight = 7,
+        opacity = 0.9,
+        group = "Mohonk Transects",
+        label = lapply(tooltip_content, HTML),
+        highlightOptions = highlightOptions(
+          weight = 9,
+          color = "#FBBF24",
+          opacity = 1,
+          bringToFront = TRUE
+        )
+      )
+  }
+
+  return(map)
 }
 
 # --- Leaflet helpers (unchanged) ---
