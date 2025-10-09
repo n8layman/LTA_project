@@ -46,9 +46,9 @@ jobs:
         run: |
           R -e "install.packages(c('leaflet.providers', 'leaflet.extras', 'shinylive'), repos = 'https://cloud.r-project.org/')"
 
-      - name: Export to shinylive
+      - name: Export to shinylive with giscus
         run: |
-          R -e "shinylive::export('app', '_site')"
+          R -e "source('app/export_with_giscus.R'); export_with_giscus(app_dir = 'app', output_dir = '_site')"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4

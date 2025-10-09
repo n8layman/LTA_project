@@ -88,24 +88,8 @@ ui <- fluidPage(
                      plotOutput("mianus_species_plot", height = "250px")))
       ),
       div(class = "data-table-styled-container",
-          h4("Mianus River Gorge Preserve Data", class = "text-lg font-semibold mb-3 text-gray-800"), 
+          h4("Mianus River Gorge Preserve Data", class = "text-lg font-semibold mb-3 text-gray-800"),
           DTOutput("mianus_data_table"))
-    ),
-
-    div(id = "giscus-container",
-      HTML('<script src="https://giscus.app/client.js"
-            data-repo="n8layman/LTA_project"
-            data-repo-id="R_kgDOOxmmjA"
-            data-mapping="number"
-            data-term="7"
-            data-reactions-enabled="1"
-            data-emit-metadata="0"
-            data-input-position="bottom"
-            data-theme="preferred_color_scheme"
-            data-lang="en"
-            crossorigin="anonymous"
-            async>
-            </script>')
     )
   )
 )
