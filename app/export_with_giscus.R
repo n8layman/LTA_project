@@ -59,7 +59,7 @@ export_with_giscus <- function(
   }
 
   # Read the HTML file
-  message("Adding giscus comments to HTML...")
+  message("Updating page title and adding giscus comments to HTML...")
   html_content <- readLines(html_file, warn = FALSE)
 
   # Create giscus div with proper indentation
@@ -97,15 +97,15 @@ export_with_giscus <- function(
     html_content[body_close_index:length(html_content)]
   )
 
+  # Update the page title
+  modified_html <- gsub("<title>Shiny App</title>",
+                        "<title>Regional Tick Surveillance Data Explorer</title>",
+                        modified_html, fixed = TRUE)
+
   # Write the modified HTML back
   writeLines(modified_html, html_file)
   message("✓ Giscus comments added successfully")
   message("\nExport complete! The app is ready at: ", output_dir)
 
   invisible(html_file)
-}
-
-# Run if called directly (not sourced)
-if (sys.nframe() == 0) {
-  export_with_giscus()
 }

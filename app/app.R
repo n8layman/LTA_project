@@ -59,8 +59,8 @@ ui <- shiny::fluidPage(
   shiny::tabsetPanel(
     id = "site_tabs",
     # Mohonk Tab
-    shiny::tabPanel(title = "Mohonk Preserve, NY", value = "Mohonk",
-      shiny::h3("Mohonk Preserve, NY - Location and Data Overview", class = "text-xl font-semibold mb-4 text-gray-700"),
+    shiny::tabPanel(title = "Mohonk Preserve", value = "Mohonk",
+      shiny::h3("Mohonk Preserve, NY", class = "text-xl font-semibold mb-4 text-gray-700"),
       shiny::fluidRow(
         shiny::column(8, leafletOutput("mohonk_map", height = "500px")),
         shiny::column(4, shiny::div(class = "site-summary-panel",
@@ -70,12 +70,12 @@ ui <- shiny::fluidPage(
       ),
       shiny::div(class = "data-table-styled-container",
           shiny::h4("Mohonk Preserve Data", class = "text-lg font-semibold mb-3 text-gray-800"),
-          DT::DTOutput("mohonk_data_table")),
+          DT::DTOutput("mohonk_data_table"))
     ),
 
     # Mianus Tab
-    shiny::tabPanel(title = "Mianus River Gorge Preserve, CT/NY", value = "Mianus River Gorge",
-      shiny::h3("Mianus River Gorge Preserve - Location and Data Overview", class = "text-xl font-semibold mb-4 text-gray-700"),
+    shiny::tabPanel(title = "Mianus River Gorge Preserve", value = "Mianus River Gorge",
+      shiny::h3("Mianus River Gorge Preserve, CT/NY", class = "text-xl font-semibold mb-4 text-gray-700"),
       shiny::fluidRow(
         shiny::column(8, leafletOutput("mianus_map", height = "500px")),
         shiny::column(4, shiny::div(class = "site-summary-panel",
@@ -86,6 +86,31 @@ ui <- shiny::fluidPage(
       shiny::div(class = "data-table-styled-container",
           shiny::h4("Mianus River Gorge Preserve Data", class = "text-lg font-semibold mb-3 text-gray-800"),
           DT::DTOutput("mianus_data_table"))
+    ),
+
+    # Project Summary Tab
+    shiny::tabPanel(title = "Project Summary", value = "Summary",
+      shiny::div(class = "container", style = "max-width: 900px; margin: 20px auto; padding: 20px;",
+        shiny::h3("Regional Tick Surveillance Project", class = "text-xl font-semibold mb-4 text-gray-700"),
+        shiny::p("This interactive application provides visualization and analysis tools for tick surveillance data collected across multiple field sites in the northeastern United States. Our research focuses on understanding tick population dynamics, species distribution, and their relationship with habitat management practices."),
+        shiny::h4("Study Sites", class = "text-lg font-semibold mt-4 mb-2 text-gray-700"),
+        shiny::p("Data has been collected from two primary locations:"),
+        shiny::tags$ul(
+          shiny::tags$li(shiny::strong("Mohonk Preserve, NY:"), " A 8,000-acre nature preserve in the Shawangunk Ridge featuring diverse forest habitats and experimental deer exclosures."),
+          shiny::tags$li(shiny::strong("Mianus River Gorge Preserve, CT/NY:"), " A 1,100-acre old-growth forest preserve with paired experimental and control transects along trail systems.")
+        ),
+        shiny::h4("Methodology", class = "text-lg font-semibold mt-4 mb-2 text-gray-700"),
+        shiny::p("Tick surveillance is conducted using standardized drag sampling techniques along established transects. Collected specimens are identified to species and life stage (adult, nymph, or larva). Data collection follows consistent protocols across all sites to enable comparative analysis of tick abundance and distribution patterns."),
+        shiny::h4("Key Species", class = "text-lg font-semibold mt-4 mb-2 text-gray-700"),
+        shiny::p("Our surveillance efforts focus on three primary tick species of medical importance:"),
+        shiny::tags$ul(
+          shiny::tags$li(shiny::strong("Blacklegged Tick"), " (", shiny::em("Ixodes scapularis"), "): Primary vector of Lyme disease"),
+          shiny::tags$li(shiny::strong("Lone Star Tick"), " (", shiny::em("Amblyomma americanum"), "): Associated with alpha-gal syndrome and ehrlichiosis"),
+          shiny::tags$li(shiny::strong("Dog Tick"), " (", shiny::em("Dermacentor variabilis"), "): Vector of Rocky Mountain spotted fever")
+        ),
+        shiny::h4("Using This Application", class = "text-lg font-semibold mt-4 mb-2 text-gray-700"),
+        shiny::p("Navigate between site tabs to explore interactive maps, data tables, and visualizations. Maps display tick abundance by location with color-coded markers. Click on table rows to highlight specific locations on the map. Download buttons allow you to export filtered data for further analysis.")
+      )
     )
   )
 )

@@ -192,8 +192,17 @@ generate_site_summary <- function(data, site_name, min_date = NA, max_date = NA)
   total_ticks <- sum(site_data$Total, na.rm = TRUE)
   unique_species <- length(unique(site_data$Species))
 
+  # Site descriptions with links
+  site_description <- if (site_name == "Mohonk Preserve") {
+    'An 8,000-acre preserve in the Shawangunk Ridge featuring mixed hardwood-conifer forests dominated by oak, hemlock, and pitch pine. The site includes experimental deer exclosures to study wildlife impacts on forest regeneration and tick populations. <a href="https://www.mohonkpreserve.org/" target="_blank" style="color: #3B82F6;">Learn more</a>'
+  } else if (site_name == "Mianus River Gorge") {
+    'A 1,100-acre preserve protecting old-growth hemlock-northern hardwood forest along steep ravines. The diverse canopy includes hemlock, oak, beech, and tulip trees, providing habitat for white-tailed deer, black bear, and numerous bird species. <a href="https://www.mianus.org/" target="_blank" style="color: #3B82F6;">Learn more</a>'
+  } else {
+    site_name
+  }
+
   summary_items <- list(
-    shiny::p(shiny::HTML(paste0("<strong>Site:</strong> ", site_name)), class = "text-gray-600"),
+    shiny::p(shiny::HTML(paste0("<strong>Site:</strong> ", site_description)), class = "text-gray-700 mb-3", style = "font-size: 0.95em;"),
     shiny::p(shiny::HTML(paste0("<strong>Total Ticks Counted:</strong> ", format(total_ticks, big.mark = ","))), class = "text-gray-600"),
     shiny::p(shiny::HTML(paste0("<strong>Unique Species Found:</strong> ", unique_species)), class = "text-gray-600")
   )
@@ -218,24 +227,17 @@ generate_site_summary <- function(data, site_name, min_date = NA, max_date = NA)
 generate_species_plot <- function(data, site_name) {
   plot_data <- data %>%
     dplyr::filter(SiteName == site_name) %>%
+    dplyr::rename(CommonName = Common.Name) %>%  # R converts "Common Name" to "Common.Name"
     dplyr::select(-Total) %>%   # drop original Total to avoid duplicate columns
     tidyr::pivot_longer(
       cols = c(Adults, Nymphs),
       names_to = "Life_Stage",
       values_to = "Count"
     ) %>%
-    dplyr::group_by(Species, Life_Stage) %>%
-    dplyr::summarize(Total = sum(Count, na.rm = TRUE), .groups = "drop") %>%
-    dplyr::mutate(
-      Species_Abbrev = dplyr::case_when(
-        Species == "Ixodes scapularis (Blacklegged)" ~ "I. scap",
-        Species == "Amblyomma americanum (Lone Star)" ~ "A. amer",
-        Species == "Dermacentor variabilis (Dog Tick)" ~ "D. var",
-        TRUE ~ Species
-      )
-    )
+    dplyr::group_by(CommonName, Life_Stage) %>%
+    dplyr::summarize(Total = sum(Count, na.rm = TRUE), .groups = "drop")
 
-  ggplot2::ggplot(plot_data, ggplot2::aes(x = Species_Abbrev, y = Total, fill = Life_Stage)) +
+  ggplot2::ggplot(plot_data, ggplot2::aes(x = CommonName, y = Total, fill = Life_Stage)) +
     ggplot2::geom_bar(stat = "identity", position = "stack", width = 0.6) +
     ggplot2::scale_fill_manual(
       values = c("Adults" = "#3B82F6", "Nymphs" = "#10B981"),
@@ -244,7 +246,7 @@ generate_species_plot <- function(data, site_name) {
     ggplot2::labs(x = NULL, y = "Count", fill = NULL) +
     ggplot2::theme_minimal() +
     ggplot2::theme(
-      axis.text.x = ggplot2::element_text(size = 11),
+      axis.text.x = ggplot2::element_text(size = 11, angle = 45, hjust = 1),
       axis.text.y = ggplot2::element_text(size = 11),
       axis.title.y = ggplot2::element_text(size = 11),
       legend.title = ggplot2::element_blank(),
