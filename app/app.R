@@ -9,8 +9,6 @@ library(dplyr)
 library(DT)
 library(lubridate)
 library(leaflet.providers)
-library(leaflet.extras)
-library(readxl)
 library(htmltools)
 library(ggplot2)
 
@@ -51,7 +49,7 @@ load_geojson <- function(file_path) {
 
 # Load the data once at app startup
 polygons_data <- load_geojson(POLYGONS_FILE_PATH)
-exclosures_data_geojson <- load_geojson(EXCLOSURES_FILE_PATH)
+exclosures_data <- load_geojson(EXCLOSURES_FILE_PATH)
 transects_data <- load_geojson(TRANSECTS_FILE_PATH)
 trails_data <- load_geojson(TRAILS_FILE_PATH)
 
@@ -62,7 +60,9 @@ trails_data <- load_geojson(TRAILS_FILE_PATH)
 tick_data <- read.csv("tick_data.csv", stringsAsFactors = FALSE) %>%
   mutate(Date = ymd(Date)) %>%
   arrange(Date, Site, Transect)
-exclosures_data <- data.frame(
+
+# Mohonk exclosures data (for markers on Mohonk map)
+mohonk_exclosures <- data.frame(
   Exclosure_Name = c("Cedar Drive Loop", "Canaan Rd", "Glory Hill", "Undercliff Rd"),
   Latitude = c(41.79766, 41.78495, 41.74764, 41.75430),
   Longitude = c(-74.11761, -74.10986, -74.14738, -74.16813)
@@ -201,79 +201,7 @@ ui <- fluidPage(
 server <- function(input, output, session) {
 
   filtered_data <- reactive({ tick_data })
-  
-  
-  # ------------------------------------------------------------------
-  # 4a. GEOJSON STYLING AND INTERACTION FUNCTIONS (Mianus Map)
-  # ------------------------------------------------------------------
-  
-  # 1. JavaScript function for INITIAL style (passed to 'style' argument)
-  # This uses pure JS to avoid R serialization issues.
-  polygon_style_js <- JS("function(feature) {
-    // Blue (#00A0B0) for Done (1), Red (#E54028) for Not Done (0)
-    var color = feature.properties.Done == 1 ? '#00A0B0' : '#E54028';
-    
-    return {
-      fillColor: color,
-      weight: 2,
-      opacity: 1,
-      color: 'white',
-      fillOpacity: 0.5
-    };
-  }")
-  
-  # 2. JavaScript function for HOVER, POPUP, and CLICK interactions (passed to 'onEachFeature' argument)
-  on_each_feature_interactions <- JS(
-    "function(feature, layer) {
-      
-      // 1. Define highlight style for hover
-      var highlightStyle = {
-        weight: 5,
-        color: '#F9D030', // Bright yellow outline for hover
-        dashArray: '',
-        fillOpacity: 0.7
-      };
-      
-      // 2. Define original style (references the styling function passed to 'style')
-      var originalStyle = layer.options.style(feature); // Retrieve base style from the main style function
 
-      // 3. Event Handlers: Mouseover, Mouseout, Click
-      layer.on({
-        mouseover: function(e) {
-          layer.setStyle(highlightStyle); // Apply highlight style
-          // Bring the highlighted layer to the front for visibility
-          if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-            layer.bringToFront();
-          }
-        },
-        mouseout: function(e) {
-          layer.setStyle(originalStyle); // Reset to original style
-        },
-        click: function(e) {
-          // Zoom to the feature on click
-          e.target._map.fitBounds(e.target.getBounds());
-        }
-      });
-
-      // 4. Popup and Tooltip Binding
-      if (feature.properties) {
-        var status = feature.properties.Done == 1 ? 'Yes' : 'No';
-        var colorClass = feature.properties.Done == 1 ? 'text-green-600 font-bold' : 'text-red-600 font-bold';
-
-        var label = '<div class=\"font-sans text-sm\">' +
-                    '<strong>Area ID: ' + feature.properties.Area + '</strong>' +
-                    '<br>Year Planned: ' + feature.properties.YearPlanne + 
-                    '<br>Done: <span class=\"' + colorClass + '\">' + status + '</span>' +
-                    '</div>';
-                    
-        layer.bindPopup(label);
-        // Sticky tooltip showing the Area ID
-        layer.bindTooltip('Area ' + feature.properties.Area, { sticky: true });
-      }
-    }"
-  )
-  
-  
   # --- Data and Summary Generation ---
 
   generate_site_summary <- function(site_name) {
@@ -332,6 +260,12 @@ server <- function(input, output, session) {
   output$mohonk_data_table <- renderDT({ datatable(filtered_data() %>% filter(Site == "Mohonk Preserve") %>% select(-Site), options = list(pageLength = 10, dom = 'tip', searching = TRUE, scrollY = '300px'), rownames = FALSE) })
   output$mianus_data_table <- renderDT({ datatable(filtered_data() %>% filter(Site == "Mianus River Gorge") %>% select(-Site), options = list(pageLength = 10, dom = 'tip', searching = TRUE, scrollY = '300px'), rownames = FALSE) })
   
+  # Helper function to safely get count from summary data
+  get_count <- function(df) {
+    result <- df %>% pull(Total)
+    if (length(result) > 0) sum(result) else 0
+  }
+
   # 1. Mohonk Map
   output$mohonk_map <- renderLeaflet({
     lat <- SITE_COORDS[["Mohonk Preserve"]][1]
@@ -344,11 +278,11 @@ server <- function(input, output, session) {
       summarize(Total = sum(Count), .groups = "drop")
 
     # Create labels with life stage breakdown in table format and colored markers
-    exclosures_with_labels <- exclosures_data %>%
+    exclosures_with_labels <- mohonk_exclosures %>%
       rowwise() %>%
       mutate(
-        adult_count = mohonk_summary %>% filter(Transect == Exclosure_Name, Life_Stage == "Adult") %>% pull(Total) %>% {if(length(.) > 0) sum(.) else 0},
-        nymph_count = mohonk_summary %>% filter(Transect == Exclosure_Name, Life_Stage == "Nymph") %>% pull(Total) %>% {if(length(.) > 0) sum(.) else 0},
+        adult_count = get_count(mohonk_summary %>% filter(Transect == Exclosure_Name, Life_Stage == "Adult")),
+        nymph_count = get_count(mohonk_summary %>% filter(Transect == Exclosure_Name, Life_Stage == "Nymph")),
         total_count = adult_count + nymph_count,
         marker_color = if(total_count == 0) "gray" else "red",
         label_text = sprintf(
@@ -544,53 +478,25 @@ server <- function(input, output, session) {
 
         # Get properties
         segm_code <- feature$properties$SegmCode
-        site <- feature$properties$Site
-        pair <- feature$properties$Pair
         treatm <- feature$properties$Treatm
-        transect <- feature$properties$Transect
-        segment <- feature$properties$Segment
 
         # Parse hierarchy from segment code (e.g., MRG-1-Fen-4-A)
         transect_num <- sub("^(MRG-\\d+).*", "\\1", segm_code)  # MRG-1
         line_code <- sub("-[A-Z]$", "", segm_code)             # MRG-1-Fen-4
 
         # Get TRANSECT level counts (e.g., all of MRG-1)
-        t_adult <- transect_summary %>%
-          filter(Transect_Num == transect_num, Life_Stage == "Adult") %>%
-          pull(Total) %>%
-          {if(length(.) > 0) sum(.) else 0}
-
-        t_nymph <- transect_summary %>%
-          filter(Transect_Num == transect_num, Life_Stage == "Nymph") %>%
-          pull(Total) %>%
-          {if(length(.) > 0) sum(.) else 0}
-
+        t_adult <- get_count(transect_summary %>% filter(Transect_Num == transect_num, Life_Stage == "Adult"))
+        t_nymph <- get_count(transect_summary %>% filter(Transect_Num == transect_num, Life_Stage == "Nymph"))
         t_total <- t_adult + t_nymph
 
         # Get LINE level counts (e.g., all segments in MRG-1-Fen-4)
-        l_adult <- line_summary %>%
-          filter(Line == line_code, Life_Stage == "Adult") %>%
-          pull(Total) %>%
-          {if(length(.) > 0) sum(.) else 0}
-
-        l_nymph <- line_summary %>%
-          filter(Line == line_code, Life_Stage == "Nymph") %>%
-          pull(Total) %>%
-          {if(length(.) > 0) sum(.) else 0}
-
+        l_adult <- get_count(line_summary %>% filter(Line == line_code, Life_Stage == "Adult"))
+        l_nymph <- get_count(line_summary %>% filter(Line == line_code, Life_Stage == "Nymph"))
         l_total <- l_adult + l_nymph
 
         # Get SEGMENT level counts (e.g., just MRG-1-Fen-4-A)
-        s_adult <- segment_summary %>%
-          filter(Segment == segm_code, Life_Stage == "Adult") %>%
-          pull(Total) %>%
-          {if(length(.) > 0) sum(.) else 0}
-
-        s_nymph <- segment_summary %>%
-          filter(Segment == segm_code, Life_Stage == "Nymph") %>%
-          pull(Total) %>%
-          {if(length(.) > 0) sum(.) else 0}
-
+        s_adult <- get_count(segment_summary %>% filter(Segment == segm_code, Life_Stage == "Adult"))
+        s_nymph <- get_count(segment_summary %>% filter(Segment == segm_code, Life_Stage == "Nymph"))
         s_total <- s_adult + s_nymph
 
         # Color: grey if no ticks on THIS SEGMENT, red/purple if has ticks
