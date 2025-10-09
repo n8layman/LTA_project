@@ -74,21 +74,38 @@ ui <- fluidPage(
       ),
       div(class = "data-table-styled-container", 
           h4("Mohonk Preserve Data", class = "text-lg font-semibold mb-3 text-gray-800"), 
-          DTOutput("mohonk_data_table"))
+          DTOutput("mohonk_data_table")),
     ),
+
     # Mianus Tab
     tabPanel(title = "Mianus River Gorge Preserve, CT/NY", value = "Mianus River Gorge",
       h3("Mianus River Gorge Preserve - Location and Data Overview", class = "text-xl font-semibold mb-4 text-gray-700"),
       fluidRow(
         column(8, leafletOutput("mianus_map", height = "500px")),
-        column(4, div(class = "site-summary-panel", 
+        column(4, div(class = "site-summary-panel",
                      h4("Data Summary", class = "text-lg font-semibold mb-3 text-gray-800"), 
-                     uiOutput("site_summary_ui_mianus"), br(), 
+                     uiOutput("site_summary_ui_mianus"), br(),
                      plotOutput("mianus_species_plot", height = "250px")))
       ),
-      div(class = "data-table-styled-container", 
+      div(class = "data-table-styled-container",
           h4("Mianus River Gorge Preserve Data", class = "text-lg font-semibold mb-3 text-gray-800"), 
           DTOutput("mianus_data_table"))
+    ),
+
+    div(id = "giscus-container",
+      HTML('<script src="https://giscus.app/client.js"
+            data-repo="n8layman/LTA_project"
+            data-repo-id="R_kgDOOxmmjA"
+            data-mapping="number"
+            data-term="7"
+            data-reactions-enabled="1"
+            data-emit-metadata="0"
+            data-input-position="bottom"
+            data-theme="preferred_color_scheme"
+            data-lang="en"
+            crossorigin="anonymous"
+            async>
+            </script>')
     )
   )
 )
