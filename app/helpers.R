@@ -1,10 +1,11 @@
 # ---- helpers.R (Updated for New Schema) ----
+# Using explicit namespaces to minimize dependencies in shinylive export
+
+# Load core packages
+library(leaflet) # For mapping - too many functions to use explicit namespacing
+
+# Load the pipe operator from dplyr (needed for %>% syntax)
 library(dplyr)
-library(ggplot2)
-library(leaflet)
-library(htmltools)
-library(jsonlite)
-library(glue)
 
 # --- Templates ---
 # Make sure TICK_COUNT_TOOLTIP_TEMPLATE and TABLE_ROW_TEMPLATE are defined in app.R
@@ -14,8 +15,8 @@ TABLE_ROW_TEMPLATE <- paste(readLines("table_row.html"), collapse = "\n")
 
 # 1. Create table row for tooltip
 create_table_row <- function(level, adults, nymphs, total, bgcolor = "") {
-  glue(TABLE_ROW_TEMPLATE,
-       bgcolor = if (bgcolor != "") glue(' style="background-color: {bgcolor};"') else "",
+  glue::glue(TABLE_ROW_TEMPLATE,
+       bgcolor = if (bgcolor != "") glue::glue(' style="background-color: {bgcolor};"') else "",
        level = level,
        adults = adults,
        nymphs = nymphs,
@@ -27,7 +28,7 @@ create_table_row <- function(level, adults, nymphs, total, bgcolor = "") {
 create_tick_tooltip <- function(title, ...) {
   rows_list <- list(...)
   rows <- paste(rows_list, collapse = "\n")
-  glue(TICK_COUNT_TOOLTIP_TEMPLATE,
+  glue::glue(TICK_COUNT_TOOLTIP_TEMPLATE,
        title = title,
        rows = rows
   )
@@ -79,16 +80,16 @@ load_geojson <- function(file_path) {
     warning(paste("GeoJSON file not found at:", file_path))
     return(NULL)
   }
-  
+
   geojson_string <- paste(readLines(file_path, warn = FALSE), collapse = "\n")
-  
+
   data <- tryCatch({
     jsonlite::fromJSON(geojson_string, simplifyVector = FALSE)
   }, error = function(e) {
     warning(paste("Error parsing GeoJSON:", e$message))
     return(NULL)
   })
-  
+
   return(data)
 }
 
@@ -106,9 +107,9 @@ get_count <- function(df, stage = "Total") {
 # 6. Summarize by transect
 summarize_by_transect <- function(data, site_name) {
   data %>%
-    filter(SiteName == site_name) %>%
-    group_by(Transect) %>%
-    summarize(
+    dplyr::filter(SiteName == site_name) %>%
+    dplyr::group_by(Transect) %>%
+    dplyr::summarize(
       adults = sum(Adults, na.rm = TRUE),
       nymphs = sum(Nymphs, na.rm = TRUE),
       total = sum(Total, na.rm = TRUE),
@@ -119,9 +120,9 @@ summarize_by_transect <- function(data, site_name) {
 # 7. Segment totals for Mianus
 get_segment_tick_totals <- function(data) {
   data %>%
-    filter(SiteName == "Mianus River Gorge") %>%
-    group_by(SegmCode) %>%
-    summarize(
+    dplyr::filter(SiteName == "Mianus River Gorge") %>%
+    dplyr::group_by(SegmCode) %>%
+    dplyr::summarize(
       Adult_Count = sum(Adults, na.rm = TRUE),
       Nymph_Count = sum(Nymphs, na.rm = TRUE),
       Total_Ticks = sum(Total, na.rm = TRUE),
@@ -131,18 +132,18 @@ get_segment_tick_totals <- function(data) {
 
 # 8. Hierarchical summaries for Mianus
 summarize_mianus_hierarchical <- function(data) {
-  mianus_data <- data %>% filter(SiteName == "Mianus River Gorge")
+  mianus_data <- data %>% dplyr::filter(SiteName == "Mianus River Gorge")
 
   list(
     # Transect = Pair + Treatment (e.g., "1-Unf", "1-Fen")
     # Extract pair from SegmCode since Pair column contains Site_location
     transect = mianus_data %>%
-      mutate(
+      dplyr::mutate(
         PairNum = sub("MRG-(\\d+)-.*", "\\1", SegmCode),
         Transect_Code = paste(PairNum, Treatm, sep = "-")
       ) %>%
-      group_by(Transect_Code) %>%
-      summarize(
+      dplyr::group_by(Transect_Code) %>%
+      dplyr::summarize(
         Adult = sum(Adults, na.rm = TRUE),
         Nymph = sum(Nymphs, na.rm = TRUE),
         Total = sum(Total, na.rm = TRUE),
@@ -152,12 +153,12 @@ summarize_mianus_hierarchical <- function(data) {
     # Line = the number within a transect (0, 1, 2, 3, 4)
     # Line_Code = Pair-Treatment-Number (e.g., "1-Unf-2")
     line = mianus_data %>%
-      mutate(
+      dplyr::mutate(
         PairNum = sub("MRG-(\\d+)-.*", "\\1", SegmCode),
         Line_Code = paste(PairNum, Treatm, Transect, sep = "-")
       ) %>%
-      group_by(Line_Code) %>%
-      summarize(
+      dplyr::group_by(Line_Code) %>%
+      dplyr::summarize(
         Adult = sum(Adults, na.rm = TRUE),
         Nymph = sum(Nymphs, na.rm = TRUE),
         Total = sum(Total, na.rm = TRUE),
@@ -166,8 +167,8 @@ summarize_mianus_hierarchical <- function(data) {
 
     # Segment = individual segment (A, B, C, etc.)
     segment = mianus_data %>%
-      group_by(SegmCode) %>%
-      summarize(
+      dplyr::group_by(SegmCode) %>%
+      dplyr::summarize(
         Adult = sum(Adults, na.rm = TRUE),
         Nymph = sum(Nymphs, na.rm = TRUE),
         Total = sum(Total, na.rm = TRUE),
@@ -187,20 +188,20 @@ get_date_range <- function(df) {
 
 # 10. Site summary UI block
 generate_site_summary <- function(data, site_name, min_date = NA, max_date = NA) {
-  site_data <- data %>% filter(SiteName == site_name)
+  site_data <- data %>% dplyr::filter(SiteName == site_name)
   total_ticks <- sum(site_data$Total, na.rm = TRUE)
   unique_species <- length(unique(site_data$Species))
 
   summary_items <- list(
-    p(HTML(paste0("<strong>Site:</strong> ", site_name)), class = "text-gray-600"),
-    p(HTML(paste0("<strong>Total Ticks Counted:</strong> ", format(total_ticks, big.mark = ","))), class = "text-gray-600"),
-    p(HTML(paste0("<strong>Unique Species Found:</strong> ", unique_species)), class = "text-gray-600")
+    shiny::p(shiny::HTML(paste0("<strong>Site:</strong> ", site_name)), class = "text-gray-600"),
+    shiny::p(shiny::HTML(paste0("<strong>Total Ticks Counted:</strong> ", format(total_ticks, big.mark = ","))), class = "text-gray-600"),
+    shiny::p(shiny::HTML(paste0("<strong>Unique Species Found:</strong> ", unique_species)), class = "text-gray-600")
   )
 
   # Only add date range if dates are available
   if (!is.na(min_date) && !is.na(max_date)) {
     summary_items <- c(summary_items, list(
-      p(paste0(
+      shiny::p(paste0(
         "Data collected between ",
         min_date,
         " and ",
@@ -210,23 +211,23 @@ generate_site_summary <- function(data, site_name, min_date = NA, max_date = NA)
     ))
   }
 
-  do.call(tagList, summary_items)
+  do.call(shiny::tagList, summary_items)
 }
 
 # 11. Generate stacked bar plot of tick species by life stage
 generate_species_plot <- function(data, site_name) {
   plot_data <- data %>%
-    filter(SiteName == site_name) %>%
-    select(-Total) %>%   # drop original Total to avoid duplicate columns
-    pivot_longer(
+    dplyr::filter(SiteName == site_name) %>%
+    dplyr::select(-Total) %>%   # drop original Total to avoid duplicate columns
+    tidyr::pivot_longer(
       cols = c(Adults, Nymphs),
       names_to = "Life_Stage",
       values_to = "Count"
     ) %>%
-    group_by(Species, Life_Stage) %>%
-    summarize(Total = sum(Count, na.rm = TRUE), .groups = "drop") %>%
-    mutate(
-      Species_Abbrev = case_when(
+    dplyr::group_by(Species, Life_Stage) %>%
+    dplyr::summarize(Total = sum(Count, na.rm = TRUE), .groups = "drop") %>%
+    dplyr::mutate(
+      Species_Abbrev = dplyr::case_when(
         Species == "Ixodes scapularis (Blacklegged)" ~ "I. scap",
         Species == "Amblyomma americanum (Lone Star)" ~ "A. amer",
         Species == "Dermacentor variabilis (Dog Tick)" ~ "D. var",
@@ -234,22 +235,22 @@ generate_species_plot <- function(data, site_name) {
       )
     )
 
-  ggplot(plot_data, aes(x = Species_Abbrev, y = Total, fill = Life_Stage)) +
-    geom_bar(stat = "identity", position = "stack", width = 0.6) +
-    scale_fill_manual(
+  ggplot2::ggplot(plot_data, ggplot2::aes(x = Species_Abbrev, y = Total, fill = Life_Stage)) +
+    ggplot2::geom_bar(stat = "identity", position = "stack", width = 0.6) +
+    ggplot2::scale_fill_manual(
       values = c("Adults" = "#3B82F6", "Nymphs" = "#10B981"),
       labels = c("Adults", "Nymphs")
     ) +
-    labs(x = NULL, y = "Count", fill = NULL) +
-    theme_minimal() +
-    theme(
-      axis.text.x = element_text(size = 11),
-      axis.text.y = element_text(size = 11),
-      axis.title.y = element_text(size = 11),
-      legend.title = element_blank(),
-      legend.text = element_text(size = 10),
+    ggplot2::labs(x = NULL, y = "Count", fill = NULL) +
+    ggplot2::theme_minimal() +
+    ggplot2::theme(
+      axis.text.x = ggplot2::element_text(size = 11),
+      axis.text.y = ggplot2::element_text(size = 11),
+      axis.title.y = ggplot2::element_text(size = 11),
+      legend.title = ggplot2::element_blank(),
+      legend.text = ggplot2::element_text(size = 10),
       legend.position = "bottom",
-      plot.margin = margin(5, 5, 5, 5)
+      plot.margin = ggplot2::margin(5, 5, 5, 5)
     )
 }
 
@@ -257,15 +258,15 @@ generate_species_plot <- function(data, site_name) {
 create_mohonk_location_tooltip <- function(data, site_location, exclosure_name) {
   # Get transect-level summary for this location
   transect_data <- data %>%
-    filter(SiteName == "Mohonk Preserve", Site_location == site_location) %>%
-    group_by(Transect) %>%
-    summarize(
+    dplyr::filter(SiteName == "Mohonk Preserve", Site_location == site_location) %>%
+    dplyr::group_by(Transect) %>%
+    dplyr::summarize(
       Adults = sum(Adults, na.rm = TRUE),
       Nymphs = sum(Nymphs, na.rm = TRUE),
       Total = sum(Total, na.rm = TRUE),
       .groups = "drop"
     ) %>%
-    arrange(Transect)
+    dplyr::arrange(Transect)
 
   # Calculate totals
   total_adults <- sum(transect_data$Adults, na.rm = TRUE)
@@ -292,7 +293,7 @@ create_mohonk_location_tooltip <- function(data, site_location, exclosure_name) 
 
   rows <- paste(all_rows, collapse = "\n")
 
-  glue(TICK_COUNT_TOOLTIP_TEMPLATE,
+  glue::glue(TICK_COUNT_TOOLTIP_TEMPLATE,
        title = exclosure_name,
        rows = rows
   )
@@ -301,8 +302,8 @@ create_mohonk_location_tooltip <- function(data, site_location, exclosure_name) 
 # 13. Summarize trailside tick data (all trails combined)
 summarize_trailside_data <- function(data) {
   data %>%
-    filter(SiteName == "Mianus River Gorge", Treatm == "Trailside") %>%
-    summarize(
+    dplyr::filter(SiteName == "Mianus River Gorge", Treatm == "Trailside") %>%
+    dplyr::summarize(
       Adult = sum(Adults, na.rm = TRUE),
       Nymph = sum(Nymphs, na.rm = TRUE),
       Total = sum(Total, na.rm = TRUE),
@@ -316,9 +317,9 @@ add_mohonk_transects <- function(map, transects_data, tick_data) {
 
   # Get segment totals for coloring
   segment_totals <- tick_data %>%
-    filter(SiteName == "Mohonk Preserve") %>%
-    group_by(SegmCode) %>%
-    summarize(
+    dplyr::filter(SiteName == "Mohonk Preserve") %>%
+    dplyr::group_by(SegmCode) %>%
+    dplyr::summarize(
       Adult_Count = sum(Adults, na.rm = TRUE),
       Nymph_Count = sum(Nymphs, na.rm = TRUE),
       Total_Ticks = sum(Total, na.rm = TRUE),
@@ -327,9 +328,9 @@ add_mohonk_transects <- function(map, transects_data, tick_data) {
 
   # Get location-level summary for tooltips
   location_summary <- tick_data %>%
-    filter(SiteName == "Mohonk Preserve") %>%
-    group_by(Site_location) %>%
-    summarize(
+    dplyr::filter(SiteName == "Mohonk Preserve") %>%
+    dplyr::group_by(Site_location) %>%
+    dplyr::summarize(
       Adult = sum(Adults, na.rm = TRUE),
       Nymph = sum(Nymphs, na.rm = TRUE),
       Total = sum(Total, na.rm = TRUE),
@@ -345,7 +346,7 @@ add_mohonk_transects <- function(map, transects_data, tick_data) {
     site_location <- props$Site_location  # Assuming this will be in the GeoJSON
 
     # Get segment data for coloring
-    segment_data <- segment_totals %>% filter(SegmCode == segm_code)
+    segment_data <- segment_totals %>% dplyr::filter(SegmCode == segm_code)
     if (nrow(segment_data) == 0) {
       segment_data <- data.frame(Adult_Count = 0, Nymph_Count = 0, Total_Ticks = 0)
     }
@@ -353,7 +354,7 @@ add_mohonk_transects <- function(map, transects_data, tick_data) {
     line_color <- if (segment_data$Total_Ticks[1] == 0) "#9CA3AF" else "#EF4444"
 
     # Get location totals for tooltip
-    location_data <- location_summary %>% filter(Site_location == site_location)
+    location_data <- location_summary %>% dplyr::filter(Site_location == site_location)
     if (nrow(location_data) == 0) {
       location_data <- data.frame(Adult = 0, Nymph = 0, Total = 0)
     }
@@ -372,7 +373,7 @@ add_mohonk_transects <- function(map, transects_data, tick_data) {
         weight = 7,
         opacity = 0.9,
         group = "Mohonk Transects",
-        label = lapply(tooltip_content, HTML),
+        label = lapply(tooltip_content, shiny::HTML),
         highlightOptions = highlightOptions(
           weight = 9,
           color = "#FBBF24",

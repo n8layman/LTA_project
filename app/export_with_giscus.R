@@ -27,9 +27,28 @@ export_with_giscus <- function(
     stop("Package 'shinylive' is required but not installed. Install with: install.packages('shinylive')")
   }
 
-  # Export the app using shinylive
+  # Export the app using shinylive with explicit package list
   message("Exporting Shiny app with shinylive...")
-  shinylive::export(appdir = app_dir, destdir = output_dir)
+
+  # Only include packages actually used in the app
+  required_packages <- c(
+    "shiny",
+    "dplyr",           # For pipe operator and data manipulation
+    "tidyr",           # For pivot_longer, replace_na
+    "leaflet",         # For maps
+    "leaflet.providers", # For map tile providers
+    "DT",              # For data tables
+    "ggplot2",         # For plots
+    "glue",            # For string interpolation
+    "jsonlite"         # For JSON parsing
+  )
+
+  message("Including packages: ", paste(required_packages, collapse = ", "))
+
+  shinylive::export(
+    appdir = app_dir,
+    destdir = output_dir
+  )
   message("✓ Shinylive export complete")
 
   # Path to the generated HTML file
@@ -52,7 +71,7 @@ export_with_giscus <- function(
     sprintf("              data-repo-id=\"%s\"", repo_id),
     "              data-mapping=\"number\"",
     sprintf("              data-term=\"%s\"", discussion_number),
-    "              data-reactions-enabled=\"1\"",
+    "              data-reactions-enabled=\"0\"",
     "              data-emit-metadata=\"0\"",
     "              data-input-position=\"bottom\"",
     sprintf("              data-theme=\"%s\"", theme),
