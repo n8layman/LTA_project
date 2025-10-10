@@ -399,7 +399,7 @@ init_leaflet_map <- function(lng, lat, zoom = 17, max_zoom = 20) {
     setView(lng = lng, lat = lat, zoom = zoom)
 }
 
-add_preserve_polygons <- function(map, polygons_data) {
+add_preserve_polygons <- function(map, polygons_data, pane = "overlayPane") {
   if (is.null(polygons_data)) return(map)
   for (i in seq_along(polygons_data$features)) {
     feature <- polygons_data$features[[i]]
@@ -415,16 +415,13 @@ add_preserve_polygons <- function(map, polygons_data) {
         weight = 2,
         opacity = 0.8,
         group = "Preserve Boundary",
-        label = ifelse(!is.null(name) && name != "", name, "Parcel"),
-        highlightOptions = highlightOptions(
-          weight = 3, color = "#34D399", fillOpacity = 0.4, bringToFront = FALSE
-        )
+        options = pathOptions(pane = pane, interactive = FALSE)
       )
   }
   return(map)
 }
 
-add_exclosure_polygons <- function(map, exclosures_data) {
+add_exclosure_polygons <- function(map, exclosures_data, pane = "overlayPane") {
   if (is.null(exclosures_data)) return(map)
   for (i in seq_along(exclosures_data$features)) {
     feature <- exclosures_data$features[[i]]
@@ -440,7 +437,8 @@ add_exclosure_polygons <- function(map, exclosures_data) {
         color = "#7C3AED",
         weight = 2,
         opacity = 0.7,
-        group = "Exclosures"
+        group = "Exclosures",
+        options = pathOptions(pane = pane, interactive = FALSE)
       )
   }
   return(map)

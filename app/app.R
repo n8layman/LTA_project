@@ -178,7 +178,8 @@ server <- function(input, output, session) {
           buttons = list(
             list(
               extend = "excel",
-              text = "Download"     # Button label
+              text = "Download",    # Button label
+              filename = "LTA_tick_data"
             )
           ),
           pageLength = 10,
@@ -335,10 +336,38 @@ server <- function(input, output, session) {
     center_lat <- SITE_COORDS[["Mianus River Gorge"]][1]
     center_lng <- SITE_COORDS[["Mianus River Gorge"]][2]
 
+    # Initialize map
     map <- init_leaflet_map(center_lng, center_lat, zoom = 17, max_zoom = 20)
+
+    # Add layers in order from bottom to top (preserve -> exclosures -> model -> trails -> transects)
+    # This ensures transects are always on top and hoverable
     map <- add_preserve_polygons(map, polygons_data)
     map <- add_exclosure_polygons(map, exclosures_data)
 
+    # Add model layer
+    map <- map %>%
+      addCircles(lng = center_lng, lat = center_lat, radius = 1000, color = "#0000FF", fillOpacity = 0.2, group = "Model Layer", options = pathOptions(interactive = FALSE))
+
+    # Add trails (simple gray lines, non-interactive)
+    if (!is.null(trails_data)) {
+      for (i in seq_along(trails_data$features)) {
+        feature <- trails_data$features[[i]]
+        coords <- feature$geometry$coordinates
+
+        map <- map %>%
+          addPolylines(
+            lng = sapply(coords, function(x) x[[1]]),
+            lat = sapply(coords, function(x) x[[2]]),
+            color = "#4B5563",
+            weight = 3,
+            opacity = 0.7,
+            group = "Trails",
+            options = pathOptions(interactive = FALSE)
+          )
+      }
+    }
+
+    # Add transects LAST so they're always on top and hoverable
     if (!is.null(transects_data)) {
       transects_properties_tibble <- lapply(seq_along(transects_data$features), function(i) {
         f <- transects_data$features[[i]]
@@ -428,54 +457,7 @@ server <- function(input, output, session) {
       }
     }
 
-    # Add trails with tick data highlighting
-    if (!is.null(trails_data)) {
-      # Get trailside tick summary (all trails combined since we don't have trail-specific mapping)
-      trailside_summary <- summarize_trailside_data(filtered_data())
-
-      has_ticks <- if (nrow(trailside_summary) > 0 && trailside_summary$Total[1] > 0) TRUE else FALSE
-      trail_color <- if (has_ticks) "#EF4444" else "#4B5563"  # Red if ticks, gray if none
-
-      # Create tooltip
-      if (nrow(trailside_summary) > 0) {
-        tooltip_content <- create_tick_tooltip(
-          title = "Trail Network (All Trailside Surveys)",
-          create_table_row("Total", trailside_summary$Adult[1], trailside_summary$Nymph[1], trailside_summary$Total[1])
-        )
-      } else {
-        tooltip_content <- create_tick_tooltip(
-          title = "Trail Network",
-          create_table_row("Total", 0, 0, 0)
-        )
-      }
-
-      # Add all trail segments with same color/tooltip
-      for (i in seq_along(trails_data$features)) {
-        feature <- trails_data$features[[i]]
-        coords <- feature$geometry$coordinates
-        trail_name <- feature$properties$TRACK
-
-        map <- map %>%
-          addPolylines(
-            lng = sapply(coords, function(x) x[[1]]),
-            lat = sapply(coords, function(x) x[[2]]),
-            color = trail_color,
-            weight = 3,
-            opacity = 0.7,
-            group = "Trails",
-            label = lapply(tooltip_content, shiny::HTML),
-            highlightOptions = highlightOptions(
-              weight = 5,
-              color = "#FBBF24",
-              opacity = 1,
-              bringToFront = TRUE
-            )
-          )
-      }
-    }
-
     map %>%
-      addCircles(lng = center_lng, lat = center_lat, radius = 1000, color = "#0000FF", fillOpacity = 0.2, group = "Model Layer") %>%
       addLayersControl(
         baseGroups = c("Default Map", "Topographic", "Satellite"),
         overlayGroups = c("Preserve Boundary", "Exclosures", "Transects", "Trails", "Model Layer"),
@@ -483,6 +465,7 @@ server <- function(input, output, session) {
       ) %>%
       hideGroup("Preserve Boundary") %>%
       hideGroup("Exclosures") %>%
+      hideGroup("Trails") %>%
       hideGroup("Model Layer")
   })
 }
