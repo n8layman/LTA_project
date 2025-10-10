@@ -53,3 +53,8 @@ body {
 .easy-button-button:hover {
   background-color: #f4f4f4 !important;
 }
+
+/* --- GitHub link hover effect --- */
+.github-link:hover {
+  color: #1F2937 !important;
+}
