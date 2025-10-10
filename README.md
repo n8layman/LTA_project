@@ -33,18 +33,21 @@ Visit the live application at: [https://n8layman.github.io/LTA_project/](https:/
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/n8layman/LTA_project.git
    cd LTA_project
    ```
 
 2. Install required packages:
+
    ```r
    install.packages(c('shiny', 'leaflet', 'leaflet.extras', 'DT',
                       'tidyr', 'dplyr', 'ggplot2', 'munsell', 'glue', 'jsonlite'))
    ```
 
 3. Run the app:
+
    ```r
    shiny::runApp('app')
    ```
@@ -63,13 +66,14 @@ export_with_giscus(app_dir = "app", output_dir = "docs")
 ```
 
 This function:
+
 - Exports the Shiny app using `shinylive::export()`
 - Automatically injects giscus comments for user feedback
 - Outputs a static site ready for GitHub Pages deployment
 
 ## Project Structure
 
-```
+```text
 LTA_project/
 ├── app/
 │   ├── app.R                        # Main Shiny application (591 lines)
@@ -116,6 +120,8 @@ This project uses a modern, cost-effective approach to deploying interactive dat
 - **Version Control Built-in**: Every deployment tracked in git—instant rollbacks and full change history
 - **Global CDN**: GitHub Pages serves content worldwide with fast load times
 - **HTTPS by Default**: Automatic SSL certificates with zero configuration
+
+**Trade-off**: Initial load takes a few seconds while WebAssembly and R packages download (cached on subsequent visits for faster loading)
 
 ### Giscus Comments
 
