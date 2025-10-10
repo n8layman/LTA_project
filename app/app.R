@@ -5,6 +5,7 @@
 # Load core packages
 library(dplyr)   # For %>% pipe operator and data manipulation
 library(leaflet) # For mapping - too many functions to use explicit namespacing
+library(leaflet.extras) # For easyButton functionality
 library(munsell) # Necessary to specify as dependency to get ggplot2 to work with shinylive
 
 # Source helper functions
@@ -111,6 +112,8 @@ ui <- shiny::fluidPage(
         ),
         shiny::h4("Using This Application", class = "text-lg font-semibold mt-4 mb-2 text-gray-700"),
         shiny::p("Navigate between site tabs to explore interactive maps, data tables, and visualizations. Maps display tick abundance by location with color-coded markers. Click on table rows to highlight specific locations on the map. Download buttons allow you to export filtered data for further analysis."),
+        shiny::h4("Funding", class = "text-lg font-semibold mt-4 mb-2 text-gray-700"),
+        shiny::p("This research was supported by [FUNDING AGENCY/GRANT NUMBER TO BE ADDED]."),
         shiny::h4("Contact", class = "text-lg font-semibold mt-4 mb-2 text-gray-700"),
         shiny::p(shiny::HTML('For more information about this project, please contact: <a href="mailto:nichargregory1@gmail.com" style="color: #3B82F6;">nichargregory1@gmail.com</a>'))
       )
@@ -178,7 +181,8 @@ server <- function(input, output, session) {
           buttons = list(
             list(
               extend = "excel",
-              text = "Download"     # Button label
+              text = "Download",    # Button label
+              filename = "LTA_tick_data"
             )
           ),
           pageLength = 10,
@@ -327,7 +331,16 @@ server <- function(input, output, session) {
         )
     }
 
-    map %>% hideGroup("Model Layer")
+    map %>%
+      hideGroup("Model Layer") %>%
+      addEasyButton(
+        easyButton(
+          icon = "fa-location-crosshairs",
+          title = "Reset View",
+          position = "bottomleft",
+          onClick = JS(sprintf("function(btn, map){ map.setView([%f, %f], 12.5); }", lat, lng))
+        )
+      )
   })
 
   # --- Mianus Map ---
@@ -335,10 +348,38 @@ server <- function(input, output, session) {
     center_lat <- SITE_COORDS[["Mianus River Gorge"]][1]
     center_lng <- SITE_COORDS[["Mianus River Gorge"]][2]
 
+    # Initialize map
     map <- init_leaflet_map(center_lng, center_lat, zoom = 17, max_zoom = 20)
+
+    # Add layers in order from bottom to top (preserve -> exclosures -> model -> trails -> transects)
+    # This ensures transects are always on top and hoverable
     map <- add_preserve_polygons(map, polygons_data)
     map <- add_exclosure_polygons(map, exclosures_data)
 
+    # Add model layer
+    map <- map %>%
+      addCircles(lng = center_lng, lat = center_lat, radius = 1000, color = "#0000FF", fillOpacity = 0.2, group = "Model Layer", options = pathOptions(interactive = FALSE))
+
+    # Add trails (simple gray lines, non-interactive)
+    if (!is.null(trails_data)) {
+      for (i in seq_along(trails_data$features)) {
+        feature <- trails_data$features[[i]]
+        coords <- feature$geometry$coordinates
+
+        map <- map %>%
+          addPolylines(
+            lng = sapply(coords, function(x) x[[1]]),
+            lat = sapply(coords, function(x) x[[2]]),
+            color = "#4B5563",
+            weight = 3,
+            opacity = 0.7,
+            group = "Trails",
+            options = pathOptions(interactive = FALSE)
+          )
+      }
+    }
+
+    # Add transects LAST so they're always on top and hoverable
     if (!is.null(transects_data)) {
       transects_properties_tibble <- lapply(seq_along(transects_data$features), function(i) {
         f <- transects_data$features[[i]]
@@ -417,6 +458,7 @@ server <- function(input, output, session) {
             weight = 7,
             opacity = 0.9,
             group = "Transects",
+            layerId = segm_code,
             label = lapply(tooltip_content, shiny::HTML),
             highlightOptions = highlightOptions(
               weight = 9,
@@ -428,54 +470,7 @@ server <- function(input, output, session) {
       }
     }
 
-    # Add trails with tick data highlighting
-    if (!is.null(trails_data)) {
-      # Get trailside tick summary (all trails combined since we don't have trail-specific mapping)
-      trailside_summary <- summarize_trailside_data(filtered_data())
-
-      has_ticks <- if (nrow(trailside_summary) > 0 && trailside_summary$Total[1] > 0) TRUE else FALSE
-      trail_color <- if (has_ticks) "#EF4444" else "#4B5563"  # Red if ticks, gray if none
-
-      # Create tooltip
-      if (nrow(trailside_summary) > 0) {
-        tooltip_content <- create_tick_tooltip(
-          title = "Trail Network (All Trailside Surveys)",
-          create_table_row("Total", trailside_summary$Adult[1], trailside_summary$Nymph[1], trailside_summary$Total[1])
-        )
-      } else {
-        tooltip_content <- create_tick_tooltip(
-          title = "Trail Network",
-          create_table_row("Total", 0, 0, 0)
-        )
-      }
-
-      # Add all trail segments with same color/tooltip
-      for (i in seq_along(trails_data$features)) {
-        feature <- trails_data$features[[i]]
-        coords <- feature$geometry$coordinates
-        trail_name <- feature$properties$TRACK
-
-        map <- map %>%
-          addPolylines(
-            lng = sapply(coords, function(x) x[[1]]),
-            lat = sapply(coords, function(x) x[[2]]),
-            color = trail_color,
-            weight = 3,
-            opacity = 0.7,
-            group = "Trails",
-            label = lapply(tooltip_content, shiny::HTML),
-            highlightOptions = highlightOptions(
-              weight = 5,
-              color = "#FBBF24",
-              opacity = 1,
-              bringToFront = TRUE
-            )
-          )
-      }
-    }
-
     map %>%
-      addCircles(lng = center_lng, lat = center_lat, radius = 1000, color = "#0000FF", fillOpacity = 0.2, group = "Model Layer") %>%
       addLayersControl(
         baseGroups = c("Default Map", "Topographic", "Satellite"),
         overlayGroups = c("Preserve Boundary", "Exclosures", "Transects", "Trails", "Model Layer"),
@@ -483,7 +478,102 @@ server <- function(input, output, session) {
       ) %>%
       hideGroup("Preserve Boundary") %>%
       hideGroup("Exclosures") %>%
-      hideGroup("Model Layer")
+      hideGroup("Trails") %>%
+      hideGroup("Model Layer") %>%
+      addEasyButton(
+        easyButton(
+          icon = "fa-location-crosshairs",
+          title = "Reset View",
+          position = "bottomleft",
+          onClick = JS(sprintf("function(btn, map){ map.setView([%f, %f], 17); }", center_lat, center_lng))
+        )
+      )
+  })
+
+  # --- Click handler for transect segments (Mianus map) ---
+  shiny::observeEvent(input$mianus_map_shape_click, {
+    click <- input$mianus_map_shape_click
+
+    if (!is.null(click$id)) {
+      segm_code <- click$id
+
+      # Get data for this segment
+      segment_data <- filtered_data() %>%
+        dplyr::filter(SiteName == "Mianus River Gorge", SegmCode == segm_code)
+
+      if (nrow(segment_data) > 0) {
+        # Extract hierarchy info from SegmCode
+        pair_num <- sub("MRG-(\\d+)-.*", "\\1", segm_code)
+        treatm_type <- sub("MRG-\\d+-([A-Za-z]+)-.*", "\\1", segm_code)
+        line_num <- sub("MRG-\\d+-[A-Za-z]+-(\\d+)-[A-Z]$", "\\1", segm_code)
+
+        # Get summaries
+        summaries <- summarize_mianus_hierarchical(filtered_data())
+        transect_summary <- summaries$transect
+        line_summary <- summaries$line
+
+        transect_code <- paste(pair_num, treatm_type, sep = "-")
+        line_code <- paste(pair_num, treatm_type, line_num, sep = "-")
+
+        # Get counts for each level
+        t_adult <- get_count(transect_summary %>% dplyr::filter(Transect_Code == transect_code), "Adult")
+        t_nymph <- get_count(transect_summary %>% dplyr::filter(Transect_Code == transect_code), "Nymph")
+        t_total <- t_adult + t_nymph
+
+        l_adult <- get_count(line_summary %>% dplyr::filter(Line_Code == line_code), "Adult")
+        l_nymph <- get_count(line_summary %>% dplyr::filter(Line_Code == line_code), "Nymph")
+        l_total <- l_adult + l_nymph
+
+        s_adult <- sum(segment_data$Adults, na.rm = TRUE)
+        s_nymph <- sum(segment_data$Nymphs, na.rm = TRUE)
+        s_total <- sum(segment_data$Total, na.rm = TRUE)
+
+        # Create copyable text content
+        modal_content <- shiny::tagList(
+          shiny::h4(segm_code, style = "margin-top: 0; margin-bottom: 12px; font-size: 16px;"),
+          shiny::tags$table(
+            style = "width: 100%; border-collapse: collapse; font-family: sans-serif; font-size: 13px;",
+            shiny::tags$thead(
+              shiny::tags$tr(
+                shiny::tags$th("Level", style = "text-align: left; padding: 4px 6px; border-bottom: 1px solid #ccc; font-weight: 600;"),
+                shiny::tags$th("Adults", style = "text-align: right; padding: 4px 6px; border-bottom: 1px solid #ccc; font-weight: 600;"),
+                shiny::tags$th("Nymphs", style = "text-align: right; padding: 4px 6px; border-bottom: 1px solid #ccc; font-weight: 600;"),
+                shiny::tags$th("Total", style = "text-align: right; padding: 4px 6px; border-bottom: 1px solid #ccc; font-weight: 600;")
+              )
+            ),
+            shiny::tags$tbody(
+              shiny::tags$tr(
+                shiny::tags$td(paste("Transect (Pair", pair_num, treatm_type, ")"), style = "padding: 4px 6px; border-bottom: 1px solid #eee;"),
+                shiny::tags$td(t_adult, style = "text-align: right; padding: 4px 6px; border-bottom: 1px solid #eee;"),
+                shiny::tags$td(t_nymph, style = "text-align: right; padding: 4px 6px; border-bottom: 1px solid #eee;"),
+                shiny::tags$td(t_total, style = "text-align: right; padding: 4px 6px; border-bottom: 1px solid #eee;")
+              ),
+              shiny::tags$tr(
+                shiny::tags$td(paste("Line", line_num), style = "padding: 4px 6px; border-bottom: 1px solid #eee; background-color: #f9fafb;"),
+                shiny::tags$td(l_adult, style = "text-align: right; padding: 4px 6px; border-bottom: 1px solid #eee; background-color: #f9fafb;"),
+                shiny::tags$td(l_nymph, style = "text-align: right; padding: 4px 6px; border-bottom: 1px solid #eee; background-color: #f9fafb;"),
+                shiny::tags$td(l_total, style = "text-align: right; padding: 4px 6px; border-bottom: 1px solid #eee; background-color: #f9fafb;")
+              ),
+              shiny::tags$tr(
+                shiny::tags$td("Segment", style = "padding: 4px 6px;"),
+                shiny::tags$td(s_adult, style = "text-align: right; padding: 4px 6px;"),
+                shiny::tags$td(s_nymph, style = "text-align: right; padding: 4px 6px;"),
+                shiny::tags$td(s_total, style = "text-align: right; padding: 4px 6px;")
+              )
+            )
+          )
+        )
+
+        shiny::showModal(
+          shiny::modalDialog(
+            modal_content,
+            title = "Transect Segment Data",
+            easyClose = TRUE,
+            footer = shiny::modalButton("Close")
+          )
+        )
+      }
+    }
   })
 }
 
