@@ -5,6 +5,7 @@
 # Load core packages
 library(dplyr)   # For %>% pipe operator and data manipulation
 library(leaflet) # For mapping - too many functions to use explicit namespacing
+library(leaflet.extras) # For easyButton functionality
 library(munsell) # Necessary to specify as dependency to get ggplot2 to work with shinylive
 
 # Source helper functions
@@ -328,7 +329,16 @@ server <- function(input, output, session) {
         )
     }
 
-    map %>% hideGroup("Model Layer")
+    map %>%
+      hideGroup("Model Layer") %>%
+      addEasyButton(
+        easyButton(
+          icon = "fa-location-crosshairs",
+          title = "Reset View",
+          position = "bottomleft",
+          onClick = JS(sprintf("function(btn, map){ map.setView([%f, %f], 12.5); }", lat, lng))
+        )
+      )
   })
 
   # --- Mianus Map ---
@@ -466,7 +476,15 @@ server <- function(input, output, session) {
       hideGroup("Preserve Boundary") %>%
       hideGroup("Exclosures") %>%
       hideGroup("Trails") %>%
-      hideGroup("Model Layer")
+      hideGroup("Model Layer") %>%
+      addEasyButton(
+        easyButton(
+          icon = "fa-location-crosshairs",
+          title = "Reset View",
+          position = "bottomleft",
+          onClick = JS(sprintf("function(btn, map){ map.setView([%f, %f], 17); }", center_lat, center_lng))
+        )
+      )
   })
 }
 

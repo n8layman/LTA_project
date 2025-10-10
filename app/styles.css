@@ -42,39 +42,14 @@ body {
   margin-top: 1.5rem;
 }
 
-/* --- Enable Font Awesome inside Leaflet EasyButtons --- */
-.easy-button-button i.fa,
-.easy-button-button i.fas,
-.easy-button-button i.far,
-.easy-button-button i.fab {
-  font-family: 'Font Awesome 6 Free' !important;
-  font-weight: 900 !important;
-  font-size: 18px !important;      /* Icon size */
-  line-height: 36px !important;
-  vertical-align: middle;
-}
-
-/* --- Resize and tighten EasyButton --- */
+/* --- EasyButton styling to match Leaflet zoom controls --- */
 .easy-button-button {
-  width: 36px !important;
-  height: 36px !important;
-  line-height: 36px !important;
+  color: #6B7280 !important;      /* Medium grey icon color */
+  font-size: 24px !important;      /* Larger icon */
   padding: 0 !important;
-  border-radius: 6px !important;
-  font-size: 18px !important;
-  color: #333;
-  transition: all 0.2s ease;
-  background-color: white !important;
-  border: 1px solid #ddd !important;
+  margin: 0 !important;
 }
 
 .easy-button-button:hover {
-  color: #007bff !important;
-  background-color: #f0f0f0 !important;
-}
-
-.easy-button-button.active {
-  color: #fff !important;
-  background-color: #007bff !important;
-  border-color: #007bff !important;
+  background-color: #f4f4f4 !important;
 }
