@@ -55,7 +55,17 @@ ui <- shiny::fluidPage(
     shiny::includeCSS("styles.css")
   ),
   shiny::titlePanel(
-    shiny::div(shiny::h1("Regional Tick Surveillance Data Explorer", class = "text-2xl font-bold text-gray-800")),
+    shiny::div(
+      style = "display: flex; justify-content: space-between; align-items: center;",
+      shiny::h1("Regional Tick Surveillance Data Explorer", class = "text-2xl font-bold text-gray-800"),
+      shiny::a(
+        href = "https://github.com/n8layman/LTA_project",
+        target = "_blank",
+        style = "font-size: 24px; color: #6B7280; text-decoration: none; transition: color 0.2s;",
+        class = "github-link",
+        shiny::icon("github", lib = "font-awesome")
+      )
+    ),
     windowTitle = "Tick Study App"
   ),
   shiny::tabsetPanel(
