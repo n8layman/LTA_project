@@ -8,9 +8,9 @@
 #' @param graphcomment_id GraphComment website ID (default: "Tick-dashboard-1")
 #'
 #' @examples
-#' export_with_giscus()
-#' export_with_giscus(graphcomment_id = "Your-Website-Name")
-export_with_giscus <- function(
+#' export_with_graphcomment()
+#' export_with_graphcomment(graphcomment_id = "Your-Website-Name")
+export_with_graphcomment <- function(
   app_dir = "app",
   output_dir = "docs",
   graphcomment_id = "Tick-dashboard-1"

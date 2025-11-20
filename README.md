@@ -58,8 +58,8 @@ This project includes automated deployment via GitHub Actions. When you push to 
 To manually export the app with GraphComment comments:
 
 ```r
-source("app/export_with_giscus.R")
-export_with_giscus(app_dir = "app", output_dir = "docs", graphcomment_id = "Tick-dashboard-1")
+source("app/export_with_graphcomment.R")
+export_with_graphcomment(app_dir = "app", output_dir = "docs", graphcomment_id = "Tick-dashboard-1")
 ```
 
 This function:
@@ -74,7 +74,7 @@ LTA_project/
 ├── app/
 │   ├── app.R                        # Main Shiny application (591 lines)
 │   ├── helpers.R                    # Helper functions for data processing
-│   ├── export_with_giscus.R         # Export script with GraphComment integration
+│   ├── export_with_graphcomment.R   # Export script with GraphComment integration
 │   ├── styles.css                   # Custom CSS styles
 │   ├── tick_count_tooltip.html      # HTML template for tick count tooltips
 │   ├── table_row.html               # HTML template for table rows
@@ -155,7 +155,7 @@ Click the "Fork" button on GitHub to create your own copy of this project.
 1. Create a free account at [graphcomment.com](https://graphcomment.com)
 2. Add your website at the GraphComment dashboard
 3. Copy your GraphComment ID (e.g., "Your-Website-Name")
-4. Update [app/export_with_giscus.R](app/export_with_giscus.R):
+4. Update [app/export_with_graphcomment.R](app/export_with_graphcomment.R):
    - Change `graphcomment_id = "Tick-dashboard-1"` to your GraphComment ID
 5. Enable Google OAuth in GraphComment settings for easy sign-in
 6. Configure moderation preferences (auto-approve or require approval)
@@ -165,7 +165,7 @@ Click the "Fork" button on GitHub to create your own copy of this project.
 Replace references to the original repository:
 
 - **[app/app.R:62](app/app.R#L62)**: GitHub link in the header
-- **[app/export_with_giscus.R](app/export_with_giscus.R)**: GraphComment ID parameter
+- **[app/export_with_graphcomment.R](app/export_with_graphcomment.R)**: GraphComment ID parameter
 
 ### 5. Add Your Data
 
