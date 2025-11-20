@@ -1,25 +1,19 @@
-#' Export Shinylive App with Giscus Comments
+#' Export Shinylive App with GraphComment Comments
 #'
 #' This function exports a Shiny app using shinylive::export() and then
-#' injects the giscus comment system into the generated HTML file.
+#' injects the GraphComment comment system into the generated HTML file.
 #'
 #' @param app_dir Path to the Shiny app directory (default: "app")
 #' @param output_dir Path to the output directory (default: "docs")
-#' @param repo GitHub repository in format "owner/repo" (default: "n8layman/LTA_project")
-#' @param repo_id GitHub repository ID from giscus configuration
-#' @param discussion_number GitHub discussion number to link comments to
-#' @param theme Giscus theme (default: "preferred_color_scheme")
+#' @param graphcomment_id GraphComment website ID (default: "Tick-dashboard-1")
 #'
 #' @examples
 #' export_with_giscus()
-#' export_with_giscus(repo = "myuser/myrepo", discussion_number = 5)
+#' export_with_giscus(graphcomment_id = "Your-Website-Name")
 export_with_giscus <- function(
   app_dir = "app",
   output_dir = "docs",
-  repo = "n8layman/LTA_project",
-  repo_id = "R_kgDOOxmmjA",
-  discussion_number = 7,
-  theme = "preferred_color_scheme"
+  graphcomment_id = "Tick-dashboard-1"
 ) {
 
   # Check if shinylive is installed
@@ -60,41 +54,54 @@ export_with_giscus <- function(
   }
 
   # Read the HTML file
-  message("Updating page title and adding giscus comments to HTML...")
+  message("Updating page title and adding GraphComment comments to HTML...")
   html_content <- readLines(html_file, warn = FALSE)
 
-  # Create giscus div with proper indentation
-  giscus_code <- c(
+  # Create GraphComment embed code
+  graphcomment_code <- c(
     "",
-    "    <div style=\"max-width: 1200px; margin: 0 auto; padding: 20px;\">",
-    "      <script src=\"https://giscus.app/client.js\"",
-    sprintf("              data-repo=\"%s\"", repo),
-    sprintf("              data-repo-id=\"%s\"", repo_id),
-    "              data-mapping=\"number\"",
-    sprintf("              data-term=\"%s\"", discussion_number),
-    "              data-reactions-enabled=\"0\"",
-    "              data-emit-metadata=\"0\"",
-    "              data-input-position=\"bottom\"",
-    sprintf("              data-theme=\"%s\"", theme),
-    "              data-lang=\"en\"",
-    "              crossorigin=\"anonymous\"",
-    "              async>",
+    "    <!-- GraphComment Comments -->",
+    "    <div style=\"max-width: 1200px; margin: 2rem auto; padding: 20px;\">",
+    "      <h2 style=\"font-family: 'Inter', sans-serif; margin-bottom: 1rem;\">Comments</h2>",
+    "      <div id=\"graphcomment\"></div>",
+    "      <script type=\"text/javascript\">",
+    "        /* - - - CONFIGURATION VARIABLES - - - */",
+    "        var __semio__params = {",
+    sprintf("          graphcommentId: \"%s\", // make sure the id is yours", graphcomment_id),
+    "          behaviour: {",
+    "            // HIGHLY RECOMMENDED",
+    "            //  uid: \"...\", // uniq identifer for the comments thread on your page (ex: your page id)",
+    "          },",
+    "          // configure your variables here",
+    "        }",
+    "",
+    "        /* - - - DON'T EDIT BELOW THIS LINE - - - */",
+    "        function __semio__onload() {",
+    "          __semio__gc_graphlogin(__semio__params)",
+    "        }",
+    "",
+    "        (function() {",
+    "          var gc = document.createElement('script'); gc.type = 'text/javascript'; gc.async = true;",
+    "          gc.onload = __semio__onload; gc.defer = true;",
+    "          gc.src = 'https://integration.graphcomment.com/gc_graphlogin.js?' + Date.now();",
+    "          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(gc);",
+    "        })();",
     "      </script>",
     "    </div>",
     ""
   )
 
-  # Find the closing </body> tag and insert giscus before it
+  # Find the closing </body> tag and insert GraphComment before it
   body_close_index <- which(grepl("</body>", html_content))
 
   if (length(body_close_index) == 0) {
     stop("Could not find </body> tag in HTML file")
   }
 
-  # Insert giscus code before </body>
+  # Insert GraphComment code before </body>
   modified_html <- c(
     html_content[1:(body_close_index - 1)],
-    giscus_code,
+    graphcomment_code,
     html_content[body_close_index:length(html_content)]
   )
 
@@ -105,7 +112,7 @@ export_with_giscus <- function(
 
   # Write the modified HTML back
   writeLines(modified_html, html_file)
-  message("✓ Giscus comments added successfully")
+  message("✓ GraphComment comments added successfully")
   message("\nExport complete! The app is ready at: ", output_dir)
 
   invisible(html_file)

@@ -7,7 +7,7 @@
 [![License: CC-BY-4.0](<https://img.shields.io/badge/License%20(for%20text)-CC_BY_4.0-blue.svg>)](https://creativecommons.org/licenses/by/4.0/)
 <!-- badges: end -->
 
-An interactive R Shiny application for exploring tick surveillance data from multiple field sites. Built with **shinylive** to run entirely in the browser—no R server required. Deployed freely on **GitHub Pages** with integrated **giscus** comments for community feedback.
+An interactive R Shiny application for exploring tick surveillance data from multiple field sites. Built with **shinylive** to run entirely in the browser—no R server required. Deployed freely on **GitHub Pages** with integrated **GraphComment** comments for community feedback.
 
 ## Live Application
 
@@ -55,16 +55,16 @@ This project includes automated deployment via GitHub Actions. When you push to 
 
 ### Manual Export
 
-To manually export the app with giscus comments:
+To manually export the app with GraphComment comments:
 
 ```r
 source("app/export_with_giscus.R")
-export_with_giscus(app_dir = "app", output_dir = "docs")
+export_with_giscus(app_dir = "app", output_dir = "docs", graphcomment_id = "Tick-dashboard-1")
 ```
 
 This function:
 - Exports the Shiny app using `shinylive::export()`
-- Automatically injects giscus comments for user feedback
+- Automatically injects GraphComment widget for user feedback
 - Outputs a static site ready for GitHub Pages deployment
 
 ## Project Structure
@@ -74,7 +74,7 @@ LTA_project/
 ├── app/
 │   ├── app.R                        # Main Shiny application (591 lines)
 │   ├── helpers.R                    # Helper functions for data processing
-│   ├── export_with_giscus.R         # Export script with giscus integration
+│   ├── export_with_giscus.R         # Export script with GraphComment integration
 │   ├── styles.css                   # Custom CSS styles
 │   ├── tick_count_tooltip.html      # HTML template for tick count tooltips
 │   ├── table_row.html               # HTML template for table rows
@@ -100,7 +100,7 @@ LTA_project/
 - **Data Tables**: Filter, sort, and download tick observation data with species information
 - **Species Plots**: Visualize tick species distribution by life stage (adults vs. nymphs) at each site
 - **Site Summaries**: Quick overview of total tick counts and species diversity
-- **User Feedback**: Integrated giscus comments for discussion and feedback
+- **User Feedback**: Integrated GraphComment for discussion and feedback (supports Google OAuth and anonymous posting)
 
 ## Why This Stack?
 
@@ -117,15 +117,16 @@ This project uses a modern, cost-effective approach to deploying interactive dat
 - **Global CDN**: GitHub Pages serves content worldwide with fast load times
 - **HTTPS by Default**: Automatic SSL certificates with zero configuration
 
-### Giscus Comments
+### GraphComment
 
-- **Free Forever**: No subscription fees or usage limits
-- **Zero Database Maintenance**: Comments live in GitHub Discussions—no database to manage, backup, or secure
-- **Built-in Moderation**: Leverage GitHub's discussion management tools you already know
-- **GitHub Authentication**: Users log in with GitHub—no separate account system to build or maintain
-- **Markdown Support**: Rich formatting using familiar GitHub-flavored markdown
-- **Searchable & Exportable**: All feedback searchable through GitHub's interface and easy to export
-- **Privacy-Focused**: Open-source alternative to proprietary comment systems
+- **Free Tier**: Unlimited page loads and comments (free forever with branding)
+- **Anonymous Posting**: No account required to comment
+- **Google/GitHub OAuth**: Optional sign-in with Google, GitHub, Facebook, or Twitter accounts
+- **Rich Media**: Support for GIFs, images, and reactions
+- **Real-time**: Comments appear instantly for all users
+- **Moderation Dashboard**: Easy-to-use web interface for comment moderation
+- **Spam Protection**: Built-in spam filtering and moderation tools
+- **No GitHub Required**: Perfect for research audiences without developer accounts
 
 ## Technology Stack
 
@@ -134,7 +135,7 @@ This project uses a modern, cost-effective approach to deploying interactive dat
 - **Leaflet**: Interactive mapping library
 - **GitHub Actions**: Automated deployment pipeline
 - **GitHub Pages**: Static site hosting
-- **Giscus**: GitHub Discussions-powered comment system
+- **GraphComment**: Free comment system with Google OAuth and anonymous posting
 
 ## Fork This Project
 
@@ -149,23 +150,22 @@ Click the "Fork" button on GitHub to create your own copy of this project.
 1. Go to your repository **Settings** → **Pages**
 2. Under "Build and deployment", set **Source** to **GitHub Actions**
 
-### 3. Enable Giscus Comments (Optional)
+### 3. Set Up GraphComment (Optional)
 
-1. Make your repository **public** (required for giscus)
-2. Enable **Discussions** in your repository settings
-3. Install the [giscus app](https://github.com/apps/giscus) on your repository
-4. Visit [giscus.app](https://giscus.app) to configure and get your settings
-5. Update [app/export_with_giscus.R](app/export_with_giscus.R):
-   - Change `repo = "n8layman/LTA_project"` to your repository
-   - Update `repo_id` with your repository ID from giscus
-   - Update `discussion_number` to match your discussion
+1. Create a free account at [graphcomment.com](https://graphcomment.com)
+2. Add your website at the GraphComment dashboard
+3. Copy your GraphComment ID (e.g., "Your-Website-Name")
+4. Update [app/export_with_giscus.R](app/export_with_giscus.R):
+   - Change `graphcomment_id = "Tick-dashboard-1"` to your GraphComment ID
+5. Enable Google OAuth in GraphComment settings for easy sign-in
+6. Configure moderation preferences (auto-approve or require approval)
 
 ### 4. Update Hard-Coded References
 
 Replace references to the original repository:
 
 - **[app/app.R:62](app/app.R#L62)**: GitHub link in the header
-- **[app/export_with_giscus.R:19](app/export_with_giscus.R#L19)**: Default repository parameter
+- **[app/export_with_giscus.R](app/export_with_giscus.R)**: GraphComment ID parameter
 
 ### 5. Add Your Data
 
