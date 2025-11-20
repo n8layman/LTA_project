@@ -25,19 +25,32 @@
     <div style="height: 100vh; width: 100vw" id="root"></div>
     
 
-    <div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
-      <script src="https://giscus.app/client.js"
-              data-repo="n8layman/LTA_project"
-              data-repo-id="R_kgDOOxmmjA"
-              data-mapping="number"
-              data-term="7"
-              data-reactions-enabled="0"
-              data-emit-metadata="0"
-              data-input-position="bottom"
-              data-theme="preferred_color_scheme"
-              data-lang="en"
-              crossorigin="anonymous"
-              async>
+    <!-- GraphComment Comments -->
+    <div style="max-width: 1200px; margin: 2rem auto; padding: 20px;">
+      <h2 style="font-family: 'Inter', sans-serif; margin-bottom: 1rem;">Comments</h2>
+      <div id="graphcomment"></div>
+      <script type="text/javascript">
+        /* - - - CONFIGURATION VARIABLES - - - */
+        var __semio__params = {
+          graphcommentId: "Tick-dashboard-1", // make sure the id is yours
+          behaviour: {
+            // HIGHLY RECOMMENDED
+            //  uid: "...", // uniq identifer for the comments thread on your page (ex: your page id)
+          },
+          // configure your variables here
+        }
+
+        /* - - - DON'T EDIT BELOW THIS LINE - - - */
+        function __semio__onload() {
+          __semio__gc_graphlogin(__semio__params)
+        }
+
+        (function() {
+          var gc = document.createElement('script'); gc.type = 'text/javascript'; gc.async = true;
+          gc.onload = __semio__onload; gc.defer = true;
+          gc.src = 'https://integration.graphcomment.com/gc_graphlogin.js?' + Date.now();
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(gc);
+        })();
       </script>
     </div>
 
