@@ -47,9 +47,9 @@ jobs:
         run: |
           R -e "install.packages(c('leaflet.providers', 'leaflet.extras', 'shinylive', 'munsell'), repos = 'https://cloud.r-project.org/')"
 
-      - name: Export to shinylive with giscus
+      - name: Export to shinylive with GraphComment
         run: |
-          R -e "source('app/export_with_giscus.R'); export_with_giscus(app_dir = 'app', output_dir = '_site')"
+          R -e "source('app/export_with_graphcomment.R'); export_with_graphcomment(app_dir = 'app', output_dir = '_site')"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
