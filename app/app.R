@@ -370,8 +370,14 @@ server <- function(input, output, session) {
     map <- map %>%
       addCircles(lng = center_lng, lat = center_lat, radius = 1000, color = "#0000FF", fillOpacity = 0.2, group = "Model Layer", options = pathOptions(interactive = FALSE))
 
-    # Add trails (simple gray lines, non-interactive)
+    # Add trails with trailside tick summary tooltip
     if (!is.null(trails_data)) {
+      trailside_summary <- summarize_trailside_data(filtered_data())
+      trail_label <- sprintf(
+        '<div style="font-family: sans-serif; font-size: 11px;"><strong>Trailside Sampling</strong><br>Adults: %d | Nymphs: %d | Total: %d</div>',
+        trailside_summary$Adult, trailside_summary$Nymph, trailside_summary$Total
+      )
+
       for (i in seq_along(trails_data$features)) {
         feature <- trails_data$features[[i]]
         coords <- feature$geometry$coordinates
@@ -384,7 +390,11 @@ server <- function(input, output, session) {
             weight = 3,
             opacity = 0.7,
             group = "Trails",
-            options = pathOptions(interactive = FALSE)
+            label = shiny::HTML(trail_label),
+            labelOptions = labelOptions(
+              style = list("background-color" = "white", "padding" = "6px", "border-radius" = "4px", "box-shadow" = "0 1px 3px rgba(0,0,0,0.2)"),
+              direction = "top"
+            )
           )
       }
     }
@@ -428,26 +438,24 @@ server <- function(input, output, session) {
         segm_code <- segment_data$SegmCode
         line_color <- segment_data$line_color
 
-        # Extract hierarchy info from SegmCode
-        # SegmCode format: MRG-1-Unf-2-B
-        # where: 1=Pair, Unf=Treatment, 2=Line number, B=Segment
-        # New hierarchy: Transect = Pair + Treatment, Line = Number, Segment = Letter
-        pair_num <- sub("MRG-(\\d+)-.*", "\\1", segm_code)  # 1
-        treatm_type <- sub("MRG-\\d+-([A-Za-z]+)-.*", "\\1", segm_code)  # Unf or Fen
-        line_num <- sub("MRG-\\d+-[A-Za-z]+-(\\d+)-[A-Z]$", "\\1", segm_code)  # 2
+        # Extract hierarchy from SegmCode: MRG-{Pair}-{Treatment}-{Transect}-{Segment}
+        # Example: MRG-1-Unf-2-B -> Pair=1, Treatment=Unf, Transect=2, Segment=B
+        pair_num <- sub("MRG-(\\d+)-.*", "\\1", segm_code)
+        treatm_type <- sub("MRG-\\d+-([A-Za-z]+)-.*", "\\1", segm_code)
+        transect_num <- sub("MRG-\\d+-[A-Za-z]+-(\\d+)-[A-Z]$", "\\1", segm_code)
 
         # Build codes for lookups
-        transect_code <- paste(pair_num, treatm_type, sep = "-")  # "1-Unf"
-        line_code <- paste(pair_num, treatm_type, line_num, sep = "-")  # "1-Unf-2"
+        pair_treatm_code <- paste(pair_num, treatm_type, sep = "-")  # "1-Unf"
+        transect_code <- paste(pair_num, treatm_type, transect_num, sep = "-")  # "1-Unf-2"
 
         # Get counts for each level
-        t_adult <- get_count(transect_summary %>% dplyr::filter(Transect_Code == transect_code), "Adult")
-        t_nymph <- get_count(transect_summary %>% dplyr::filter(Transect_Code == transect_code), "Nymph")
-        t_total <- t_adult + t_nymph
+        pt_adult <- get_count(transect_summary %>% dplyr::filter(Transect_Code == pair_treatm_code), "Adult")
+        pt_nymph <- get_count(transect_summary %>% dplyr::filter(Transect_Code == pair_treatm_code), "Nymph")
+        pt_total <- pt_adult + pt_nymph
 
-        l_adult <- get_count(line_summary %>% dplyr::filter(Line_Code == line_code), "Adult")
-        l_nymph <- get_count(line_summary %>% dplyr::filter(Line_Code == line_code), "Nymph")
-        l_total <- l_adult + l_nymph
+        t_adult <- get_count(line_summary %>% dplyr::filter(Line_Code == transect_code), "Adult")
+        t_nymph <- get_count(line_summary %>% dplyr::filter(Line_Code == transect_code), "Nymph")
+        t_total <- t_adult + t_nymph
 
         s_adult <- segment_data$Adult_Count
         s_nymph <- segment_data$Nymph_Count
@@ -455,8 +463,8 @@ server <- function(input, output, session) {
 
         tooltip_content <- create_tick_tooltip(
           title = segm_code,
-          create_table_row(paste("Transect (Pair", pair_num, treatm_type, ")", sep = " "), t_adult, t_nymph, t_total),
-          create_table_row(paste("Line", line_num), l_adult, l_nymph, l_total, bgcolor = "#f9fafb"),
+          create_table_row(paste0("Pair ", pair_num, " ", treatm_type), pt_adult, pt_nymph, pt_total),
+          create_table_row(paste("Transect", transect_num), t_adult, t_nymph, t_total, bgcolor = "#f9fafb"),
           create_table_row("Segment", s_adult, s_nymph, s_total)
         )
 
@@ -512,27 +520,27 @@ server <- function(input, output, session) {
         dplyr::filter(SiteName == "Mianus River Gorge", SegmCode == segm_code)
 
       if (nrow(segment_data) > 0) {
-        # Extract hierarchy info from SegmCode
+        # Extract hierarchy from SegmCode: MRG-{Pair}-{Treatment}-{Transect}-{Segment}
         pair_num <- sub("MRG-(\\d+)-.*", "\\1", segm_code)
         treatm_type <- sub("MRG-\\d+-([A-Za-z]+)-.*", "\\1", segm_code)
-        line_num <- sub("MRG-\\d+-[A-Za-z]+-(\\d+)-[A-Z]$", "\\1", segm_code)
+        transect_num <- sub("MRG-\\d+-[A-Za-z]+-(\\d+)-[A-Z]$", "\\1", segm_code)
 
         # Get summaries
         summaries <- summarize_mianus_hierarchical(filtered_data())
         transect_summary <- summaries$transect
         line_summary <- summaries$line
 
-        transect_code <- paste(pair_num, treatm_type, sep = "-")
-        line_code <- paste(pair_num, treatm_type, line_num, sep = "-")
+        pair_treatm_code <- paste(pair_num, treatm_type, sep = "-")
+        transect_code <- paste(pair_num, treatm_type, transect_num, sep = "-")
 
         # Get counts for each level
-        t_adult <- get_count(transect_summary %>% dplyr::filter(Transect_Code == transect_code), "Adult")
-        t_nymph <- get_count(transect_summary %>% dplyr::filter(Transect_Code == transect_code), "Nymph")
-        t_total <- t_adult + t_nymph
+        pt_adult <- get_count(transect_summary %>% dplyr::filter(Transect_Code == pair_treatm_code), "Adult")
+        pt_nymph <- get_count(transect_summary %>% dplyr::filter(Transect_Code == pair_treatm_code), "Nymph")
+        pt_total <- pt_adult + pt_nymph
 
-        l_adult <- get_count(line_summary %>% dplyr::filter(Line_Code == line_code), "Adult")
-        l_nymph <- get_count(line_summary %>% dplyr::filter(Line_Code == line_code), "Nymph")
-        l_total <- l_adult + l_nymph
+        t_adult <- get_count(line_summary %>% dplyr::filter(Line_Code == transect_code), "Adult")
+        t_nymph <- get_count(line_summary %>% dplyr::filter(Line_Code == transect_code), "Nymph")
+        t_total <- t_adult + t_nymph
 
         s_adult <- sum(segment_data$Adults, na.rm = TRUE)
         s_nymph <- sum(segment_data$Nymphs, na.rm = TRUE)
@@ -553,16 +561,16 @@ server <- function(input, output, session) {
             ),
             shiny::tags$tbody(
               shiny::tags$tr(
-                shiny::tags$td(paste("Transect (Pair", pair_num, treatm_type, ")"), style = "padding: 4px 6px; border-bottom: 1px solid #eee;"),
-                shiny::tags$td(t_adult, style = "text-align: right; padding: 4px 6px; border-bottom: 1px solid #eee;"),
-                shiny::tags$td(t_nymph, style = "text-align: right; padding: 4px 6px; border-bottom: 1px solid #eee;"),
-                shiny::tags$td(t_total, style = "text-align: right; padding: 4px 6px; border-bottom: 1px solid #eee;")
+                shiny::tags$td(paste0("Pair ", pair_num, " ", treatm_type), style = "padding: 4px 6px; border-bottom: 1px solid #eee;"),
+                shiny::tags$td(pt_adult, style = "text-align: right; padding: 4px 6px; border-bottom: 1px solid #eee;"),
+                shiny::tags$td(pt_nymph, style = "text-align: right; padding: 4px 6px; border-bottom: 1px solid #eee;"),
+                shiny::tags$td(pt_total, style = "text-align: right; padding: 4px 6px; border-bottom: 1px solid #eee;")
               ),
               shiny::tags$tr(
-                shiny::tags$td(paste("Line", line_num), style = "padding: 4px 6px; border-bottom: 1px solid #eee; background-color: #f9fafb;"),
-                shiny::tags$td(l_adult, style = "text-align: right; padding: 4px 6px; border-bottom: 1px solid #eee; background-color: #f9fafb;"),
-                shiny::tags$td(l_nymph, style = "text-align: right; padding: 4px 6px; border-bottom: 1px solid #eee; background-color: #f9fafb;"),
-                shiny::tags$td(l_total, style = "text-align: right; padding: 4px 6px; border-bottom: 1px solid #eee; background-color: #f9fafb;")
+                shiny::tags$td(paste("Transect", transect_num), style = "padding: 4px 6px; border-bottom: 1px solid #eee; background-color: #f9fafb;"),
+                shiny::tags$td(t_adult, style = "text-align: right; padding: 4px 6px; border-bottom: 1px solid #eee; background-color: #f9fafb;"),
+                shiny::tags$td(t_nymph, style = "text-align: right; padding: 4px 6px; border-bottom: 1px solid #eee; background-color: #f9fafb;"),
+                shiny::tags$td(t_total, style = "text-align: right; padding: 4px 6px; border-bottom: 1px solid #eee; background-color: #f9fafb;")
               ),
               shiny::tags$tr(
                 shiny::tags$td("Segment", style = "padding: 4px 6px;"),
