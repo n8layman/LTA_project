@@ -2,8 +2,11 @@
 library(dplyr)
 library(tidyr)
 
-# Read the raw LTA data with check.names=FALSE to preserve column names
-lta_data <- read.csv("LTA_tick_data.csv", stringsAsFactors = FALSE, check.names = FALSE)
+# Read the definitive data source
+lta_data <- read.csv("../LTA_tick_data_master_final.csv", stringsAsFactors = FALSE, check.names = FALSE)
+
+# Drop columns with empty or NA names (trailing comma in CSV)
+lta_data <- lta_data[, !is.na(names(lta_data)) & names(lta_data) != ""]
 
 # Clean column names manually
 colnames(lta_data) <- gsub("#", "num", colnames(lta_data))
@@ -30,12 +33,11 @@ lta_data <- lta_data %>%
       Fence_Unf == "Roadside" ~ "Roadside",
       TRUE ~ Fence_Unf
     ),
-    # Build SegmCode in format: LT_Site-1-Treatm-Transect#-Segment (uppercase)
-    # Always use "1" for the pair number in SegmCode to match GeoJSON
-    # For MRG: MRG-1-Unf-0-A or MRG-1-Fen-0-A
+    # Build SegmCode in format: LT_Site-Pair-Treatm-Transect#-Segment (uppercase)
+    # For MRG: MRG-1-Unf-0-A or MRG-2-Fen-0-A
     SegmCode = paste0(
       LT_Site, "-",
-      "1", "-",  # GeoJSON uses 1 for all segments
+      Pair, "-",
       Treatm_Code, "-",
       `Transect_num`, "-",
       toupper(Segment)
@@ -77,9 +79,15 @@ tick_data_long <- lta_data %>%
     Species_Code = sub("_.*", "", SpeciesStage),
     Life_Stage = sub(".*_", "", SpeciesStage),
     Species = case_when(
-      Species_Code == "BL" ~ "Ixodes scapularis (Blacklegged)",
-      Species_Code == "Dg" ~ "Dermacentor variabilis (Dog Tick)",
-      Species_Code == "ALH" ~ "Amblyomma americanum (Lone Star)",
+      Species_Code == "BL" ~ "Ixodes scapularis",
+      Species_Code == "Dg" ~ "Dermacentor variabilis",
+      Species_Code == "ALH" ~ "Amblyomma americanum",
+      TRUE ~ Species_Code
+    ),
+    `Common Name` = case_when(
+      Species_Code == "BL" ~ "Blacklegged Tick",
+      Species_Code == "Dg" ~ "Dog Tick",
+      Species_Code == "ALH" ~ "Lone Star Tick",
       TRUE ~ Species_Code
     )
   ) %>%
@@ -96,7 +104,7 @@ tick_data_long <- lta_data %>%
   ) %>%
   # Select and order columns to match app expectations
   select(
-    Species, SiteName, SegmCode, Site_location, Pair, Treatm, Transect, Segment,
+    Species, `Common Name`, SiteName, SegmCode, Site_location, Pair, Treatm, Transect, Segment,
     Adults, Nymphs, Larva, Total
   ) %>%
   # Remove rows where no ticks were found (optional - uncomment if desired)

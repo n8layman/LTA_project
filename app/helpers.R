@@ -207,6 +207,20 @@ generate_site_summary <- function(data, site_name, min_date = NA, max_date = NA)
     shiny::p(shiny::HTML(paste0("<strong>Unique Species Found:</strong> ", unique_species)), class = "text-gray-600")
   )
 
+  # Add trailside summary for Mianus
+  if (site_name == "Mianus River Gorge") {
+    trailside <- summarize_trailside_data(data)
+    if (trailside$Total > 0) {
+      summary_items <- c(summary_items, list(
+        shiny::p(shiny::HTML(paste0(
+          "<strong>Trailside Ticks:</strong> ",
+          format(trailside$Total, big.mark = ","),
+          " (Adults: ", trailside$Adult, ", Nymphs: ", trailside$Nymph, ")"
+        )), class = "text-gray-600")
+      ))
+    }
+  }
+
   # Only add date range if dates are available
   if (!is.na(min_date) && !is.na(max_date)) {
     summary_items <- c(summary_items, list(

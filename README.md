@@ -102,6 +102,41 @@ LTA_project/
 - **Site Summaries**: Quick overview of total tick counts and species diversity
 - **User Feedback**: Integrated GraphComment for discussion and feedback (supports Google OAuth and anonymous posting)
 
+## Data Structure
+
+### Source Data
+
+The definitive data source is `LTA_tick_data_master_final.csv`. All processed CSV files used by the app are derived from it.
+
+### Mianus River Gorge (MRG)
+
+Mianus has **2 pairs** of fenced/unfenced plots, plus trailside controls. The `Site` column in the data files refers to **sampling day**, not a geographic location.
+
+#### Segment Code Format
+
+Segment codes follow the pattern: `MRG-{Pair}-{Treatment}-{Transect}-{Segment}`
+
+Example: **MRG-2-Fen-0-A**
+| Component | Value | Meaning |
+|-----------|-------|---------|
+| Site | MRG | Mianus River Gorge |
+| Pair | 2 | 2nd paired plot |
+| Treatment | Fen | Fenced (deer exclosure) |
+| Transect | 0 | Transect number |
+| Segment | A | Segment within transect |
+
+#### Treatments
+- **Fen** (Fenced): Inside deer exclosures
+- **Unf** (Unfenced): Outside deer exclosures (control)
+- **Trailside**: Trail-adjacent sampling (Pair 3 controls)
+
+#### Pair Structure
+| Pair | Segments per transect | Treatments |
+|------|-----------------------|------------|
+| 1 | 6 (A–F) | Fen + Unf |
+| 2 | 8 (A–H) | Fen + Unf |
+| 3 | 8 (A–H) | Trailside / Unf controls |
+
 ## Why This Stack?
 
 This project uses a modern, cost-effective approach to deploying interactive data applications:
