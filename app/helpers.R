@@ -270,7 +270,74 @@ generate_species_plot <- function(data, site_name) {
     )
 }
 
-# 12. Create detailed tooltip for Mohonk locations showing transect breakdown
+# 12. Generate paired exclosure comparison plotly (Fenced vs Unfenced)
+generate_exclosure_plot <- function(data, site_name) {
+  # Aggregate totals per Pair x Treatment
+  plot_data <- data %>%
+    dplyr::filter(SiteName == site_name, Treatm %in% c("Fen", "Unf")) %>%
+    dplyr::mutate(Pair = ifelse(Pair == "" | is.na(Pair), "1", Pair))
+
+  paired_totals <- plot_data %>%
+    dplyr::group_by(Pair, Treatm) %>%
+    dplyr::summarize(Total = sum(Total, na.rm = TRUE), .groups = "drop") %>%
+    dplyr::group_by(Pair) %>%
+    dplyr::filter(dplyr::n() == 2) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(
+      Treatment = ifelse(Treatm == "Fen", "Fenced", "Unfenced"),
+      Treatment = factor(Treatment, levels = c("Unfenced", "Fenced"))
+    )
+
+  if (nrow(paired_totals) == 0) return(NULL)
+
+  # Build species breakdown tooltip per point
+  breakdown <- plot_data %>%
+    dplyr::filter(Pair %in% unique(paired_totals$Pair)) %>%
+    dplyr::rename(CommonName = Common.Name) %>%
+    dplyr::group_by(Pair, Treatm, CommonName) %>%
+    dplyr::summarize(
+      Adults = sum(Adults, na.rm = TRUE),
+      Nymphs = sum(Nymphs, na.rm = TRUE),
+      Larva = sum(Larva, na.rm = TRUE),
+      SpTotal = sum(Total, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    dplyr::filter(SpTotal > 0) %>%
+    dplyr::group_by(Pair, Treatm) %>%
+    dplyr::summarize(
+      tooltip = paste0(CommonName, ": ", Adults, "A / ", Nymphs, "N / ", Larva, "L",
+                       collapse = "\n"),
+      .groups = "drop"
+    )
+
+  paired_totals <- paired_totals %>%
+    dplyr::left_join(breakdown, by = c("Pair", "Treatm")) %>%
+    dplyr::mutate(tooltip = ifelse(is.na(tooltip), "No ticks found", tooltip))
+
+  p <- ggplot2::ggplot(paired_totals, ggplot2::aes(x = Treatment, y = Total, group = Pair,
+                                                     color = Pair, text = tooltip)) +
+    ggplot2::geom_line(linewidth = 1, alpha = 0.7) +
+    ggplot2::geom_point(size = 4) +
+    ggplot2::scale_color_manual(values = c("1" = "#3B82F6", "2" = "#10B981")) +
+    ggplot2::scale_y_continuous(expand = ggplot2::expansion(mult = 0.15)) +
+    ggplot2::labs(x = NULL, y = "Total Ticks", color = "Pair", title = "Exclosure Comparison") +
+    ggplot2::theme_minimal() +
+    ggplot2::theme(
+      plot.title = ggplot2::element_text(size = 12, face = "bold"),
+      axis.text.x = ggplot2::element_text(size = 11),
+      axis.text.y = ggplot2::element_text(size = 11),
+      axis.title.y = ggplot2::element_text(size = 11),
+      legend.text = ggplot2::element_text(size = 10),
+      legend.position = "bottom",
+      plot.margin = ggplot2::margin(5, 5, 5, 5)
+    )
+
+  plotly::ggplotly(p, tooltip = "text") %>%
+    plotly::config(displayModeBar = FALSE) %>%
+    plotly::layout(hoverlabel = list(bgcolor = "white", font = list(size = 12)))
+}
+
+# 13. Create detailed tooltip for Mohonk locations showing transect breakdown
 create_mohonk_location_tooltip <- function(data, site_location, exclosure_name) {
   # Get transect-level summary for this location
   transect_data <- data %>%

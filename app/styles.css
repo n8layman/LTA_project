@@ -22,11 +22,12 @@ body {
   border-radius: 0.5rem;
   box-shadow: none;
   border: 1px solid #e5e7eb;
-  height: 500px;
+  height: 525px;
 }
 
 .site-summary-panel {
-  height: 500px;
+  height: 525px;
+  overflow-y: auto;
   padding: 1.5rem;
   background-color: #f9f9f9;
   border: 1px solid #e5e7eb;

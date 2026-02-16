@@ -74,7 +74,7 @@ ui <- shiny::fluidPage(
     shiny::tabPanel(title = "Mohonk Preserve", value = "Mohonk",
       shiny::h3("Mohonk Preserve, NY", class = "text-xl font-semibold mb-4 text-gray-700"),
       shiny::fluidRow(
-        shiny::column(8, leafletOutput("mohonk_map", height = "500px")),
+        shiny::column(8, leafletOutput("mohonk_map", height = "525px")),
         shiny::column(4, shiny::div(class = "site-summary-panel",
                      shiny::h4("Data Summary", class = "text-lg font-semibold mb-3 text-gray-800"),
                      shiny::uiOutput("site_summary_ui"), shiny::br(),
@@ -89,11 +89,11 @@ ui <- shiny::fluidPage(
     shiny::tabPanel(title = "Mianus River Gorge Preserve", value = "Mianus River Gorge",
       shiny::h3("Mianus River Gorge Preserve, CT/NY", class = "text-xl font-semibold mb-4 text-gray-700"),
       shiny::fluidRow(
-        shiny::column(8, leafletOutput("mianus_map", height = "500px")),
+        shiny::column(8, leafletOutput("mianus_map", height = "525px")),
         shiny::column(4, shiny::div(class = "site-summary-panel",
                      shiny::h4("Data Summary", class = "text-lg font-semibold mb-3 text-gray-800"),
                      shiny::uiOutput("site_summary_ui_mianus"), shiny::br(),
-                     shiny::plotOutput("mianus_species_plot", height = "250px")))
+                     plotly::plotlyOutput("mianus_exclosure_plot", height = "250px")))
       ),
       shiny::div(class = "data-table-styled-container",
           shiny::h4("Mianus River Gorge Preserve Data", class = "text-lg font-semibold mb-3 text-gray-800"),
@@ -150,8 +150,9 @@ server <- function(input, output, session) {
     generate_species_plot(filtered_data(), "Mohonk Preserve")
   })
 
-  output$mianus_species_plot <- shiny::renderPlot({
-    generate_species_plot(filtered_data(), "Mianus River Gorge")
+  # --- Exclosure Comparison Plot ---
+  output$mianus_exclosure_plot <- plotly::renderPlotly({
+    generate_exclosure_plot(filtered_data(), "Mianus River Gorge")
   })
 
     # --- Data Tables ---
