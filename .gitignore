@@ -19,13 +19,6 @@ _targets/objects
 
 admin/**
 2D.md
-SECURITY_REVIEW.md
-COMMENT_SYSTEMS_GUIDE.md
-comment_system_setup_report.md
-shinylive_anonymous_comments.md
-scripts/GEOJSON_FIXES_REPORT.md
-scripts/left_off.md
-scripts/source_data_cleanup.md
 Rplots.pdf
 GIS_MRG/
 GIS_MRG-*.zip
