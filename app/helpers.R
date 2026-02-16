@@ -190,7 +190,7 @@ get_date_range <- function(df) {
 generate_site_summary <- function(data, site_name, min_date = NA, max_date = NA) {
   site_data <- data %>% dplyr::filter(SiteName == site_name)
   total_ticks <- sum(site_data$Total, na.rm = TRUE)
-  unique_species <- length(unique(site_data$Species))
+  unique_species <- length(unique(site_data$Species[site_data$Total > 0]))
 
   # Site descriptions with links
   site_description <- if (site_name == "Mohonk Preserve") {
